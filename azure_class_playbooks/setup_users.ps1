@@ -23,7 +23,7 @@ function CreateUser {
     New-AzureRmResourceGroup -Name $rgname -Location $location
     #New-AzureADGroup -DisplayName $rgname -MailEnabled $false -SecurityEnabled $true -MailNickName "NotSet"
 
-    $user = Get-AzureADUser -Filter "DisplayName eq $name" | Select-Object ObjectId
+    $user = Get-AzureADUser -Filter "DisplayName eq '$name'" | Select-Object ObjectId
 
     New-AzureRmRoleAssignment -ObjectId $user.ObjectId -RoleDefinitionName Owner -Scope
 
