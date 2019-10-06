@@ -24,9 +24,9 @@ function CreateUser {
     New-AzureADMSInvitation -InvitedUserDisplayName $name -InvitedUserEmailAddress $email -InviteRedirectURL https://portal.azure.com -SendInvitationMessage $true
     New-AzureRmResourceGroup -Name $rgname -Location $location
    
-    $user = Get-AzureADUser -Filter "DisplayName eq '$name'" | Select-Object ObjectId
+    #$user = Get-AzureADUser -Filter "DisplayName eq '$name'" | Select-Object ObjectId
 
-    New-AzureRmRoleAssignment -ObjectId $user.ObjectId -RoleDefinitionName Owner -Scope "/subscriptions/$subid.Subscription"
+    New-AzureRmRoleAssignment -signinname $email -RoleDefinitionName Owner -Scope "/subscriptions/$subid.Subscription"
 
     New-AzureRmStorageAccount -ResourceGroupName $rgname -Name $storage -Location $location -SkuName Standard_LRS -kind StorageV2
 }
