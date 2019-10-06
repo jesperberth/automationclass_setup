@@ -5,20 +5,27 @@ function CreateUser {
     $location = "North Europe"
     $emailStringTmp = $email -replace "@","_"
     $emailString = $emailStringTmp -replace "\.","_"
-    write-host $emailString
+    #write-host $emailString
     $rgname = $emailString
-    $rgname = $rgname.substring(0,16)
+    if ($rgname.length -gt 16) {
+        $rgname = $rgname.substring(0,16)
+    }
 
     $storage = $emailString -replace "_",""
 
-    write-host $rgname
+    if ($storage.length -gt 16) {
+        $storage = $storage.substring(0,16)
+    }    
+ 
+    #write-host $rgname
+    
     New-AzureADMSInvitation -InvitedUserDisplayName $name -InvitedUserEmailAddress $email -InviteRedirectURL https://portal.azure.com -SendInvitationMessage $true
     New-AzureRmResourceGroup -Name $rgname -Location $location
     #New-AzureADGroup -DisplayName $rgname -MailEnabled $false -SecurityEnabled $true -MailNickName "NotSet"
 
-    $group = Get-AzureADGroup -SearchString $rgname | Select-Object ObjectId
+    $user = Get-AzureADUser -Filter "DisplayName eq $name" | Select-Object ObjectId
 
-    New-AzureRmRoleAssignment -ObjectId $group.ObjectId -RoleDefinitionName Owner -ResourceGroupName $rgname
+    New-AzureRmRoleAssignment -ObjectId $user.ObjectId -RoleDefinitionName Owner -Scope
 
     New-AzureRmStorageAccount -ResourceGroupName $rgname -Name $storage -Location $location -SkuName Standard_LRS -kind StorageV2
 }
