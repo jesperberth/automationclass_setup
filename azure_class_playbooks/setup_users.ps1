@@ -16,14 +16,15 @@ function CreateUser {
         $storage = $storage.substring(0,16)
     }    
  
-    $subid =  Get-AzContext | Select-Object Subscription
-
+    $subId = (Get-AzureRmContext).Subscription
     New-AzureADMSInvitation -InvitedUserDisplayName $name -InvitedUserEmailAddress $email -InviteRedirectURL https://portal.azure.com -SendInvitationMessage $true
     New-AzureRmResourceGroup -Name $rgname -Location $location
-   
-    $user = Get-AzureADUser -Filter "DisplayName eq '$name'" | Select-Object ObjectId
+    
+    start-sleep -s 30
 
-    New-AzureRmRoleAssignment -ObjectId $user.ObjectId -RoleDefinitionName Owner -Scope "/subscriptions/$subid.Subscription"
+    $user = (Get-AzureADUser -Filter "DisplayName eq '$name'").ObjectId
+
+    New-AzureRmRoleAssignment -ObjectId $user.ObjectId -RoleDefinitionName Owner -Scope "/subscriptions/$subId"
 
     New-AzureRmStorageAccount -ResourceGroupName $rgname -Name $storage -Location $location -SkuName Standard_LRS -kind StorageV2
 }
