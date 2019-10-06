@@ -1,6 +1,4 @@
 function CreateUser {
-    param (
-    )
     $location = "North Europe"
     $emailStringTmp = $email -replace "@","_"
     $emailString = $emailStringTmp -replace "\.","_"
