@@ -5,10 +5,9 @@ function CreateUser {
     $location = "North Europe"
     $emailStringTmp = $email -replace "@","_"
     $emailString = $emailStringTmp -replace "\.","_"
-    #write-host $emailString
     $rgname = $emailString
-    if ($rgname.length -gt 16) {
-        $rgname = $rgname.substring(0,16)
+    if ($rgname.length -gt 90) {
+        $rgname = $rgname.substring(0,90)
     }
 
     $storage = $emailString -replace "_",""
@@ -17,8 +16,6 @@ function CreateUser {
         $storage = $storage.substring(0,16)
     }    
  
-    #write-host $rgname
-   
     $subid =  Get-AzContext | Select-Object Subscription
 
     New-AzureADMSInvitation -InvitedUserDisplayName $name -InvitedUserEmailAddress $email -InviteRedirectURL https://portal.azure.com -SendInvitationMessage $true
