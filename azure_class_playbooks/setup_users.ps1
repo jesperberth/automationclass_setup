@@ -18,14 +18,16 @@ function CreateUser {
     }    
  
     #write-host $rgname
-    
+   
+    $subid =  Get-AzContext | Select-Object Subscription
+
     New-AzureADMSInvitation -InvitedUserDisplayName $name -InvitedUserEmailAddress $email -InviteRedirectURL https://portal.azure.com -SendInvitationMessage $true
     New-AzureRmResourceGroup -Name $rgname -Location $location
     #New-AzureADGroup -DisplayName $rgname -MailEnabled $false -SecurityEnabled $true -MailNickName "NotSet"
 
     $user = Get-AzureADUser -Filter "DisplayName eq '$name'" | Select-Object ObjectId
 
-    New-AzureRmRoleAssignment -ObjectId $user.ObjectId -RoleDefinitionName Owner -Scope
+    New-AzureRmRoleAssignment -ObjectId $user.ObjectId -RoleDefinitionName Owner -Scope "/subscriptions/$subid.Subscription"
 
     New-AzureRmStorageAccount -ResourceGroupName $rgname -Name $storage -Location $location -SkuName Standard_LRS -kind StorageV2
 }
