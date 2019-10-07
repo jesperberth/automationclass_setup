@@ -66,6 +66,10 @@ function CreateUser {
     write-host "Check"
     New-AzureRmRoleAssignment -ObjectId $user -RoleDefinitionName Owner -Scope "/subscriptions/$subId"
 
+    $role = (Get-AzureADDirectoryRole | Where-Object {$_.displayName -eq 'Application administrator'}).ObjectId
+
+    Add-AzureADDirectoryRoleMember -ObjectId $role -RefObjectId $user
+
     New-AzureRmStorageAccount -ResourceGroupName $rgname -Name $storage -Location $location -SkuName Standard_LRS -kind StorageV2
 }
 
