@@ -1,7 +1,10 @@
 function CreateUser {
-    param (
-
-    )
+    Param(
+        [Parameter(Mandatory=$True)]
+        $email,
+        [Parameter(Mandatory=$True)]
+        $name
+      )
     $location = "North Europe"
     $emailStringTmp = $email -replace "@","_"
     $emailString = $emailStringTmp -replace "\.","_"
@@ -31,4 +34,4 @@ function CreateUser {
 }
 $email = Read-Host -Prompt 'Input email'
 $name = Read-Host -Prompt 'Input name'
-CreateUser
+CreateUser -email $email -name $name
