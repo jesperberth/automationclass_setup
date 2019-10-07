@@ -1,3 +1,39 @@
+# Usage
+# 
+# Create users for Ansible training
+# 
+# ./setup_users.ps1 Will prompt you for an email and a name and create the user
+# ./setup_users.ps1 -email "some@address.com" -name "Some Name" will create the user
+# ./setup_users.ps1 -file somefile.csv will take all lines in a csv file and create all users
+#
+# CSV file format
+#
+# email,name
+# "some@address.com","Some Name"
+# "someother@address.com", "Some Other Name"
+#
+# Author: Jesper Berth, jesper.berth@arrow.com
+param(
+    $file,
+    $email,
+    $name
+)
+$tmpvar = $null
+function ReadCsv{
+    Param(
+        [Parameter(Mandatory=$True)]
+        $file
+      )
+    $csvuser = Import-Csv -Path $file
+    foreach ($usr in $csvuser) {
+        
+        $email = $usr.email
+        $name = $usr.name
+
+        CreateUser -email $email -name $name
+}
+
+}
 function CreateUser {
     Param(
         [Parameter(Mandatory=$True)]
@@ -32,6 +68,38 @@ function CreateUser {
 
     New-AzureRmStorageAccount -ResourceGroupName $rgname -Name $storage -Location $location -SkuName Standard_LRS -kind StorageV2
 }
-$email = Read-Host -Prompt 'Input email'
-$name = Read-Host -Prompt 'Input name'
-CreateUser -email $email -name $name
+
+function promptUser{
+    $email = Read-Host -Prompt 'Input email'
+    $name = Read-Host -Prompt 'Input name'
+    CreateUser -email $email -name $name
+}
+
+
+if($file){
+
+    ReadCsv -file $file
+    exit
+
+}else{
+
+    $tmpvar = "1"
+
+}
+
+if($email -and $name){
+
+    CreateUser -email $email -name $name
+    exit
+
+}else{
+
+    $tmpvar = "1"
+
+}
+
+if($tmpvar){
+
+    promptUser
+    exit
+}
