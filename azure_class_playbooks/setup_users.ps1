@@ -23,8 +23,9 @@ function CreateUser {
     start-sleep -s 30
 
     $user = (Get-AzureADUser -Filter "DisplayName eq '$name'").ObjectId
-
-    New-AzureRmRoleAssignment -ObjectId $user.ObjectId -RoleDefinitionName Owner -Scope "/subscriptions/$subId"
+    write-host $user
+    write-host "Check"
+    New-AzureRmRoleAssignment -ObjectId $user -RoleDefinitionName Owner -Scope "/subscriptions/$subId"
 
     New-AzureRmStorageAccount -ResourceGroupName $rgname -Name $storage -Location $location -SkuName Standard_LRS -kind StorageV2
 }
