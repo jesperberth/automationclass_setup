@@ -21,21 +21,19 @@
       state: present
       started: true
       
-  - name: Stop VM server1
+  - name: Start VM server1
     azure_rm_virtualmachine:
       resource_group: "{{ resource_group }}"
-      allocated: no
       name: "server1"
       state: present
-      started: false
+      started: true
   
-  - name: Stop VM server2
+  - name: Start VM server2
     azure_rm_virtualmachine:
       resource_group: "{{ resource_group }}"
-      allocated: no
       name: "server2"
       state: present
-      started: false
+      started: true
 
   - name: Stop VM server3
     azure_rm_virtualmachine:
