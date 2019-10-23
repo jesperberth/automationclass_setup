@@ -50,9 +50,10 @@ function CreateUser {
     }
 
     $storage = $emailString -replace "_",""
+    $storage = $storage -replace "-",""
 
-    if ($storage.length -gt 16) {
-        $storage = $storage.substring(0,16)
+    if ($storage.length -gt 24) {
+        $storage = $storage.substring(0,24)
     }    
  
     $subId = (Get-AzureRmContext).Subscription
