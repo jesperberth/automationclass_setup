@@ -1,7 +1,6 @@
 ---
 - hosts: localhost
   connection: local
-  vars:
 
   vars_prompt:
     - name: resource_group
@@ -9,44 +8,39 @@
       private: no
 
   tasks:
-# Stop All Virtual Machines
-  - name: Stop VM ansible
+# Start All Virtual Machines
+  - name: Start VM ansible
     azure_rm_virtualmachine:
       resource_group: "{{ resource_group }}"
-      allocated: no
       name: "ansible"
       state: present
-      started: false
+      started: true
   
-  - name: Stop VM server1
+  - name: Start VM server1
     azure_rm_virtualmachine:
       resource_group: "{{ resource_group }}"
-      allocated: no
       name: "server1"
       state: present
-      started: false
+      started: true
   
-  - name: Stop VM server2
+  - name: Start VM server2
     azure_rm_virtualmachine:
       resource_group: "{{ resource_group }}"
-      allocated: no
       name: "server2"
       state: present
-      started: false
+      started: true
 
-  - name: Stop VM server3
+  - name: Start VM server3
     azure_rm_virtualmachine:
       resource_group: "{{ resource_group }}"
-      allocated: no
       name: "server3"
       state: present
-      started: false
+      started: true
 
-  - name: Stop VM server4
+  - name: Start VM server4
     azure_rm_virtualmachine:
       resource_group: "{{ resource_group }}"
-      allocated: no
       name: "server4"
       state: present
-      started: false
+      started: true
                      
