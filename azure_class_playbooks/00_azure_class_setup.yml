@@ -293,4 +293,4 @@
       location: "{{ location }}"
       tags:
           owner: "{{ adminUser }}"
-          delete: "{{ ansibletraining }}"
+          delete: ansibletraining
