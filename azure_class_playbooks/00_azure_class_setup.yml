@@ -286,3 +286,11 @@
         version: latest
       vm_size: Standard_A1_v2
       network_interfaces: "server4_nic01"
+
+  - name: Create a resource group
+    azure_rm_resourcegroup:
+      name: "{{ resource_group }}"
+      location: "{{ northeurope }}"
+      tags:
+          owner: "{{ adminUser }}"
+          delete: "{{ ansibletraining }}"
