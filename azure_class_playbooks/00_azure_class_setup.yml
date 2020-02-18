@@ -36,9 +36,6 @@
       virtual_network_name: "{{ virtual_network_name }}"
       name: "{{ subnet }}"
       address_prefix_cidr: "10.1.0.0/24"
-      tags:
-          owner: "{{ adminUser }}"
-          delete: ansibletraining
 
   - name: Create a public ip address ansible
     azure_rm_publicipaddress:
