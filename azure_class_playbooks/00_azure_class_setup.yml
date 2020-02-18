@@ -290,7 +290,7 @@
   - name: Create a resource group
     azure_rm_resourcegroup:
       name: "{{ resource_group }}"
-      location: "{{ northeurope }}"
+      location: "{{ location }}"
       tags:
           owner: "{{ adminUser }}"
           delete: "{{ ansibletraining }}"
