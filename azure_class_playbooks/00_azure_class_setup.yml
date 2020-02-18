@@ -27,8 +27,8 @@
       name: "{{ virtual_network_name }}"
       address_prefixes_cidr: "10.1.0.0/16"
       tags:
-          purpose: testing
-          delete: allow
+          owner: "{{ adminUser }}"
+          delete: ansibletraining
   
   - name: Create a subnet
     azure_rm_subnet:
@@ -36,6 +36,9 @@
       virtual_network_name: "{{ virtual_network_name }}"
       name: "{{ subnet }}"
       address_prefix_cidr: "10.1.0.0/24"
+      tags:
+          owner: "{{ adminUser }}"
+          delete: ansibletraining
 
   - name: Create a public ip address ansible
     azure_rm_publicipaddress:
@@ -43,6 +46,9 @@
       name: public_ip_ansible
       allocation_method: static
       domain_name: "ansible{{ domain_sub }}"
+      tags:
+          owner: "{{ adminUser }}"
+          delete: ansibletraining
 
   - name: Create a public ip address server1
     azure_rm_publicipaddress:
@@ -50,6 +56,9 @@
       name: server1_public_ip
       allocation_method: static
       domain_name: "server1{{ domain_sub }}"
+      tags:
+          owner: "{{ adminUser }}"
+          delete: ansibletraining
 
   - name: Create a public ip address server2
     azure_rm_publicipaddress:
@@ -57,6 +66,9 @@
       name: server2_public_ip
       allocation_method: static
       domain_name: "server2{{ domain_sub }}"
+      tags:
+          owner: "{{ adminUser }}"
+          delete: ansibletraining
 
   - name: Create a public ip address server3
     azure_rm_publicipaddress:
@@ -64,6 +76,9 @@
       name: server3_public_ip
       allocation_method: static
       domain_name: "server3{{ domain_sub }}"
+      tags:
+          owner: "{{ adminUser }}"
+          delete: ansibletraining
 
   - name: Create a public ip address server4
     azure_rm_publicipaddress:
@@ -71,6 +86,9 @@
       name: server4_public_ip
       allocation_method: static
       domain_name: "server4{{ domain_sub }}"
+      tags:
+          owner: "{{ adminUser }}"
+          delete: ansibletraining
 
   - name: Create Security Group for ansible
     azure_rm_securitygroup:
@@ -84,6 +102,9 @@
             access: Allow
             priority: 100
             direction: Inbound
+      tags:
+          owner: "{{ adminUser }}"
+          delete: ansibletraining
 
   - name: Create Security Group for server1
     azure_rm_securitygroup:
@@ -97,6 +118,9 @@
             access: Allow
             priority: 100
             direction: Inbound
+      tags:
+          owner: "{{ adminUser }}"
+          delete: ansibletraining
 
   - name: Create Security Group for server2
     azure_rm_securitygroup:
@@ -110,6 +134,9 @@
             access: Allow
             priority: 100
             direction: Inbound
+      tags:
+          owner: "{{ adminUser }}"
+          delete: ansibletraining
 
   - name: Create Security Group for server3
     azure_rm_securitygroup:
@@ -123,6 +150,9 @@
             access: Allow
             priority: 100
             direction: Inbound
+      tags:
+          owner: "{{ adminUser }}"
+          delete: ansibletraining
 
   - name: Create Security Group for server4
     azure_rm_securitygroup:
@@ -136,6 +166,9 @@
             access: Allow
             priority: 100
             direction: Inbound
+      tags:
+          owner: "{{ adminUser }}"
+          delete: ansibletraining
 
   - name: Create a network interface for ansible
     azure_rm_networkinterface:
@@ -148,6 +181,9 @@
         - name: "ansible_nic01_ipconfig"
           public_ip_address_name: "ansible_public_ip"
           primary: True
+      tags:
+          owner: "{{ adminUser }}"
+          delete: ansibletraining
  
   - name: Create a network interface for server1
     azure_rm_networkinterface:
@@ -160,6 +196,9 @@
         - name: "server1_nic01_ipconfig"
           public_ip_address_name: "server1_public_ip"
           primary: True
+      tags:
+          owner: "{{ adminUser }}"
+          delete: ansibletraining
 
   - name: Create a network interface for server2
     azure_rm_networkinterface:
@@ -172,6 +211,9 @@
         - name: "server2_nic01_ipconfig"
           public_ip_address_name: "server2_public_ip"
           primary: True
+      tags:
+          owner: "{{ adminUser }}"
+          delete: ansibletraining
 
   - name: Create a network interface for server3
     azure_rm_networkinterface:
@@ -184,6 +226,9 @@
         - name: "server3_nic01_ipconfig"
           public_ip_address_name: "server3_public_ip"
           primary: True
+      tags:
+          owner: "{{ adminUser }}"
+          delete: ansibletraining
 
   - name: Create a network interface for server4
     azure_rm_networkinterface:
@@ -196,6 +241,9 @@
         - name: "server4_nic01_ipconfig"
           public_ip_address_name: "server4_public_ip"
           primary: True
+      tags:
+          owner: "{{ adminUser }}"
+          delete: ansibletraining
 
   # Create Virtual Machine ansible       
   - name: Create a VM ansible
@@ -214,6 +262,9 @@
         version: latest
       vm_size: Standard_A1_v2
       network_interfaces: "ansible_nic01"
+      tags:
+          owner: "{{ adminUser }}"
+          delete: ansibletraining
 
   # Create Virtual Machine server1       
   - name: Create a VM server1
@@ -232,6 +283,9 @@
         version: latest
       vm_size: Standard_A1_v2
       network_interfaces: "server1_nic01"
+      tags:
+          owner: "{{ adminUser }}"
+          delete: ansibletraining
 
   # Create Virtual Machine server2       
   - name: Create a VM server2
@@ -250,6 +304,9 @@
         version: latest
       vm_size: Standard_A1_v2
       network_interfaces: "server2_nic01"
+      tags:
+          owner: "{{ adminUser }}"
+          delete: ansibletraining
 
 # Create Virtual Machine server3      
   - name: Create a VM server3
@@ -268,6 +325,9 @@
         version: latest
       vm_size: Standard_A1_v2
       network_interfaces: "server3_nic01"
+      tags:
+          owner: "{{ adminUser }}"
+          delete: ansibletraining
 
 # Create Virtual Machine server4      
   - name: Create a VM server4
@@ -286,6 +346,9 @@
         version: latest
       vm_size: Standard_A1_v2
       network_interfaces: "server4_nic01"
+      tags:
+          owner: "{{ adminUser }}"
+          delete: ansibletraining
 
   - name: Create a resource group
     azure_rm_resourcegroup:
