@@ -99,6 +99,7 @@
       ssh-copy-id "user@{{ storagevm_ip_fact }}"
 
 -  hosts: storagetmp
+   remote_user: "user"
    become: yes
    vars:
      storagevm_ip_fact: "{{ hostvars['localhost']['storagevm_ip_fact'] }}"
@@ -146,6 +147,7 @@
       ssh-copy-id "user@{{ ansiblevm_ip_fact }}"
 
 -  hosts: ansibletmp
+   remote_user: "user"
    become: yes
    vars:
      ansiblevm_ip_fact: "{{ hostvars['localhost']['ansiblevm_ip_fact'] }}"
@@ -192,6 +194,7 @@
      when: ansiblevm_ip_fact != "10.172.10.9"
  
 - hosts: storage
+  remote_user: "user"
   become: yes
   vars:
     ansible_python_interpreter: /usr/bin/python3
@@ -355,6 +358,7 @@
       command: firewall-cmd --reload
 
 - hosts: ansibleserver
+  remote_user: "user"
   become: yes
   vars:
     ansible_python_interpreter: /usr/bin/python3
