@@ -30,7 +30,7 @@
          'NFS.MaxVolumes': '16'
          'NFS41.MaxVolumes': '16'
 
-   - name: Clone fedora 30 to storage.ansible.local
+   - name: Clone fedora 31 to storage.ansible.local
      vmware_guest:
        hostname: "{{ vmwhostname }}"
        username: "{{ vmwusername }}"
@@ -54,7 +54,7 @@
        wait_for_ip_address: yes
      register: storagevm
 
-   - name: Clone fedora 30 to ansibleserver.ansible.local
+   - name: Clone fedora 31 to ansibleserver.ansible.local
      vmware_guest:
        hostname: "{{ vmwhostname }}"
        username: "{{ vmwusername }}"
@@ -96,7 +96,7 @@
 
    - name: Copy SSH ID
      shell: |
-      ssh-copy-id "{{ ansible_user_id }}@{{ storagevm_ip_fact }}"
+      ssh-copy-id "user@{{ storagevm_ip_fact }}"
 
 -  hosts: storagetmp
    become: yes
@@ -143,7 +143,7 @@
 
    - name: Copy SSH ID
      shell: |
-      ssh-copy-id "{{ ansible_user_id }}@{{ ansiblevm_ip_fact }}"
+      ssh-copy-id "user@{{ ansiblevm_ip_fact }}"
 
 -  hosts: ansibletmp
    become: yes
