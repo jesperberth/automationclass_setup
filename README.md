@@ -109,11 +109,11 @@ pip3 install fortiosapi --user
 
 ssh-keygen
 
-git clone https://github.com/jesperberth/automationclass.git
+git clone https://github.com/jesperberth/automationclass_setup.git
 
-cd automationclass/setup_class/class_room
+cd automationclass_setup/class_room/
 
-ansible-playbook 01_class_setup.yml
+ansible-playbook 01_class_setup.yml --ask-become-pass
 
 ```
 

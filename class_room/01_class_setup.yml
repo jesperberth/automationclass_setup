@@ -16,7 +16,7 @@
     # Setup Bind
 
     - name: Install bind
-      yum:
+      dnf:
        name: bind
        state: present
 
@@ -87,7 +87,7 @@
     # Create DHCP server
 
     - name: Install dhcp
-      yum:
+      dnf:
        name: dhcp
        state: present
 
