@@ -37,7 +37,7 @@
        password: "{{ vmwpassword }}"
        validate_certs: False
        name: storage.ansible.local
-       template: _TEMP_fedora30
+       template: _TEMP_fedora31
        datacenter: Datacenter
        folder: /Admin
        state: poweredon
@@ -61,7 +61,7 @@
        password: "{{ vmwpassword }}"
        validate_certs: False
        name: ansibleserver.ansible.local
-       template: _TEMP_fedora30
+       template: _TEMP_fedora31
        datacenter: Datacenter
        folder: /Admin
        state: poweredon

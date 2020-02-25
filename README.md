@@ -18,7 +18,7 @@ Role: DNS, DHCP, ansible for setting up classroom, Firewall, Vmware environment
 
 Install on local VM, or laptop
 
-Fedora 30+
+Fedora 31
 
 Minimal install
 
@@ -67,7 +67,7 @@ Size: Tiny
 
 Role: NFS storage server for esxi host
 
-Fedora 30 - deployed from template
+Fedora 31 - deployed from template
 
 Virtual Machine running on ESXi
 2 CPU
@@ -84,7 +84,7 @@ name: storage.ansible.local
 
 Role: Lab users ansible server
 
-Fedora 30 - deployed from template
+Fedora 31 - deployed from template
 
 ip: 10.172.10.22/24
 Gateway: 10.172.10.1
@@ -128,9 +128,20 @@ Deploy vcenter
 Manual Configure vcenter
 
 Make folder iso
-Upload fedora_30_x86_64.iso
+Upload fedora_31_x86_64.iso
 
-Upload or Create Fedora 30 Template
+Upload or Create Fedora 31 Template
+
+```bash
+Create Template
+Fedora Server
++ Guest Tools
+English(With Danish key)
+Use /dev/sda
+
+Add Remote User - user as admin
+
+```
 
 Create VM Folder
 
@@ -138,7 +149,7 @@ Create VM Folder
 \Admin
 
 Place vcenter.ansible.local in folder \admin
-Register the _TEMP_fedora30 and place it in folder \Templates
+Register the _TEMP_fedora31 and place it in folder \Templates
 
 On ansiblehost.ansible.local log on as user
 
@@ -146,7 +157,7 @@ Now deploy the storage server, ansible server, and make esxi configurations
 
 ```bash
 
-ansible-playbook 02_class_setup.yml
+ansible-playbook 02_class_setup.yml --ask-become-pass
 
 ansible-playbook 03_class_network_setup.yml
 
