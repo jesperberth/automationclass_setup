@@ -1,18 +1,35 @@
 # Class Setup
 
+## Fortigate 60E
+
+Use Wan1/Wan2 for internet access
+
+Plug ansiblehost in port 7
+
+Plug Wireless AP in port 6
+
+Plug Vmware Host in port 5
+
 ## ansiblehost.ansible.local
+
+Only for course admin
 
 Role: DNS, DHCP, ansible for setting up classroom, Firewall, Vmware environment
 
-Local VM, or laptop
+Install on local VM, or laptop
 
-Fedora 30
+Fedora 30+
+
 Minimal install
+
 root user
+
 additional user: xxx
 
 ip: 10.172.10.2/24
+
 Gateway: 10.172.10.1
+
 DNS 1.1.1.1
 
 ## esxi.ansible.local
