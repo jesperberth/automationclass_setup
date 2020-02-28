@@ -52,6 +52,16 @@
       - server2
       - server3
       - server4
+    async: 1000
+    poll: 0
+    register: create_pub_ip
+
+  - name: Wait for Public Ip
+    async_status:
+      jid: "{{ create_pub_ip.ansible_job_id }}"
+    register: job_result
+    until: job_result.finished
+    retries: 30
 
   - name: Create Security Group for Linux
     azure_rm_securitygroup:
@@ -92,7 +102,7 @@
       - server3
       - server4
 
-  - name: Create a network interfaces
+  - name: Create network interfaces
     azure_rm_networkinterface:
       name: "{{ item }}_nic01"
       resource_group: "{{ resource_group }}"
