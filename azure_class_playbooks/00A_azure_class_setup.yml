@@ -65,7 +65,6 @@
     delay: 5
     with_items: "{{ create_pub_ip.results }}"
 
-
   - name: Create Security Group for Linux
     azure_rm_securitygroup:
       resource_group: "{{ resource_group }}"
@@ -85,6 +84,18 @@
       - ansible
       - server1
       - server2
+    async: 1000
+    poll: 0
+    register: create_secgrp_linux
+
+  - name: Wait for Security Group Linux
+    async_status:
+      jid: "{{ item.ansible_job_id }}"
+    register: job_result
+    until: job_result.finished
+    retries: 30
+    delay: 5
+    with_items: "{{ create_secgrp_linux.results }}"
 
   - name: Create Security Group for Windows
     azure_rm_securitygroup:
@@ -104,6 +115,18 @@
     loop:
       - server3
       - server4
+    async: 1000
+    poll: 0
+    register: create_secgrp_windows
+
+  - name: Wait for Security Group Windows
+    async_status:
+      jid: "{{ item.ansible_job_id }}"
+    register: job_result
+    until: job_result.finished
+    retries: 30
+    delay: 5
+    with_items: "{{ create_secgrp_windows.results }}"
 
   - name: Create network interfaces
     azure_rm_networkinterface:
@@ -125,6 +148,18 @@
       - server2
       - server3
       - server4
+    async: 1000
+    poll: 0
+    register: create_nic
+
+  - name: Wait for Network Interfaces
+    async_status:
+      jid: "{{ item.ansible_job_id }}"
+    register: job_result
+    until: job_result.finished
+    retries: 30
+    delay: 5
+    with_items: "{{ create_nic.results }}"
 
 # Create Virtual Machines     
   - name: Create Virtual Machines
@@ -152,6 +187,18 @@
         - { 'name': 'server2', 'os_type': 'Linux', 'offer': 'RHEL', 'publisher': 'RedHat', 'sku': '8', 'version': 'latest' }
         - { 'name': 'server3', 'os_type': 'Windows', 'offer': 'WindowsServer', 'publisher': 'MicrosoftWindowsServer', 'sku': '2019-Datacenter', 'version': 'latest' }
         - { 'name': 'server4', 'os_type': 'Windows', 'offer': 'WindowsServer', 'publisher': 'MicrosoftWindowsServer', 'sku': '2019-Datacenter', 'version': 'latest' }
+    async: 1000
+    poll: 0
+    register: create_vm
+
+  - name: Wait for Virtual Machines
+    async_status:
+      jid: "{{ item.ansible_job_id }}"
+    register: job_result
+    until: job_result.finished
+    retries: 30
+    delay: 5
+    with_items: "{{ create_vm.results }}"
 
   - name: Add tags to resource group
     azure_rm_resourcegroup:
