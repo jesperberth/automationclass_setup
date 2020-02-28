@@ -196,7 +196,7 @@
       jid: "{{ item.ansible_job_id }}"
     register: job_result
     until: job_result.finished
-    retries: 30
+    retries: 100
     delay: 5
     with_items: "{{ create_vm.results }}"
 
