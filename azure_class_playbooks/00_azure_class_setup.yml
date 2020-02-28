@@ -207,3 +207,4 @@
       tags:
           owner: "{{ adminUser }}"
           delete: ansibletraining
+          
