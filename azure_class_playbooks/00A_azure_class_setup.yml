@@ -140,7 +140,7 @@
         - { 'name': 'server3', 'os_type': 'Windows', 'offer': 'WindowsServer', 'publisher': 'MicrosoftWindowsServer', 'sku': '2019-Datacenter', 'version': 'latest' }
         - { 'name': 'server4', 'os_type': 'Windows', 'offer': 'WindowsServer', 'publisher': 'MicrosoftWindowsServer', 'sku': '2019-Datacenter', 'version': 'latest' }
 
-  - name: Create a resource group
+  - name: Add tags to resource group
     azure_rm_resourcegroup:
       name: "{{ resource_group }}"
       location: "{{ location }}"
