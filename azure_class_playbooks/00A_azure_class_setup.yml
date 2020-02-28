@@ -1,0 +1,149 @@
+---
+- hosts: localhost
+  connection: local
+  vars:
+    location: northeurope
+    virtual_network_name: automationNetwork
+    subnet: Servers
+
+  vars_prompt:
+    - name: resource_group
+      prompt: "Type the name of your Azure Resource Group"
+      private: no
+    - name: domain_sub
+      prompt: "Type a uniq name for servers Domain Name"
+      private: no
+    - name: adminUser
+      prompt: "Type the name of your root/administrator account"
+      private: no
+    - name: adminPassword
+      prompt: "Type the password of your root/administrator account"
+      private: no
+
+  tasks:
+  - name: Create a virtual network
+    azure_rm_virtualnetwork:
+      resource_group: "{{ resource_group }}"
+      name: "{{ virtual_network_name }}"
+      address_prefixes_cidr: "10.1.0.0/16"
+      tags:
+          owner: "{{ adminUser }}"
+          delete: ansibletraining
+  
+  - name: Create a subnet
+    azure_rm_subnet:
+      resource_group: "{{ resource_group }}"
+      virtual_network_name: "{{ virtual_network_name }}"
+      name: "{{ subnet }}"
+      address_prefix_cidr: "10.1.0.0/24"
+
+  - name: Create a public ip addresses
+    azure_rm_publicipaddress:
+      resource_group: "{{ resource_group }}"
+      name: "{{ item }}_public_ip"
+      allocation_method: static
+      domain_name: "{{ item }}{{ domain_sub }}"
+      tags:
+          owner: "{{ adminUser }}"
+          delete: ansibletraining
+      loop:
+        - ansible
+        - server1
+        - server2
+        - server3
+        - server4
+
+  - name: Create Security Group for Linux
+    azure_rm_securitygroup:
+      resource_group: "{{ resource_group }}"
+      name: "{{ item }}_securitygroup"
+      purge_rules: yes
+      rules:
+          - name: Allow_SSH
+            protocol: Tcp
+            destination_port_range: 22
+            access: Allow
+            priority: 100
+            direction: Inbound
+      tags:
+          owner: "{{ adminUser }}"
+          delete: ansibletraining
+      loop:
+        - ansible
+        - server1
+        - server2
+
+  - name: Create Security Group for Windows
+    azure_rm_securitygroup:
+      resource_group: "{{ resource_group }}"
+      name: "{{ item }}_securitygroup"
+      purge_rules: yes
+      rules:
+          - name: Allow_RDP
+            protocol: Tcp
+            destination_port_range: 3389
+            access: Allow
+            priority: 100
+            direction: Inbound
+      tags:
+          owner: "{{ adminUser }}"
+          delete: ansibletraining
+      loop:
+        - server3
+        - server4
+
+  - name: Create a network interfaces
+    azure_rm_networkinterface:
+      name: "{{ item }}_nic01"
+      resource_group: "{{ resource_group }}"
+      virtual_network: "{{ virtual_network_name }}"
+      subnet_name: "{{ subnet }}"
+      security_group: "{{ item }}_securitygroup"
+      ip_configurations:
+        - name: "{{ item }}_nic01_ipconfig"
+          public_ip_address_name: "{{ item }}_public_ip"
+          primary: True
+      tags:
+          owner: "{{ adminUser }}"
+          delete: ansibletraining
+      loop:
+        - ansible
+        - server1
+        - server2
+        - server3
+        - server4
+
+# Create Virtual Machines     
+  - name: Create Virtual Machines
+    azure_rm_virtualmachine:
+      resource_group: "{{ resource_group }}"
+      name: "{{ item.name }}"
+      os_type: "{{ item.os_type }}"
+      admin_username: "{{ adminUser }}"
+      admin_password: "{{ adminPassword }}"
+      managed_disk_type: Standard_LRS
+      state: present
+      image:
+        offer: "{{ item.offer }}"
+        publisher: "{{ item.publisher }}"
+        sku: "{{ item.sku }}"
+        version: "{{ item.version }}"
+      vm_size: Standard_A1_v2
+      network_interfaces: "{{ item.name }}_nic01"
+      tags:
+          owner: "{{ adminUser }}"
+          delete: ansibletraining
+      loop:
+          - { 'name': 'ansible', 'os_type': 'Linux', 'offer': 'RHEL', 'publisher': 'RedHat', 'sku': '8', 'version': 'latest' }
+          - { 'name': 'server1', 'os_type': 'Linux', 'offer': 'RHEL', 'publisher': 'RedHat', 'sku': '8', 'version': 'latest' }
+          - { 'name': 'server2', 'os_type': 'Linux', 'offer': 'RHEL', 'publisher': 'RedHat', 'sku': '8', 'version': 'latest' }
+          - { 'name': 'server3', 'os_type': 'Windows', 'offer': 'WindowsServer', 'publisher': 'MicrosoftWindowsServer', 'sku': '2019-Datacenter', 'version': 'latest' }
+          - { 'name': 'server4', 'os_type': 'Windows', 'offer': 'WindowsServer', 'publisher': 'MicrosoftWindowsServer', 'sku': '2019-Datacenter', 'version': 'latest' }
+
+  - name: Create a resource group
+    azure_rm_resourcegroup:
+      name: "{{ resource_group }}"
+      location: "{{ location }}"
+      tags:
+          owner: "{{ adminUser }}"
+          delete: ansibletraining
