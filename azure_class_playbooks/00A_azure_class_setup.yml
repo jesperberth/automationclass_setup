@@ -58,10 +58,13 @@
 
   - name: Wait for Public Ip
     async_status:
-      jid: "{{ create_pub_ip.ansible_job_id }}"
+      jid: "{{ item.ansible_job_id }}"
     register: job_result
     until: job_result.finished
     retries: 30
+    delay: 5
+    with_items: "{{ create_pub_ip.results }}"
+
 
   - name: Create Security Group for Linux
     azure_rm_securitygroup:
