@@ -37,60 +37,38 @@
       name: "{{ subnet }}"
       address_prefix_cidr: "10.1.0.0/24"
 
-  - name: Create a public ip address ansible
+  - name: Create a public ip addresses
     azure_rm_publicipaddress:
       resource_group: "{{ resource_group }}"
-      name: public_ip_ansible
+      name: "{{ item }}_public_ip"
       allocation_method: static
-      domain_name: "ansible{{ domain_sub }}"
+      domain_name: "{{ item }}{{ domain_sub }}"
       tags:
           owner: "{{ adminUser }}"
           delete: ansibletraining
+    loop:
+      - ansible
+      - server1
+      - server2
+      - server3
+      - server4
+    async: 1000
+    poll: 0
+    register: create_pub_ip
 
-  - name: Create a public ip address server1
-    azure_rm_publicipaddress:
-      resource_group: "{{ resource_group }}"
-      name: server1_public_ip
-      allocation_method: static
-      domain_name: "server1{{ domain_sub }}"
-      tags:
-          owner: "{{ adminUser }}"
-          delete: ansibletraining
+  - name: Wait for Public Ip
+    async_status:
+      jid: "{{ item.ansible_job_id }}"
+    register: job_result
+    until: job_result.finished
+    retries: 30
+    delay: 5
+    with_items: "{{ create_pub_ip.results }}"
 
-  - name: Create a public ip address server2
-    azure_rm_publicipaddress:
-      resource_group: "{{ resource_group }}"
-      name: server2_public_ip
-      allocation_method: static
-      domain_name: "server2{{ domain_sub }}"
-      tags:
-          owner: "{{ adminUser }}"
-          delete: ansibletraining
-
-  - name: Create a public ip address server3
-    azure_rm_publicipaddress:
-      resource_group: "{{ resource_group }}"
-      name: server3_public_ip
-      allocation_method: static
-      domain_name: "server3{{ domain_sub }}"
-      tags:
-          owner: "{{ adminUser }}"
-          delete: ansibletraining
-
-  - name: Create a public ip address server4
-    azure_rm_publicipaddress:
-      resource_group: "{{ resource_group }}"
-      name: server4_public_ip
-      allocation_method: static
-      domain_name: "server4{{ domain_sub }}"
-      tags:
-          owner: "{{ adminUser }}"
-          delete: ansibletraining
-
-  - name: Create Security Group for ansible
+  - name: Create Security Group for Linux
     azure_rm_securitygroup:
       resource_group: "{{ resource_group }}"
-      name: "ansible_securitygroup"
+      name: "{{ item }}_securitygroup"
       purge_rules: yes
       rules:
           - name: Allow_SSH
@@ -102,43 +80,27 @@
       tags:
           owner: "{{ adminUser }}"
           delete: ansibletraining
+    loop:
+      - ansible
+      - server1
+      - server2
+    async: 1000
+    poll: 0
+    register: create_secgrp_linux
 
-  - name: Create Security Group for server1
+  - name: Wait for Security Group Linux
+    async_status:
+      jid: "{{ item.ansible_job_id }}"
+    register: job_result
+    until: job_result.finished
+    retries: 30
+    delay: 5
+    with_items: "{{ create_secgrp_linux.results }}"
+
+  - name: Create Security Group for Windows
     azure_rm_securitygroup:
       resource_group: "{{ resource_group }}"
-      name: "server1_securitygroup"
-      purge_rules: yes
-      rules:
-          - name: Allow_SSH
-            protocol: Tcp
-            destination_port_range: 22
-            access: Allow
-            priority: 100
-            direction: Inbound
-      tags:
-          owner: "{{ adminUser }}"
-          delete: ansibletraining
-
-  - name: Create Security Group for server2
-    azure_rm_securitygroup:
-      resource_group: "{{ resource_group }}"
-      name: "server2_securitygroup"
-      purge_rules: yes
-      rules:
-          - name: Allow_SSH
-            protocol: Tcp
-            destination_port_range: 22
-            access: Allow
-            priority: 100
-            direction: Inbound
-      tags:
-          owner: "{{ adminUser }}"
-          delete: ansibletraining
-
-  - name: Create Security Group for server3
-    azure_rm_securitygroup:
-      resource_group: "{{ resource_group }}"
-      name: "server3_securitygroup"
+      name: "{{ item }}_securitygroup"
       purge_rules: yes
       rules:
           - name: Allow_RDP
@@ -150,204 +112,95 @@
       tags:
           owner: "{{ adminUser }}"
           delete: ansibletraining
+    loop:
+      - server3
+      - server4
+    async: 1000
+    poll: 0
+    register: create_secgrp_windows
 
-  - name: Create Security Group for server4
-    azure_rm_securitygroup:
-      resource_group: "{{ resource_group }}"
-      name: "server4_securitygroup"
-      purge_rules: yes
-      rules:
-          - name: Allow_RDP
-            protocol: Tcp
-            destination_port_range: 3389
-            access: Allow
-            priority: 100
-            direction: Inbound
-      tags:
-          owner: "{{ adminUser }}"
-          delete: ansibletraining
+  - name: Wait for Security Group Windows
+    async_status:
+      jid: "{{ item.ansible_job_id }}"
+    register: job_result
+    until: job_result.finished
+    retries: 30
+    delay: 5
+    with_items: "{{ create_secgrp_windows.results }}"
 
-  - name: Create a network interface for ansible
+  - name: Create network interfaces
     azure_rm_networkinterface:
-      name: "ansible_nic01"
+      name: "{{ item }}_nic01"
       resource_group: "{{ resource_group }}"
       virtual_network: "{{ virtual_network_name }}"
       subnet_name: "{{ subnet }}"
-      security_group: "ansible_securitygroup"
+      security_group: "{{ item }}_securitygroup"
       ip_configurations:
-        - name: "ansible_nic01_ipconfig"
-          public_ip_address_name: "ansible_public_ip"
+        - name: "{{ item }}_nic01_ipconfig"
+          public_ip_address_name: "{{ item }}_public_ip"
           primary: True
       tags:
           owner: "{{ adminUser }}"
           delete: ansibletraining
- 
-  - name: Create a network interface for server1
-    azure_rm_networkinterface:
-      name: "server1_nic01"
-      resource_group: "{{ resource_group }}"
-      virtual_network: "{{ virtual_network_name }}"
-      subnet_name: "{{ subnet }}"
-      security_group: "server1_securitygroup"
-      ip_configurations:
-        - name: "server1_nic01_ipconfig"
-          public_ip_address_name: "server1_public_ip"
-          primary: True
-      tags:
-          owner: "{{ adminUser }}"
-          delete: ansibletraining
+    loop:
+      - ansible
+      - server1
+      - server2
+      - server3
+      - server4
+    async: 1000
+    poll: 0
+    register: create_nic
 
-  - name: Create a network interface for server2
-    azure_rm_networkinterface:
-      name: "server2_nic01"
-      resource_group: "{{ resource_group }}"
-      virtual_network: "{{ virtual_network_name }}"
-      subnet_name: "{{ subnet }}"
-      security_group: "server2_securitygroup"
-      ip_configurations:
-        - name: "server2_nic01_ipconfig"
-          public_ip_address_name: "server2_public_ip"
-          primary: True
-      tags:
-          owner: "{{ adminUser }}"
-          delete: ansibletraining
+  - name: Wait for Network Interfaces
+    async_status:
+      jid: "{{ item.ansible_job_id }}"
+    register: job_result
+    until: job_result.finished
+    retries: 30
+    delay: 5
+    with_items: "{{ create_nic.results }}"
 
-  - name: Create a network interface for server3
-    azure_rm_networkinterface:
-      name: "server3_nic01"
-      resource_group: "{{ resource_group }}"
-      virtual_network: "{{ virtual_network_name }}"
-      subnet_name: "{{ subnet }}"
-      security_group: "server3_securitygroup"
-      ip_configurations:
-        - name: "server3_nic01_ipconfig"
-          public_ip_address_name: "server3_public_ip"
-          primary: True
-      tags:
-          owner: "{{ adminUser }}"
-          delete: ansibletraining
-
-  - name: Create a network interface for server4
-    azure_rm_networkinterface:
-      name: "server4_nic01"
-      resource_group: "{{ resource_group }}"
-      virtual_network: "{{ virtual_network_name }}"
-      subnet_name: "{{ subnet }}"
-      security_group: "server4_securitygroup"
-      ip_configurations:
-        - name: "server4_nic01_ipconfig"
-          public_ip_address_name: "server4_public_ip"
-          primary: True
-      tags:
-          owner: "{{ adminUser }}"
-          delete: ansibletraining
-
-  # Create Virtual Machine ansible       
-  - name: Create a VM ansible
+# Create Virtual Machines     
+  - name: Create Virtual Machines
     azure_rm_virtualmachine:
       resource_group: "{{ resource_group }}"
-      name: "ansible"
-      os_type: Linux
-      admin_username: "{{ adminUser }}"
-      admin_password: "{{ adminPassword }}"
-      managed_disk_type: Standard_LRS
-      state: present 
-      image:
-        offer: RHEL
-        publisher: RedHat
-        sku: 8
-        version: latest
-      vm_size: Standard_A1_v2
-      network_interfaces: "ansible_nic01"
-      tags:
-          owner: "{{ adminUser }}"
-          delete: ansibletraining
-
-  # Create Virtual Machine server1       
-  - name: Create a VM server1
-    azure_rm_virtualmachine:
-      resource_group: "{{ resource_group }}"
-      name: "server1"
-      os_type: Linux
-      admin_username: "{{ adminUser }}"
-      admin_password: "{{ adminPassword }}"
-      managed_disk_type: Standard_LRS
-      state: present 
-      image:
-        offer: RHEL
-        publisher: RedHat
-        sku: 8
-        version: latest
-      vm_size: Standard_A1_v2
-      network_interfaces: "server1_nic01"
-      tags:
-          owner: "{{ adminUser }}"
-          delete: ansibletraining
-
-  # Create Virtual Machine server2       
-  - name: Create a VM server2
-    azure_rm_virtualmachine:
-      resource_group: "{{ resource_group }}"
-      name: "server2"
-      os_type: Linux
-      admin_username: "{{ adminUser }}"
-      admin_password: "{{ adminPassword }}"
-      managed_disk_type: Standard_LRS
-      state: present 
-      image:
-        offer: RHEL
-        publisher: RedHat
-        sku: 8
-        version: latest
-      vm_size: Standard_A1_v2
-      network_interfaces: "server2_nic01"
-      tags:
-          owner: "{{ adminUser }}"
-          delete: ansibletraining
-
-# Create Virtual Machine server3      
-  - name: Create a VM server3
-    azure_rm_virtualmachine:
-      resource_group: "{{ resource_group }}"
-      name: "server3"
-      os_type: Windows
+      name: "{{ item.name }}"
+      os_type: "{{ item.os_type }}"
       admin_username: "{{ adminUser }}"
       admin_password: "{{ adminPassword }}"
       managed_disk_type: Standard_LRS
       state: present
       image:
-        offer: WindowsServer
-        publisher: MicrosoftWindowsServer
-        sku: 2019-Datacenter
-        version: latest
+        offer: "{{ item.offer }}"
+        publisher: "{{ item.publisher }}"
+        sku: "{{ item.sku }}"
+        version: "{{ item.version }}"
       vm_size: Standard_A1_v2
-      network_interfaces: "server3_nic01"
+      network_interfaces: "{{ item.name }}_nic01"
       tags:
           owner: "{{ adminUser }}"
           delete: ansibletraining
+    loop:
+        - { 'name': 'ansible', 'os_type': 'Linux', 'offer': 'RHEL', 'publisher': 'RedHat', 'sku': '8', 'version': 'latest' }
+        - { 'name': 'server1', 'os_type': 'Linux', 'offer': 'RHEL', 'publisher': 'RedHat', 'sku': '8', 'version': 'latest' }
+        - { 'name': 'server2', 'os_type': 'Linux', 'offer': 'RHEL', 'publisher': 'RedHat', 'sku': '8', 'version': 'latest' }
+        - { 'name': 'server3', 'os_type': 'Windows', 'offer': 'WindowsServer', 'publisher': 'MicrosoftWindowsServer', 'sku': '2019-Datacenter', 'version': 'latest' }
+        - { 'name': 'server4', 'os_type': 'Windows', 'offer': 'WindowsServer', 'publisher': 'MicrosoftWindowsServer', 'sku': '2019-Datacenter', 'version': 'latest' }
+    async: 1000
+    poll: 0
+    register: create_vm
 
-# Create Virtual Machine server4      
-  - name: Create a VM server4
-    azure_rm_virtualmachine:
-      resource_group: "{{ resource_group }}"
-      name: "server4"
-      os_type: Windows
-      admin_username: "{{ adminUser }}"
-      admin_password: "{{ adminPassword }}"
-      managed_disk_type: Standard_LRS
-      state: present
-      image:
-        offer: WindowsServer
-        publisher: MicrosoftWindowsServer
-        sku: 2019-Datacenter
-        version: latest
-      vm_size: Standard_A1_v2
-      network_interfaces: "server4_nic01"
-      tags:
-          owner: "{{ adminUser }}"
-          delete: ansibletraining
+  - name: Wait for Virtual Machines
+    async_status:
+      jid: "{{ item.ansible_job_id }}"
+    register: job_result
+    until: job_result.finished
+    retries: 100
+    delay: 5
+    with_items: "{{ create_vm.results }}"
 
-  - name: Create a resource group
+  - name: Add tags to resource group
     azure_rm_resourcegroup:
       name: "{{ resource_group }}"
       location: "{{ location }}"
