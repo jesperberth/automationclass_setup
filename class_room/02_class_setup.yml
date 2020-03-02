@@ -435,9 +435,7 @@
         - { 'name': 'user8' }
         - { 'name': 'user9' }
         - { 'name': 'user10' }
-        - { 'name': 'user11' }
-        - { 'name': 'user12' }      
-
+  
   - name: add fstab entry
     copy:
       src: /home/user/.ssh/id_rsa
@@ -456,8 +454,6 @@
         - { 'name': 'user8' }
         - { 'name': 'user9' }
         - { 'name': 'user10' }
-        - { 'name': 'user11' }
-        - { 'name': 'user12' }      
 
 # Create Ansible Hosts file
   - name: Create Ansible dir
