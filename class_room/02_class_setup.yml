@@ -94,6 +94,9 @@
       groups: storagetmp
      when: storagevm_ip_fact != "10.172.10.12"
 
+   - name: Add webserver to ssh known_hosts
+     shell: "ssh-keyscan -t ecdsa {{ storagevm_ip_fact }}  >> /home/{{ user }}/.ssh/known_hosts"
+    
    - name: Copy SSH ID
      shell: |
       ssh-copy-id "user@{{ storagevm_ip_fact }}"
@@ -141,6 +144,10 @@
       name: "{{ ansiblevm_ip_fact }}"
       groups: ansibletmp
      when: ansiblevm_ip_fact != "10.172.10.9"
+
+
+   - name: Add webserver to ssh known_hosts
+     shell: "ssh-keyscan -t ecdsa {{ ansiblevm_ip_fact }}  >> /home/{{ user }}/.ssh/known_hosts"
 
    - name: Copy SSH ID
      shell: |
@@ -412,6 +419,6 @@
       name: git
       state: present
 
-  - name: Install pip
-    pip:
-      name: pip
+#  - name: Install pip
+#    pip:
+#      name: pip
