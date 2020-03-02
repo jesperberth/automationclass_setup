@@ -444,6 +444,7 @@
       dest: "/home/{{ item.name }}/.ssh/id_rsa"
       owner: "{{ item.name }}"
       group: "{{ item.name }}"
+      mode: "600"
       remote_src: yes
     loop:
         - { 'name': 'user1' }
