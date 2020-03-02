@@ -423,6 +423,8 @@
     file:
       path: "/home/{{ item.name }}/.ssh"
       state: directory
+      owner: "{{ item.name }}"
+      group: "{{ item.name }}"
       mode: '0700'
     loop:
         - { 'name': 'user1' }
@@ -436,7 +438,7 @@
         - { 'name': 'user9' }
         - { 'name': 'user10' }
   
-  - name: add fstab entry
+  - name: Copy id_rsa file
     copy:
       src: /home/user/.ssh/id_rsa
       dest: "/home/{{ item.name }}/.ssh/id_rsa"
