@@ -12,6 +12,30 @@
       private: no
    tasks:
 #  Generate SSH Key for User
+   - name: remove ssh knownhost ansibleserver
+     known_hosts:
+       path: ~/.ssh/known_hosts
+       name: "ansibleserver.ansible.local"
+       state: absent
+
+   - name: remove ssh knownhost ansibleserver ip
+     known_hosts:
+       path: ~/.ssh/known_hosts
+       name: "10.172.10.9"
+       state: absent
+
+   - name: remove ssh knownhost storage
+     known_hosts:
+       path: ~/.ssh/known_hosts
+       name: "storage.ansible.local"
+       state: absent
+
+   - name: remove ssh knownhost storage ip
+     known_hosts:
+       path: ~/.ssh/known_hosts
+       name: "10.172.10.12"
+       state: absent
+
    - name: Generate SSH keys
      user:
        name: "{{ ansible_user_id }}"
