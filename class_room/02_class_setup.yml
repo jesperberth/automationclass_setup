@@ -448,6 +448,7 @@
       name: git
       state: present
 
-#  - name: Install pip
-#    pip:
-#      name: pip
+  - name: Install Virtualenv
+    dnf:
+      name: virtualenv
+      state: present
