@@ -189,15 +189,21 @@
        state: absent
      when: storagevm_ip_fact != "10.172.10.9"
 
-   - name: pause for 2 minutes
+   - name: pause for 1 minutes
      pause:
-       minutes: 2    
+       minutes: 1    
      when: storagevm_ip_fact != "10.172.10.12"
 
-   - name: pause for 2 minutes
+   - name: pause for 1 minutes
      pause:
-       minutes: 2    
+       minutes: 1    
      when: ansiblevm_ip_fact != "10.172.10.9"
+
+   - name: Add storageserver to ssh known_hosts
+     shell: "ssh-keyscan -t ecdsa {{ ansiblevm_ip_fact }}  >> /home/{{ ansible_user_id }}/.ssh/known_hosts"
+
+   - name: Add ansibleserver to ssh known_hosts
+     shell: "ssh-keyscan -t ecdsa {{ ansiblevm_ip_fact }}  >> /home/{{ ansible_user_id }}/.ssh/known_hosts"
  
 - hosts: storage
   remote_user: "user"
