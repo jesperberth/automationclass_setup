@@ -419,6 +419,46 @@
         - { 'name': 'user9', 'pw': '{{ password }}'}
         - { 'name': 'user10', 'pw': '{{ password }}'}
 
+  - name: Create .ssh directory if it does not exist
+    file:
+      path: "/home/{{ item.name }}/.ssh"
+      state: directory
+      mode: '0700'
+    loop:
+        - { 'name': 'user1' }
+        - { 'name': 'user2' }
+        - { 'name': 'user3' }
+        - { 'name': 'user4' }
+        - { 'name': 'user5' }
+        - { 'name': 'user6' }
+        - { 'name': 'user7' }
+        - { 'name': 'user8' }
+        - { 'name': 'user9' }
+        - { 'name': 'user10' }
+        - { 'name': 'user11' }
+        - { 'name': 'user12' }      
+
+  - name: add fstab entry
+    copy:
+      src: /home/user/.ssh/id_rsa
+      dest: "/home/{{ item.name }}/.ssh/id_rsa"
+      owner: "{{ item.name }}"
+      group: "{{ item.name }}"
+      remote_src: yes
+    loop:
+        - { 'name': 'user1' }
+        - { 'name': 'user2' }
+        - { 'name': 'user3' }
+        - { 'name': 'user4' }
+        - { 'name': 'user5' }
+        - { 'name': 'user6' }
+        - { 'name': 'user7' }
+        - { 'name': 'user8' }
+        - { 'name': 'user9' }
+        - { 'name': 'user10' }
+        - { 'name': 'user11' }
+        - { 'name': 'user12' }      
+
 # Create Ansible Hosts file
   - name: Create Ansible dir
     file:
