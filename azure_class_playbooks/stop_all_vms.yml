@@ -14,39 +14,24 @@
     azure_rm_virtualmachine:
       resource_group: "{{ resource_group }}"
       allocated: no
-      name: "ansible"
+      name: "{{ item }}"
       state: present
       started: false
-  
-  - name: Stop VM server1
-    azure_rm_virtualmachine:
-      resource_group: "{{ resource_group }}"
-      allocated: no
-      name: "server1"
-      state: present
-      started: false
-  
-  - name: Stop VM server2
-    azure_rm_virtualmachine:
-      resource_group: "{{ resource_group }}"
-      allocated: no
-      name: "server2"
-      state: present
-      started: false
+    loop:
+      - ansible
+      - server1
+      - server2
+      - server3
+      - server4
+    async: 1000
+    poll: 0
+    register: stop_all
 
-  - name: Stop VM server3
-    azure_rm_virtualmachine:
-      resource_group: "{{ resource_group }}"
-      allocated: no
-      name: "server3"
-      state: present
-      started: false
-
-  - name: Stop VM server4
-    azure_rm_virtualmachine:
-      resource_group: "{{ resource_group }}"
-      allocated: no
-      name: "server4"
-      state: present
-      started: false
-                     
+  - name: Wait for VMs to stop
+    async_status:
+      jid: "{{ item.ansible_job_id }}"
+    register: job_result
+    until: job_result.finished
+    retries: 100
+    delay: 5
+    with_items: "{{ stop_all.results }}"
