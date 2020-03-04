@@ -5,6 +5,7 @@
     location: northeurope
     virtual_network_name: automationNetwork
     subnet: Servers
+    jesper: jesper
 
   vars_prompt:
     - name: resource_group
