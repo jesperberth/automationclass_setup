@@ -36,7 +36,7 @@ function createUsers($numberUsers, $defaultPassword) {
         New-AzureADUser -DisplayName $user -PasswordProfile $PasswordProfile -UserPrincipalName $upn -AccountEnabled $true -MailNickName $user
         }
         catch{
-            write-host "$upn already exists"
+            write-host -ForegroundColor yellow "$upn already exists"
         }
     }
 }
