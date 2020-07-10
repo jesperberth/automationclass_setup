@@ -61,7 +61,8 @@ function roleAssignment($user) {
     $userguid = (Get-AzureADUser -Filter "DisplayName eq '$user'").ObjectId
     $word = ( -join ((0x30..0x39) + ( 0x61..0x7A)| Get-Random -Count 5  | ForEach-Object {[char]$_}) )
     $rgname = "$user-ansible"
-    $storageName = "$user-ansible-$word"
+    $stoname =$user+"ansible"
+    $storageName = "$stoname$word"
 
     New-AzureRmResourceGroup -Name $rgname -Location $location
 
