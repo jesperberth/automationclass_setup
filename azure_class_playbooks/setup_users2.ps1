@@ -32,7 +32,12 @@ function createUsers($numberUsers, $defaultPassword) {
         #write-host $user
         $upn = $user+"@"+$domainname
         write-host "Create user: $upn"
+        try{
         New-AzureADUser -DisplayName $user -PasswordProfile $PasswordProfile -UserPrincipalName $upn -AccountEnabled $true -MailNickName $user
+        }
+        catch{
+            write-host "$upn already exists"
+        }
     }
 }
 
