@@ -25,6 +25,7 @@ function createUsers($numberUsers, $defaultPassword) {
     $PasswordProfile = New-Object -TypeName Microsoft.Open.AzureAD.Model.PasswordProfile
     $PasswordProfile.Password = $defaultPassword
     $domain = get-azureaddomain | where-object {$_.IsDefault -eq $true} | select-object Name
+    $domainname = $domain.name
 
     for($i=1; $i -le $numberUsers; $i++ ){
         $user = "user$i"
