@@ -70,9 +70,12 @@ function roleAssignment($user) {
     $role = (Get-AzureADDirectoryRole | Where-Object {$_.displayName -eq 'Application administrator'}).ObjectId
 
     Add-AzureADDirectoryRoleMember -ObjectId $role -RefObjectId $userguid
-
+    try{
     New-AzureRmStorageAccount -ResourceGroupName $rgname -Name $storageName -Location $location -SkuName Standard_LRS -kind StorageV2
-
+    }
+    catch{
+        write-host -ForegroundColor red "Could not create Storage account for $user"
+    }
     
 }
 #connect-azuread
