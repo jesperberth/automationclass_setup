@@ -59,10 +59,10 @@ function getAzureLocations{
 function roleAssignment($user) {
     
     $userguid = (Get-AzureADUser -Filter "DisplayName eq '$user'").ObjectId
-    $word = ( -join ((0x30..0x39) + ( 0x41..0x5A) + ( 0x61..0x7A) | Get-Random -Count 5  | ForEach-Object {[char]$_}) )
+    $word = ( -join ((0x30..0x39) + ( 0x41..0x5A) | Get-Random -Count 5  | ForEach-Object {[char]$_}) )
     $rgname = "$user-ansible"
     $storageName = "$user-ansible-$word"
-
+# + ( 0x61..0x7A)
     New-AzureRmResourceGroup -Name $rgname -Location $location
 
     New-AzureRmRoleAssignment -ObjectId $userguid -RoleDefinitionName Owner -Scope "/subscriptions/$subId"
