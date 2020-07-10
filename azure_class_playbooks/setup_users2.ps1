@@ -29,9 +29,10 @@ function createUsers($numberUsers, $defaultPassword) {
 
     for($i=1; $i -le $numberUsers; $i++ ){
         $user = "user$i"
-        write-host $user
+        #write-host $user
         $upn = $user+"@"+$domainname
-        write-host $upn
+        write-host "Create user: $upn"
+        New-AzureADUser -DisplayName $user -PasswordProfile $PasswordProfile -UserPrincipalName $upn -AccountEnabled $true -MailNickName $user
     }
 }
 
