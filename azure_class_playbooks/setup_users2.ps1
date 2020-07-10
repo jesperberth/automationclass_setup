@@ -34,6 +34,7 @@ function createUsers($numberUsers, $defaultPassword) {
         write-host "Create user: $upn"
         try{
         New-AzureADUser -DisplayName $user -PasswordProfile $PasswordProfile -UserPrincipalName $upn -AccountEnabled $true -MailNickName $user
+        roleAssignment $user
         }
         catch{
             write-host -ForegroundColor yellow "$upn already exists"
@@ -51,12 +52,12 @@ function getAzureLocations{
     
         $arrayitem = $azureLocation[$arrayselection].location
     
-        write-host $arrayitem
+        return $arrayitem
 
 }
-function roleAssignment {
+function roleAssignment($user) {
     
-
+    $rgname = "ansible_$user"
 
     New-AzureRmResourceGroup -Name $rgname -Location $location
 
@@ -66,11 +67,11 @@ function roleAssignment {
 
     Add-AzureADDirectoryRoleMember -ObjectId $role -RefObjectId $user
 
-    New-AzureRmStorageAccount -ResourceGroupName $rgname -Name $storage -Location $location -SkuName Standard_LRS -kind StorageV2
+    #New-AzureRmStorageAccount -ResourceGroupName $rgname -Name $storage -Location $location -SkuName Standard_LRS -kind StorageV2
 
     
 }
 #connect-azuread
-#$subId = (Get-AzureRmContext).Subscription
-getAzureLocations
-#run
+$subId = (Get-AzureRmContext).Subscription
+$location = getAzureLocations
+run
