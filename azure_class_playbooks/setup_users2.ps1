@@ -52,5 +52,5 @@ function roleAssignment {
 
     
 }
-connect-azuread
+#connect-azuread
 run
