@@ -43,6 +43,7 @@ function createUsers($numberUsers, $defaultPassword) {
 }
 
 function getAzureLocations{
+        write-host "Select a region"
         $azureLocation = get-azurermlocation | Select-Object Location, DisplayName
         write-host "#####################"
         foreach ($element in $azureLocation) {
@@ -58,7 +59,9 @@ function getAzureLocations{
 function roleAssignment($user) {
     
     $userguid = (Get-AzureADUser -Filter "DisplayName eq '$user'").ObjectId
-    $rgname = "ansible_$user"
+    $word = ( -join ((0x30..0x39) + ( 0x41..0x5A) + ( 0x61..0x7A) | Get-Random -Count 5  | ForEach-Object {[char]$_}) )
+    $rgname = "$user-ansible"
+    $storageName = "$user-ansible-$word"
 
     New-AzureRmResourceGroup -Name $rgname -Location $location
 
@@ -68,7 +71,7 @@ function roleAssignment($user) {
 
     Add-AzureADDirectoryRoleMember -ObjectId $role -RefObjectId $userguid
 
-    #New-AzureRmStorageAccount -ResourceGroupName $rgname -Name $storage -Location $location -SkuName Standard_LRS -kind StorageV2
+    New-AzureRmStorageAccount -ResourceGroupName $rgname -Name $storageName -Location $location -SkuName Standard_LRS -kind StorageV2
 
     
 }
