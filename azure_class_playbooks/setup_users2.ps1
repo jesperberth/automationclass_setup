@@ -41,10 +41,22 @@ function createUsers($numberUsers, $defaultPassword) {
     }
 }
 
+function getAzureLocations{
+        $azureLocation = get-azurermlocation | Select-Object Location, DisplayName
+        write-host "#####################"
+        foreach ($element in $azureLocation) {
+            write-host $azureLocation.IndexOf($element): $element.DisplayName
+        }
+        $arrayselection = Read-Host "Please make a selection"
+    
+        $arrayitem = $azureLocation[$arrayselection].location
+    
+        write-host $arrayitem
 
+}
 function roleAssignment {
     
-    $subId = (Get-AzureRmContext).Subscription
+
 
     New-AzureRmResourceGroup -Name $rgname -Location $location
 
@@ -59,4 +71,6 @@ function roleAssignment {
     
 }
 #connect-azuread
-run
+#$subId = (Get-AzureRmContext).Subscription
+getAzureLocations
+#run
