@@ -57,15 +57,16 @@ function getAzureLocations{
 }
 function roleAssignment($user) {
     
+    $userguid = (Get-AzureADUser -Filter "DisplayName eq '$user'").ObjectId
     $rgname = "ansible_$user"
 
     New-AzureRmResourceGroup -Name $rgname -Location $location
 
-    New-AzureRmRoleAssignment -ObjectId $user -RoleDefinitionName Owner -Scope "/subscriptions/$subId"
+    New-AzureRmRoleAssignment -ObjectId $userguid -RoleDefinitionName Owner -Scope "/subscriptions/$subId"
 
     $role = (Get-AzureADDirectoryRole | Where-Object {$_.displayName -eq 'Application administrator'}).ObjectId
 
-    Add-AzureADDirectoryRoleMember -ObjectId $role -RefObjectId $user
+    Add-AzureADDirectoryRoleMember -ObjectId $role -RefObjectId $userguid
 
     #New-AzureRmStorageAccount -ResourceGroupName $rgname -Name $storage -Location $location -SkuName Standard_LRS -kind StorageV2
 
