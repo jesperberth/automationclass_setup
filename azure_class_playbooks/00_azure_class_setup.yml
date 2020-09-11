@@ -58,28 +58,69 @@
         - { networksecuritygroup_name: 'SG_Network', rulename: 'AllowSSH',  ruleprotocol: 'Tcp', rulesourceaddress: '0.0.0.0/0', ruledestinationportrange: '22', ruleaccess: 'Allow', rulepriority: '102', ruledirection: 'Inbound' }
         - { networksecuritygroup_name: 'SG_Network', rulename: 'AllowRDP',  ruleprotocol: 'Tcp', rulesourceaddress: '0.0.0.0/0', ruledestinationportrange: '3389', ruleaccess: 'Allow', rulepriority: '103', ruledirection: 'Inbound' }
           
-    - name: Azure VM
-      include_role:
-        name: jesperberth.az_vm
-      vars:
-        vmname: "{{ item.vmname }}"
-        virtualnetwork_name: "{{ virtualnetwork_name }}"
-        networksecuritygroup_name: "SG_Network"
-        vmsize: "Standard_A1_v2"
-        ostype: "{{ item.ostype }}"
-        azurevmuser: jesbe
-        azurevmpw: "{{ adminPassword }}"
-        offer: "{{ item.offer}}"
-        publisher: "{{ item.publisher}}"
-        sku: "{{ item.sku}}"
-        version: "{{ item.version}}"
+    - name: Create network interfaces
+      azure_rm_networkinterface:
+        name: "{{ item }}_nic01"
+        resource_group: "{{ resourcegroup_input }}"
+        virtual_network: "{{ virtualnetwork_name }}"
+        subnet_name: "{{ subnet_name }}"
+        security_group: "{{ item }}_securitygroup"
+        ip_configurations:
+          - name: "{{ item }}_nic01_ipconfig"
+            public_ip_address_name: "{{ item }}_public_ip"
+            primary: True
+        tags:
+            owner: "{{ adminUser }}"
+            delete: ansibletraining
       loop:
-        - { 'vmname': 'server1', 'ostype': 'Linux', 'offer': 'RHEL', 'publisher': 'RedHat', 'sku': '8', 'version': 'latest' }
-        - { 'vmname': 'server2', 'ostype': 'Windows', 'offer': 'WindowsServer', 'publisher': 'MicrosoftWindowsServer', 'sku': '2019-Datacenter', 'version': 'latest' }
+        - ansible
+        - server1
+        - server2
+        - server3
+        - server4
+      async: 1000
+      poll: 0
+      register: create_nic
+  
+    - name: Wait for Network Interfaces
+      async_status:
+        jid: "{{ item.ansible_job_id }}"
+      register: job_result
+      until: job_result.finished
+      retries: 30
+      delay: 5
+      with_items: "{{ create_nic.results }}"
+  
+  # Create Virtual Machines     
+    - name: Create Virtual Machines
+      azure_rm_virtualmachine:
+        resource_group: "{{ resourcegroup_input }}"
+        name: "{{ item.name }}"
+        os_type: "{{ item.os_type }}"
+        admin_username: "{{ adminUser }}"
+        admin_password: "{{ adminPassword }}"
+        managed_disk_type: Standard_LRS
+        state: present
+        image:
+          offer: "{{ item.offer }}"
+          publisher: "{{ item.publisher }}"
+          sku: "{{ item.sku }}"
+          version: "{{ item.version }}"
+        vm_size: Standard_A1_v2
+        network_interfaces: "{{ item.name }}_nic01"
+        tags:
+            owner: "{{ adminUser }}"
+            delete: ansibletraining
+      loop:
+          - { 'name': 'ansible', 'os_type': 'Linux', 'offer': 'RHEL', 'publisher': 'RedHat', 'sku': '8', 'version': 'latest' }
+          - { 'name': 'server1', 'os_type': 'Linux', 'offer': 'RHEL', 'publisher': 'RedHat', 'sku': '8', 'version': 'latest' }
+          - { 'name': 'server2', 'os_type': 'Linux', 'offer': 'RHEL', 'publisher': 'RedHat', 'sku': '8', 'version': 'latest' }
+          - { 'name': 'server3', 'os_type': 'Windows', 'offer': 'WindowsServer', 'publisher': 'MicrosoftWindowsServer', 'sku': '2019-Datacenter', 'version': 'latest' }
+          - { 'name': 'server4', 'os_type': 'Windows', 'offer': 'WindowsServer', 'publisher': 'MicrosoftWindowsServer', 'sku': '2019-Datacenter', 'version': 'latest' }
       async: 1000
       poll: 0
       register: create_vm
-
+  
     - name: Wait for Virtual Machines
       async_status:
         jid: "{{ item.ansible_job_id }}"
