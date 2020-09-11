@@ -76,4 +76,15 @@
       loop:
         - { 'vmname': 'server1', 'ostype': 'Linux', 'offer': 'RHEL', 'publisher': 'RedHat', 'sku': '8', 'version': 'latest' }
         - { 'vmname': 'server2', 'ostype': 'Windows', 'offer': 'WindowsServer', 'publisher': 'MicrosoftWindowsServer', 'sku': '2019-Datacenter', 'version': 'latest' }
-        
+      async: 1000
+      poll: 0
+      register: create_vm
+
+    - name: Wait for Virtual Machines
+      async_status:
+        jid: "{{ item.ansible_job_id }}"
+      register: job_result
+      until: job_result.finished
+      retries: 100
+      delay: 5
+      with_items: "{{ create_vm.results }}"
