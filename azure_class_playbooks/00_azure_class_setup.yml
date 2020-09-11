@@ -33,6 +33,7 @@
         name: jesperberth.az_virtualnetwork
       vars:
         resourcegroup: "{{ resourcegroup_input }}"
+        virtualnetwork_name: "{{ virtualnetwork_name }}"
         cidr: 10.1.0.0/16
         subnet_name: "{{ subnet }}"
         subnet_cidr: 10.1.0.0/24
@@ -70,8 +71,8 @@
             public_ip_address_name: "{{ item }}_public_ip"
             primary: True
         tags:
-            owner: "{{ adminUser }}"
-            delete: ansibletraining
+           owner: "{{ tag_owner }}"
+           project: "{{ tag_project }}"
       loop:
         - ansible
         - server1
