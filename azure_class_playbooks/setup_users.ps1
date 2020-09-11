@@ -1,110 +1,85 @@
 # Usage
 # 
 # Create users for Ansible training
-# 
-# ./setup_users.ps1 Will prompt you for an email and a name and create the user
-# ./setup_users.ps1 -email "some@address.com" -name "Some Name" will create the user
-# ./setup_users.ps1 -file somefile.csv will take all lines in a csv file and create all users
 #
-# CSV file format
+# using native azure ad users 
 #
-# email,name
-# "some@address.com","Some Name"
-# "someother@address.com", "Some Other Name"
-#
-# Author: Jesper Berth, jesper.berth@arrow.com
-param(
-    $file,
-    $email,
-    $name
-)
-$tmpvar = $null
-function ReadCsv{
-    Param(
-        [Parameter(Mandatory=$True)]
-        $file
-      )
-    $csvuser = Import-Csv -Path $file
-    foreach ($usr in $csvuser) {
-        
-        $email = $usr.email
-        $name = $usr.name
+# Author: Jesper Berth, jesper.berth@arrow.com - july 2020
 
-        CreateUser -email $email -name $name
-}
+function run{
+
+    write-host "Create new users for Ansible training`n"
+
+    $numberUsers = Read-Host "Number of users"
+    $defaultPassword = Read-host "Enter default password for new users"
+
+    createUsers $numberUsers $defaultPassword
+
 
 }
-function CreateUser {
-    Param(
-        [Parameter(Mandatory=$True)]
-        $email,
-        [Parameter(Mandatory=$True)]
-        $name
-      )
-    $location = "North Europe"
-    $emailStringTmp = $email -replace "@","_"
-    $emailString = $emailStringTmp -replace "\.","_"
-    $rgname = $emailString
-    if ($rgname.length -gt 90) {
-        $rgname = $rgname.substring(0,90)
+
+function createUsers($numberUsers, $defaultPassword) {
+
+    write-host "`nCreating $numberUsers new users`n"
+    write-host -foregroundcolor yellow "with default password: $defaultPassword`n"
+    $PasswordProfile = New-Object -TypeName Microsoft.Open.AzureAD.Model.PasswordProfile
+    $PasswordProfile.Password = $defaultPassword
+    $domain = get-azureaddomain | where-object {$_.IsDefault -eq $true} | select-object Name
+    $domainname = $domain.name
+
+    for($i=1; $i -le $numberUsers; $i++ ){
+        $user = "user$i"
+        #write-host $user
+        $upn = $user+"@"+$domainname
+        write-host "Create user: $upn"
+        try{
+        New-AzureADUser -DisplayName $user -PasswordProfile $PasswordProfile -UserPrincipalName $upn -AccountEnabled $true -MailNickName $user
+        roleAssignment $user
+        }
+        catch{
+            write-host -ForegroundColor yellow "$upn already exists"
+        }
     }
+}
 
-    $storage = $emailString -replace "_",""
-    $storage = $storage -replace "-",""
-
-    if ($storage.length -gt 24) {
-        $storage = $storage.substring(0,24)
-    }    
- 
-    $subId = (Get-AzureRmContext).Subscription
-    New-AzureADMSInvitation -InvitedUserDisplayName $name -InvitedUserEmailAddress $email -InviteRedirectURL https://portal.azure.com -SendInvitationMessage $true
-    New-AzureRmResourceGroup -Name $rgname -Location $location
+function getAzureLocations{
+        write-host "Select a region"
+        $azureLocation = get-azurermlocation | Select-Object Location, DisplayName
+        write-host "#####################"
+        foreach ($element in $azureLocation) {
+            write-host $azureLocation.IndexOf($element): $element.DisplayName
+        }
+        $arrayselection = Read-Host "Please make a selection"
     
-    start-sleep -s 30
+        $arrayitem = $azureLocation[$arrayselection].location
+    
+        return $arrayitem
 
-    $user = (Get-AzureADUser -Filter "DisplayName eq '$name'").ObjectId
-    write-host $user
-    write-host "Check"
-    New-AzureRmRoleAssignment -ObjectId $user -RoleDefinitionName Owner -Scope "/subscriptions/$subId"
+}
+function roleAssignment($user) {
+    
+    $userguid = (Get-AzureADUser -Filter "DisplayName eq '$user'").ObjectId
+    $word = ( -join ((0x30..0x39) + ( 0x61..0x7A)| Get-Random -Count 5  | ForEach-Object {[char]$_}) )
+    $rgname = "$user-ansible"
+    $stoname =$user+"ansible"
+    $storageName = "$stoname$word"
+
+    New-AzureRmResourceGroup -Name $rgname -Location $location
+
+    New-AzureRmRoleAssignment -ObjectId $userguid -RoleDefinitionName Owner -Scope "/subscriptions/$subId"
 
     $role = (Get-AzureADDirectoryRole | Where-Object {$_.displayName -eq 'Application administrator'}).ObjectId
 
-    Add-AzureADDirectoryRoleMember -ObjectId $role -RefObjectId $user
-
-    New-AzureRmStorageAccount -ResourceGroupName $rgname -Name $storage -Location $location -SkuName Standard_LRS -kind StorageV2
+    Add-AzureADDirectoryRoleMember -ObjectId $role -RefObjectId $userguid
+    try{
+    New-AzureRmStorageAccount -ResourceGroupName $rgname -Name $storageName -Location $location -SkuName Standard_LRS -kind StorageV2
+    }
+    catch{
+        write-host -ForegroundColor red "Could not create Storage account for $user"
+    }
+    
 }
-
-function promptUser{
-    $email = Read-Host -Prompt 'Input email'
-    $name = Read-Host -Prompt 'Input name'
-    CreateUser -email $email -name $name
-}
-
-
-if($file){
-
-    ReadCsv -file $file
-    exit
-
-}else{
-
-    $tmpvar = "1"
-
-}
-
-if($email -and $name){
-
-    CreateUser -email $email -name $name
-    exit
-
-}else{
-
-    $tmpvar = "1"
-
-}
-
-if($tmpvar){
-
-    promptUser
-    exit
-}
+#connect-azuread
+$subId = (Get-AzureRmContext).Subscription
+$location = getAzureLocations
+run
