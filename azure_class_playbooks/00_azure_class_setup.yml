@@ -25,6 +25,8 @@
         name: jesperberth.az_resourcegroup
       vars:
         resourcegroup: "{{ resourcegroup_input }}"
+        owner: "{{ tag_owner }}"
+        project: "{{ tag_project }}"
 
     - name: Azure Virtual Network
       include_role:
@@ -34,6 +36,8 @@
         cidr: 10.1.0.0/16
         subnet_name: Servers
         subnet_cidr: 10.1.0.0/24
+        owner: "{{ tag_owner }}"
+        project: "{{ tag_project }}"
         
     - name: Azure Network Security Group
       include_role:
@@ -48,7 +52,28 @@
         ruleaccess: "{{ item.ruleaccess }}"
         rulepriority: "{{ item.rulepriority }}"
         ruledirection: "{{ item.ruledirection }}"
+        owner: "{{ tag_owner }}"
+        project: "{{ tag_project }}"
       loop:
         - { networksecuritygroup_name: 'SG_Network', rulename: 'AllowSSH',  ruleprotocol: 'Tcp', rulesourceaddress: '0.0.0.0/0', ruledestinationportrange: '22', ruleaccess: 'Allow', rulepriority: '102', ruledirection: 'Inbound' }
         - { networksecuritygroup_name: 'SG_Network', rulename: 'AllowRDP',  ruleprotocol: 'Tcp', rulesourceaddress: '0.0.0.0/0', ruledestinationportrange: '3389', ruleaccess: 'Allow', rulepriority: '103', ruledirection: 'Inbound' }
           
+    - name: Azure VM
+      include_role:
+        name: jesperberth.az_vm
+      vars:
+        vmname: "{{ item.vmname }}"
+        virtualnetwork_name: "{{ virtualnetwork_name }}"
+        networksecuritygroup_name: "SG_Network"
+        vmsize: "Standard_A1_v2"
+        ostype: "{{ item.ostype }}"
+        azurevmuser: jesbe
+        azurevmpw: "{{ adminPassword }}"
+        offer: "{{ item.offer}}"
+        publisher: "{{ item.publisher}}"
+        sku: "{{ item.sku}}"
+        version: "{{ item.version}}"
+      loop:
+        - { 'vmname': 'server1', 'ostype': 'Linux', 'offer': 'RHEL', 'publisher': 'RedHat', 'sku': '8', 'version': 'latest' }
+        - { 'vmname': 'server2', 'ostype': 'Windows', 'offer': 'WindowsServer', 'publisher': 'MicrosoftWindowsServer', 'sku': '2019-Datacenter', 'version': 'latest' }
+        
