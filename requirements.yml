@@ -1,0 +1,3 @@
+- src: jesperberth.az-resourcegroup
+- src: jesperberth.az-virtualnetwork
+- src: jesperberth.az-securitygroup
