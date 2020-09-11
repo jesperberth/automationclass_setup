@@ -64,7 +64,7 @@
         resource_group: "{{ resourcegroup_input }}"
         virtual_network: "{{ virtualnetwork_name }}"
         subnet_name: "{{ subnet_name }}"
-        security_group: "{{ item }}_securitygroup"
+        security_group: "SG_Network"
         ip_configurations:
           - name: "{{ item }}_nic01_ipconfig"
             public_ip_address_name: "{{ item }}_public_ip"
