@@ -3,12 +3,12 @@
   connection: local
   vars:
     location: northeurope
-    virtual_network_name: automationNetwork
+    virtualnetwork_name: automationNetwork
     subnet: Servers
     tag_project: ansibletraining
 
   vars_prompt:
-    - name: resourcegroup
+    - name: resourcegroup_input
       prompt: "Type the name of your Azure Resource Group"
       private: no
     - name: adminUser
@@ -22,12 +22,31 @@
     - name: Azure Resource Group
       include_role:
         name: jesperberth.az_resourcegroup
+      vars:
+        resourcegroup: "{{ resourcegroup_input }}"
 
     - name: Azure Virtual Network
       include_role:
         name: jesperberth.az_virtualnetwork
-
+      vars:
+        cidr: 10.1.0.0/16
+        subnet_name: Servers
+        subnet_cidr: 10.1.0.0/24
+        
     - name: Azure Network Security Group
       include_role:
         name: jesperberth.az_securitygroup
+      vars:
+        resourcegroup: "{{ resourcegroup_name }}"
+        networksecuritygroup_name: "{{ item.networksecuritygroup_name }}"
+        rulename: "{{ item.rulename }}"
+        ruleprotocol: "{{ item.ruleprotocol }}"
+        rulesourceaddress: "{{ item.rulesourceaddress }}"
+        ruledestinationportrange: "{{ item.ruledestinationportrange }}"
+        ruleaccess: "{{ item.ruleaccess }}"
+        rulepriority: "{{ item.rulepriority }}"
+        ruledirection: "{{ item.ruledirection }}"
+      loop:
+        - { networksecuritygroup_name: 'SG_Network', rulename: 'AllowSSH',  ruleprotocol: 'Tcp', rulesourceaddress: '0.0.0.0/0', ruledestinationportrange: '22', ruleaccess: 'Allow', rulepriority: '102', ruledirection: 'Inbound' }
+        - { networksecuritygroup_name: 'SG_Network', rulename: 'AllowRDP',  ruleprotocol: 'Tcp', rulesourceaddress: '0.0.0.0/0', ruledestinationportrange: '3389', ruleaccess: 'Allow', rulepriority: '103', ruledirection: 'Inbound' }
           
