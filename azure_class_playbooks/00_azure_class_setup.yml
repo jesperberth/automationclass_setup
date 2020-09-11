@@ -34,7 +34,7 @@
       vars:
         resourcegroup: "{{ resourcegroup_input }}"
         cidr: 10.1.0.0/16
-        subnet_name: Servers
+        subnet_name: "{{ subnet }}"
         subnet_cidr: 10.1.0.0/24
         owner: "{{ tag_owner }}"
         project: "{{ tag_project }}"
@@ -63,7 +63,7 @@
         name: "{{ item }}_nic01"
         resource_group: "{{ resourcegroup_input }}"
         virtual_network: "{{ virtualnetwork_name }}"
-        subnet_name: "{{ subnet_name }}"
+        subnet_name: "{{ subnet }}"
         security_group: "SG_Network"
         ip_configurations:
           - name: "{{ item }}_nic01_ipconfig"
