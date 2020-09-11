@@ -5,6 +5,7 @@
     location: northeurope
     virtualnetwork_name: automationNetwork
     subnet: Servers
+    tag_owner: arrow
     tag_project: ansibletraining
 
   vars_prompt:
@@ -29,6 +30,7 @@
       include_role:
         name: jesperberth.az_virtualnetwork
       vars:
+        resourcegroup: "{{ resourcegroup_input }}"
         cidr: 10.1.0.0/16
         subnet_name: Servers
         subnet_cidr: 10.1.0.0/24
@@ -37,7 +39,7 @@
       include_role:
         name: jesperberth.az_securitygroup
       vars:
-        resourcegroup: "{{ resourcegroup_name }}"
+        resourcegroup: "{{ resourcegroup_input }}"
         networksecuritygroup_name: "{{ item.networksecuritygroup_name }}"
         rulename: "{{ item.rulename }}"
         ruleprotocol: "{{ item.ruleprotocol }}"
