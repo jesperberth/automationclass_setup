@@ -3,7 +3,7 @@
   connection: local
   vars:
     location: northeurope
-    virtualnetwork_name: automationNetwork
+    virtualnetwork: automationNetwork
     subnet: Servers
     tag_owner: arrow
     tag_project: ansibletraining
@@ -33,7 +33,7 @@
         name: jesperberth.az_virtualnetwork
       vars:
         resourcegroup: "{{ resourcegroup_input }}"
-        virtualnetwork_name: "{{ virtualnetwork_name }}"
+        virtualnetwork_name: "{{ virtualnetwork }}"
         cidr: 10.1.0.0/16
         subnet_name: "{{ subnet }}"
         subnet_cidr: 10.1.0.0/24
@@ -63,7 +63,7 @@
       azure_rm_networkinterface:
         name: "{{ item }}_nic01"
         resource_group: "{{ resourcegroup_input }}"
-        virtual_network: "{{ virtualnetwork_name }}"
+        virtual_network: "{{ virtualnetwork }}"
         subnet_name: "{{ subnet }}"
         security_group: "SG_Network"
         ip_configurations:
