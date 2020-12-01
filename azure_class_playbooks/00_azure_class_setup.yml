@@ -131,7 +131,7 @@
       delay: 5
       with_items: "{{ create_vm.results }}"
 
-    - name: Mount the managed disk to VM
+    - name: Add Datadisk to ansible VM
       azure_rm_manageddisk:
         name: datadisk
         location: "{{ location }}"
