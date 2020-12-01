@@ -130,3 +130,11 @@
       retries: 100
       delay: 5
       with_items: "{{ create_vm.results }}"
+
+    - name: Mount the managed disk to VM
+      azure_rm_manageddisk:
+        name: datadisk
+        location: "{{ location }}"
+        resource_group: "{{ resourcegroup_input }}"
+        disk_size_gb: 32
+        managed_by: ansible
