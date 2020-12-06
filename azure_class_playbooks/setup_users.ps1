@@ -79,7 +79,7 @@ function roleAssignment($user) {
     }
     
 }
-#connect-azuread
+connect-azuread
 $subId = (Get-AzureRmContext).Subscription
 $location = getAzureLocations
 run
