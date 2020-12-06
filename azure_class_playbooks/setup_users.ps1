@@ -1,8 +1,8 @@
 # Usage
-# 
+#
 # Create users for Ansible training
 #
-# using native azure ad users 
+# using native azure ad users
 #
 # Author: Jesper Berth, jesper.berth@arrow.com - july 2020
 
@@ -50,14 +50,11 @@ function getAzureLocations{
             write-host $azureLocation.IndexOf($element): $element.DisplayName
         }
         $arrayselection = Read-Host "Please make a selection"
-    
         $arrayitem = $azureLocation[$arrayselection].location
-    
         return $arrayitem
 
 }
 function roleAssignment($user) {
-    
     $userguid = (Get-AzureADUser -Filter "DisplayName eq '$user'").ObjectId
     $word = ( -join ((0x30..0x39) + ( 0x61..0x7A)| Get-Random -Count 5  | ForEach-Object {[char]$_}) )
     $rgname = "$user-ansible"
@@ -77,9 +74,8 @@ function roleAssignment($user) {
     catch{
         write-host -ForegroundColor red "Could not create Storage account for $user"
     }
-    
 }
-connect-azuread
+#connect-azuread
 $subId = (Get-AzureRmContext).Subscription
 $location = getAzureLocations
 run
