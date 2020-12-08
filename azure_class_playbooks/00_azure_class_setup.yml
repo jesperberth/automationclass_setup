@@ -107,17 +107,17 @@
           publisher: "{{ item.publisher }}"
           sku: "{{ item.sku }}"
           version: "{{ item.version }}"
-        vm_size: Standard_A1_v2
+        vm_size: "{{ item.size }}"
         network_interfaces: "{{ item.name }}_nic01"
         tags:
             owner: "{{ adminUser }}"
             delete: ansibletraining
       loop:
-          - { 'name': 'ansible', 'os_type': 'Linux', 'offer': 'RHEL', 'publisher': 'RedHat', 'sku': '8', 'version': 'latest' }
-          - { 'name': 'server1', 'os_type': 'Linux', 'offer': 'RHEL', 'publisher': 'RedHat', 'sku': '8', 'version': 'latest' }
-          - { 'name': 'server2', 'os_type': 'Linux', 'offer': 'RHEL', 'publisher': 'RedHat', 'sku': '8', 'version': 'latest' }
-          - { 'name': 'server3', 'os_type': 'Windows', 'offer': 'WindowsServer', 'publisher': 'MicrosoftWindowsServer', 'sku': '2019-Datacenter', 'version': 'latest' }
-          - { 'name': 'server4', 'os_type': 'Windows', 'offer': 'WindowsServer', 'publisher': 'MicrosoftWindowsServer', 'sku': '2019-Datacenter', 'version': 'latest' }
+          - { 'name': 'ansible', 'size': 'Standard_A1_v2', 'os_type': 'Linux', 'offer': 'RHEL', 'publisher': 'RedHat', 'sku': '8', 'version': 'latest' }
+          - { 'name': 'server1', 'size': 'Standard_A1_v2', 'os_type': 'Linux', 'offer': 'RHEL', 'publisher': 'RedHat', 'sku': '8', 'version': 'latest' }
+          - { 'name': 'server2', 'size': 'Standard_A1_v2', 'os_type': 'Linux', 'offer': 'RHEL', 'publisher': 'RedHat', 'sku': '8', 'version': 'latest' }
+          - { 'name': 'server3', 'size': 'Standard_A1_v2', 'os_type': 'Windows', 'offer': 'WindowsServer', 'publisher': 'MicrosoftWindowsServer', 'sku': '2019-Datacenter', 'version': 'latest' }
+          - { 'name': 'server4', 'size': 'Standard_A1_v2', 'os_type': 'Windows', 'offer': 'WindowsServer', 'publisher': 'MicrosoftWindowsServer', 'sku': '2019-Datacenter', 'version': 'latest' }
       async: 1000
       poll: 0
       register: create_vm

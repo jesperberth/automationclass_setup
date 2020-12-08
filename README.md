@@ -99,13 +99,18 @@ On ansiblehost.ansible.local log on as user
 
 sudo dnf update -y
 
+sudo dnf install libselinux-python -y
 sudo dnf install python3-pip git -y
 
-pip3 install pip --user
+virtualenv ansible --system-site-packages
 
-pip3 install ansible --user
-pip3 install pyvmomi --user
-pip3 install fortiosapi --user  
+source ansible/bin/activate
+
+pip install pip
+
+pip install ansible
+pip install pyvmomir
+pip install fortiosapi
 
 ssh-keygen
 
