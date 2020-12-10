@@ -1,3 +1,22 @@
+# Azure Class Setup
+
+## Create users in azure
+
+Open a azure cloud shell
+
+Run in Powershell
+
+```bash
+cd clouddrive
+
+git clone https://github.com/jesperberth/automationclass_setup.git
+
+cd automationclass_setup
+
+setup_users.ps1
+
+```
+
 # Class Setup
 
 ## Fortigate 60E
