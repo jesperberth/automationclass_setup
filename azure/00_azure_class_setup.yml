@@ -39,7 +39,7 @@
         subnet_cidr: 10.1.0.0/24
         owner: "{{ tag_owner }}"
         project: "{{ tag_project }}"
-        
+
     - name: Azure Network Security Group
       include_role:
         name: jesperberth.az_securitygroup
@@ -142,7 +142,7 @@
     - name: Create Azure VM extension to enable datadisk
       azure_rm_virtualmachineextension:
         name: ansible-adddisk
-        resource_group: "{{ resourcegroup }}"
+        resource_group: "{{ resourcegroup_input }}"
         virtual_machine_name: ansible
         publisher: Microsoft.Compute
         virtual_machine_extension_type: CustomScriptExtension
