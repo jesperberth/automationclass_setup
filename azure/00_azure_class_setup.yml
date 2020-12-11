@@ -141,7 +141,7 @@
 
     - name: Create Azure VM extension to enable datadisk
       azure_rm_virtualmachineextension:
-        name: winrm-extension
+        name: ansible-adddisk
         resource_group: "{{ resourcegroup }}"
         virtual_machine_name: ansible
         publisher: Microsoft.Compute
