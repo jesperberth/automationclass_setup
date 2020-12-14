@@ -144,7 +144,7 @@
         name: ansible-adddisk
         resource_group: "{{ resourcegroup_input }}"
         virtual_machine_name: ansible
-        publisher: Microsoft.Compute.Extensions
+        publisher: Microsoft.Azure.Extensions
         virtual_machine_extension_type: CustomScript
         type_handler_version: "2.1"
         settings: '{"fileUris": "https://raw.githubusercontent.com/jesperberth/automationclass_setup/master/azure_class_playbooks/add_disk_home.sh", "commandToExecute": "chmod +x add_disk_home.sh && add_disk_home.sh"}'
