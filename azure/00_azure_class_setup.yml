@@ -58,7 +58,7 @@
       loop:
         - { networksecuritygroup_name: 'SG_Network', rulename: 'AllowSSH',  ruleprotocol: 'Tcp', rulesourceaddress: '0.0.0.0/0', ruledestinationportrange: '22', ruleaccess: 'Allow', rulepriority: '102', ruledirection: 'Inbound' }
         - { networksecuritygroup_name: 'SG_Network', rulename: 'AllowRDP',  ruleprotocol: 'Tcp', rulesourceaddress: '0.0.0.0/0', ruledestinationportrange: '3389', ruleaccess: 'Allow', rulepriority: '103', ruledirection: 'Inbound' }
-          
+
     - name: Create network interfaces
       azure_rm_networkinterface:
         name: "{{ item }}_nic01"
@@ -82,7 +82,7 @@
       async: 1000
       poll: 0
       register: create_nic
-  
+
     - name: Wait for Network Interfaces
       async_status:
         jid: "{{ item.ansible_job_id }}"
@@ -91,8 +91,8 @@
       retries: 30
       delay: 5
       with_items: "{{ create_nic.results }}"
-  
-  # Create Virtual Machines     
+
+  # Create Virtual Machines
     - name: Create Virtual Machines
       azure_rm_virtualmachine:
         resource_group: "{{ resourcegroup_input }}"
@@ -121,7 +121,7 @@
       async: 1000
       poll: 0
       register: create_vm
-  
+
     - name: Wait for Virtual Machines
       async_status:
         jid: "{{ item.ansible_job_id }}"
