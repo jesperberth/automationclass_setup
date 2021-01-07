@@ -1,6 +1,8 @@
 ---
 - hosts: localhost
   vars:
+    esxhost: esxi.ansible.local
+    esxhost_user: root
 
   vars_prompt:
     - name: password
@@ -30,3 +32,14 @@
       debug:
         msg: "{{ my_folders }}"
 
+    - name: Look up the different folders
+      set_fact:
+        my_host_folder: '{{ my_folders.value|selectattr("type", "equalto", "HOST")|first}}'
+
+    - name: Connect the host
+      vmware.vmware_rest.vcenter_host:
+        hostname: "{{ esxhost }}"
+        user_name: "{{ esxhost_user }}"
+        password: "{{ password }}"
+        thumbprint_verification: NONE
+        folder: '{{ my_host_folder.folder }}'
