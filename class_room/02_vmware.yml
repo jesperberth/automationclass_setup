@@ -18,7 +18,15 @@
       vmware.vmware_rest.vcenter_datacenter_info:
       register: existing_datacenters
 
-    - name: Debug
+    - name: Build a list of all the folders
+      vmware.vmware_rest.vcenter_folder_info:
+      register: my_folders
+
+    - name: Debug Datacenter
       debug:
-        var: "{{ existing_datacenters }}"
+        msg: "{{ existing_datacenters }}"
+
+    - name: Debug Folders
+      debug:
+        msg: "{{ my_folders }}"
 
