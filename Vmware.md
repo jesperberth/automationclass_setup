@@ -85,7 +85,26 @@ Size Tiny
 
 Set IP, DNS and Gateway and hostname as vcenter.ansible.local
 
-When Done add licenses
+Create Datacenter
+
+Add Host esxi.ansible.local
+
+Create Datastore
+
+Create a folder iso - upload fedora iso
+
+Rename esxi storage to esxi-local
+
+Add Licens
+
+Create Folders
+
+\Templates
+\Virtual Machines
+
+Create a template vm
+
+Fedora 33
 
 ```bash
 Create Template
@@ -97,11 +116,6 @@ Use /dev/sda
 Add Remote User - user as admin
 
 ```
-
-Create VM Folder
-
-\Templates
-\Admin
 
 Register the _TEMP_fedora33 and place it in folder \Templates
 
