@@ -87,8 +87,6 @@
        immediate: yes
       notify: reload firewall
 
-    # Create DHCP server
-
     - name: Install dhcp
       package:
        name: dhcp
@@ -126,12 +124,107 @@
         state: present
       notify: restart network
 
-#    - name: configure network
-#      shell: |
-#        nmcli connection modify ens192 ipv4.dns "127.0.0.1"
-#        shutdown -r +1
+    - name: create partion /dev/sdb
+      parted:
+       device: /dev/sdb
+       number: 1
+       flags: [ lvm ]
+       state: present
 
-  # handlers
+    - name: create volume group vg.data
+      lvg:
+       vg: vg.data
+       pvs: /dev/sdb1
+
+    - name: create logical data disk on vg.data
+      lvol:
+       vg: vg.data
+       lv: lv.data{{ item.name }}
+       size: +100%FREE
+       state: present
+      loop:
+          - { 'name': 'user' }
+
+    - name: create filesystem xfs on lv.data
+      filesystem:
+       fstype: xfs
+       dev: /dev/mapper/vg.data-lv.data{{ item.name }}
+      loop:
+          - { 'name': 'user' }
+
+    - name: create /storage directory for lv.data mountpoint
+      file:
+       path: /storage
+       state: directory
+
+    - name: Create directorys for export
+      file:
+       path: "/storage/{{ item.name }}"
+       state: directory
+      loop:
+          - { 'name': 'user' }
+
+    - name: add fstab entry
+      mount:
+       name: /storage/{{ item.name }}
+       src: /dev/mapper/vg.data-lv.data{{ item.name }}
+       fstype: xfs
+       opts: defaults
+       state: present
+      loop:
+          - { 'name': 'user' }
+
+    - name: mount disk
+      shell: mount -a
+      args:
+       warn: false
+
+    - name: Install nfs
+      package:
+       name: nfs-utils
+       state: present
+
+    - name: Create exports
+      blockinfile:
+       path: /etc/exports
+       block: |
+          /storage/user 192.168.124.0/24(rw,no_root_squash)
+
+    - name: Start rpcbind
+      systemd:
+       name: rpcbind
+       state: started
+       enabled: yes
+
+    - name: Start nfs-server
+      systemd:
+       name: nfs-server
+       state: started
+       enabled: yes
+
+    - name: Allow nfs in firewall
+      firewalld:
+        zone: FedoraServer
+        service: nfs
+        permanent: yes
+        state: enabled
+      notify: reload firewall
+
+    - name: Allow rpc-bind in firewall
+      firewalld:
+        zone: FedoraServer
+        service: rpc-bind
+        permanent: yes
+        state: enabled
+      notify: reload firewall
+
+    - name: Allow mountd in firewall
+      firewalld:
+        zone: FedoraServer
+        service: mountd
+        permanent: yes
+        state: enabled
+      notify: reload firewall
 
   handlers:
     - name: restart named
@@ -151,5 +244,5 @@
 
     - name: restart network
       service:
-       name: network
-       state: restart
+       name: NetworkManager
+       state: restarted
