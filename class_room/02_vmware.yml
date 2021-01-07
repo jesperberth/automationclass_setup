@@ -32,7 +32,16 @@
       debug:
         msg: "{{ my_folders }}"
 
-    - name: Look up the different folders
+    - name: Set Datacenter
+      set_fact:
+        my_datacenter_folder: '{{ my_folders.value|selectattr("type", "equalto", "DATACENTER")|first}}'
+
+    - name: Create datacenter
+      vmware.vmware_rest.vcenter_datacenter:
+        name: Datacenter
+        folder: '{{ my_datacenter_folder.folder }}'
+
+    - name: Set Host Folder
       set_fact:
         my_host_folder: '{{ my_folders.value|selectattr("type", "equalto", "HOST")|first}}'
 
