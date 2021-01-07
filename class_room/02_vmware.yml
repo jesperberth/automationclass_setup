@@ -20,12 +20,5 @@
 
     - name: Debug
       debug:
-        msg: "{{ existing_datacenters }}"
+        var: "{{ existing_datacenters }}"
 
-#    - name: Set my_datacenter_folder
-#      set_fact:
-#        my_datacenter_folder: '{{ my_folders.value|selectattr("type", "equalto", "DATACENTER")|first}}'
-
-    - name: Create datacenter Datacenter
-      vmware.vmware_rest.vcenter_datacenter:
-        name: Datacenter
