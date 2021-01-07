@@ -1,0 +1,25 @@
+---
+- hosts: localhost
+  vars:
+    vcenter_username: administrator@vsphere.local
+    vcenter_hostname: vcenter.ansible.local
+    vcenter_validate_certs: no
+
+  vars_prompt:
+    name: vcenter_password
+    propt: Password
+    private: no
+
+  tasks:
+    - name: Get a list of all the datacenters
+      register: existing_datacenters
+      vmware.vmware_rest.vcenter_datacenter_info:
+
+    - name: Set my_datacenter_folder
+      set_fact:
+        my_datacenter_folder: '{{ my_folders.value|selectattr("type", "equalto", "DATACENTER")|first}}'
+
+    - name: Create datacenter Datacenter
+      vmware.vmware_rest.vcenter_datacenter:
+        name: Datacenter
+        folder: '{{ my_datacenter_folder.folder }}'

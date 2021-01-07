@@ -61,7 +61,9 @@ source ansible/bin/activate
 
 pip install --upgrade pip
 
-pip install ansible
+pip install ansible aiohttp
+
+ansible-galaxy collection install vmware.vmware_rest
 
 git clone https://github.com/jesperberth/automationclass_setup.git
 
