@@ -49,30 +49,25 @@ Size: Tiny
 
 ### Setup
 
-On ansible.ansible.local log on as user
+On ansible.ansible.local log on as root
 
 ```bash
 
-sudo dnf update -y
-
-sudo dnf install libselinux-python -y
-sudo dnf install python3-pip git -y
+dnf install python3-pip git python3-virtualenv libselinux-python3 -y
 
 virtualenv ansible --system-site-packages
 
 source ansible/bin/activate
 
-pip install pip
+pip install --upgrade pip
 
 pip install ansible
-
-ssh-keygen
 
 git clone https://github.com/jesperberth/automationclass_setup.git
 
 cd automationclass_setup/class_room/
 
-ansible-playbook 01_class_setup.yml --ask-become-pass
+ansible-playbook 01_vmware_setup.yml --ask-become-pass
 
 ```
 
