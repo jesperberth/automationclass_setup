@@ -7,7 +7,7 @@
 
   vars_prompt:
     - name: vcenter_password
-      propt: Password
+      prompt: Password
       private: no
 
   tasks:
