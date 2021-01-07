@@ -8,10 +8,10 @@
       private: no
 
   environment:
-    vcenter_username: administrator@vsphere.local
-    vcenter_hostname: vcenter.ansible.local
-    vcenter_validate_certs: no
-    vcenter_password: "{{ password }}"
+    VMWARE_USER: administrator@vsphere.local
+    VMWARE_HOST: vcenter.ansible.local
+    VMWARE_VALIDATE_CERTS: no
+    VMWARE_PASSWORD: "{{ password }}"
 
   tasks:
     - name: Get a list of all the datacenters
