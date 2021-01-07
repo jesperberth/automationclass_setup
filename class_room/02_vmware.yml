@@ -1,14 +1,17 @@
 ---
 - hosts: localhost
   vars:
+
+  vars_prompt:
+    - name: password
+      prompt: Password
+      private: no
+
+  environment:
     vcenter_username: administrator@vsphere.local
     vcenter_hostname: vcenter.ansible.local
     vcenter_validate_certs: no
-
-  vars_prompt:
-    - name: vcenter_password
-      prompt: Password
-      private: no
+    vcenter_password: "{{ password }}"
 
   tasks:
     - name: Get a list of all the datacenters
