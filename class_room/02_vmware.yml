@@ -6,9 +6,9 @@
     vcenter_validate_certs: no
 
   vars_prompt:
-    name: vcenter_password
-    propt: Password
-    private: no
+    - name: vcenter_password
+      propt: Password
+      private: no
 
   tasks:
     - name: Get a list of all the datacenters
