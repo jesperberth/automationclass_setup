@@ -18,11 +18,10 @@
       register: existing_datacenters
       vmware.vmware_rest.vcenter_datacenter_info:
 
-    - name: Set my_datacenter_folder
-      set_fact:
-        my_datacenter_folder: '{{ my_folders.value|selectattr("type", "equalto", "DATACENTER")|first}}'
+#    - name: Set my_datacenter_folder
+#      set_fact:
+#        my_datacenter_folder: '{{ my_folders.value|selectattr("type", "equalto", "DATACENTER")|first}}'
 
     - name: Create datacenter Datacenter
       vmware.vmware_rest.vcenter_datacenter:
         name: Datacenter
-        folder: '{{ my_datacenter_folder.folder }}'
