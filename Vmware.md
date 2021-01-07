@@ -73,12 +73,17 @@ ansible-playbook 01_vmware_setup.yml --ask-become-pass
 
 Install esxi.ansible.local
 
-On esxi.ansible.local
+Set IP, DNS and Gateway and hostname as esxi.ansible.local
 
-Make folder iso
-Upload fedora_33_x86_64.iso
+Install VCenter Appliance
 
-Upload or Create Fedora 33 Template
+You must be able to access via fqdn
+
+Size Tiny
+
+Set IP, DNS and Gateway and hostname as vcenter.ansible.local
+
+When Done add licenses
 
 ```bash
 Create Template
@@ -102,8 +107,5 @@ On ansible.ansible.local log on as user
 
 ```bash
 
-ansible-playbook 02_class_setup.yml --ask-become-pass
-
-ansible-playbook 03_class_network_setup.yml
 
 ```
