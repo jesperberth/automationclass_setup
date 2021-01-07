@@ -20,7 +20,7 @@
 
     - name: Debug
       debug:
-        var: "{{ existing_datacenters }}"
+        msg: "{{ existing_datacenters }}"
 
 #    - name: Set my_datacenter_folder
 #      set_fact:
