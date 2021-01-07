@@ -12,8 +12,13 @@
     rangehigh: 192.168.124.200
 
   tasks:
+    - name: Package Upgrade
+      package:
+       name: "*"
+       state: latest
+
     - name: Install bind
-      dnf:
+      package:
        name: bind
        state: present
 
@@ -80,11 +85,12 @@
        permanent: true
        state: enabled
        immediate: yes
+      notify: reload firewall
 
     # Create DHCP server
 
     - name: Install dhcp
-      dnf:
+      package:
        name: dhcp
        state: present
 
@@ -94,6 +100,7 @@
        permanent: true
        state: enabled
        immediate: yes
+      notify: reload firewall
 
     - name: Copy dhcpd conf local file
       template:
@@ -104,46 +111,25 @@
        mode: 0644
       notify: restart dhcpd
 
-    - name: Restart firewalld
-      systemd:
-       name: firewalld
-       enabled: yes
-       state: restarted
-
     - name: Enable dhcpd
       systemd:
        name: dhcpd
        enabled: yes
        state: started
 
-#  # Create Ansible Hosts file
-#    - name: Create Ansible dir
-#      file:
-#        path: /etc/ansible
-#        state: directory
-#
-#    - name: Touch Ansible hosts file
-#      file:
-#        path: /etc/ansible/hosts
-#        state: touch
-#
-#    - name: Add servers to Ansible hosts file
-#      blockinfile:
-#        path: /etc/ansible/hosts
-#        block: |
-#          [storage]
-#          storage.ansible.local
-#          [esxi]
-#          esxi.ansible.local
-#          [vcenter]
-#          vcenter.ansible.local
-#          [ansibleserver]
-#          ansibleserver.ansible.local
+    - name: Change DNS to localhost
+      community.general.nmcli:
+        conn_name: ens224
+        type: ethernet
+        dns4:
+        - 127.0.0.1
+        state: present
+      notify: restart network
 
-    - name: configure network
-      shell: |
-        nmcli connection modify ens192 ipv4.dns "127.0.0.1"
-        shutdown -r +1
+#    - name: configure network
+#      shell: |
+#        nmcli connection modify ens192 ipv4.dns "127.0.0.1"
+#        shutdown -r +1
 
   # handlers
 
@@ -157,3 +143,13 @@
       service:
        name: dhcpd
        state: restarted
+
+    - name: reload firewall
+      service:
+       name: firewalld
+       state: reloaded
+
+    - name: restart network
+      service:
+       name: network
+       state: restart
