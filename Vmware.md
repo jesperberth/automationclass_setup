@@ -104,20 +104,23 @@ Create Folders
 
 Create a template vm
 
-Fedora 33
+Centos 8
 
 ```bash
 Create Template
-Fedora Server
-+ Guest Tools
+centos 8 Server
 English(With Danish key)
 Use /dev/sda
 
 Add Remote User - user as admin
 
+Install Vmware tools
+
+copy ssh pub key from user@ansible
+
 ```
 
-Register the _TEMP_fedora33 and place it in folder \Templates
+Register the TEMP_Centos8 and place it in folder \Templates
 
 On ansible.ansible.local log on as user
 
