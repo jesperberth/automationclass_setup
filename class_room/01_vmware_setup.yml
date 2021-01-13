@@ -117,7 +117,7 @@
 
     - name: Change DNS to localhost
       community.general.nmcli:
-        conn_name: ens32
+        conn_name: "{{ ansible_default_ipv4.interface }}"
         type: ethernet
         dns4:
         - 127.0.0.1
