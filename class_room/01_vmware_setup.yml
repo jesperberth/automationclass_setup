@@ -3,7 +3,7 @@
   become: yes
   vars:
     domain: ansible.local
-    rev_domain: 0.124.168.192.in-addr.arpa
+    rev_domain: 124.168.192.in-addr.arpa
     subnet: 192.168.124.0
     netmask: 255.255.255.0
     broadcast: 192.168.124.255
