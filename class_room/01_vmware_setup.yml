@@ -204,7 +204,7 @@
 
     - name: Allow nfs in firewall
       firewalld:
-        zone: Public
+        zone: public
         service: nfs
         permanent: yes
         state: enabled
@@ -212,7 +212,7 @@
 
     - name: Allow rpc-bind in firewall
       firewalld:
-        zone: Public
+        zone: public
         service: rpc-bind
         permanent: yes
         state: enabled
@@ -220,7 +220,7 @@
 
     - name: Allow mountd in firewall
       firewalld:
-        zone: Public
+        zone: public
         service: mountd
         permanent: yes
         state: enabled
