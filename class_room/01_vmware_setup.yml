@@ -89,7 +89,7 @@
 
     - name: Install dhcp
       package:
-       name: dhcp
+       name: dhcp-server
        state: present
 
     - name: Open firewall port
