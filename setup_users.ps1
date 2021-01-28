@@ -75,7 +75,7 @@ function roleAssignment($user) {
         write-host -ForegroundColor red "Could not create Storage account for $user"
     }
     try{
-        New-AzRmStorageShare -StorageAccount $storageName -Name $storageName -EnabledProtocol SMB -QuotaGiB 6 | Out-Null
+        Get-AzStorageAccount -ResourceGroupName $rgname -StorageAccountName $storageName | New-AzRmStorageShare -Name $stoname -QuotaGiB 6
         }
     catch{
         write-host -ForegroundColor red "Could not create Fileshare for $user"
