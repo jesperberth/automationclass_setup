@@ -74,6 +74,12 @@ function roleAssignment($user) {
     catch{
         write-host -ForegroundColor red "Could not create Storage account for $user"
     }
+    try{
+        New-AzRmStorageShare -StorageAccount $storageName -Name $storageName -EnabledProtocol SMB -QuotaGiB 6 | Out-Null
+        }
+    catch{
+        write-host -ForegroundColor red "Could not create Fileshare for $user"
+        }
 }
 #connect-azuread
 $subId = (Get-AzureRmContext).Subscription
