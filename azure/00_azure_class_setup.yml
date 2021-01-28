@@ -17,14 +17,6 @@
       private: no
 
   tasks:
-    - name: Azure Resource Group
-      include_role:
-        name: jesperberth.az_resourcegroup
-      vars:
-        resourcegroup: "ansible-{{ adminUser }}"
-        owner: "{{ tag_owner }}"
-        project: "{{ tag_project }}"
-
     - name: Azure Virtual Network
       include_role:
         name: jesperberth.az_virtualnetwork
