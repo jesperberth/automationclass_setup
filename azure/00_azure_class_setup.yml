@@ -60,7 +60,7 @@
     - name: Create network interfaces
       azure_rm_networkinterface:
         name: "{{ item }}_nic01"
-        resource_group: "{{ resourcegroup_input }}"
+        resource_group: "ansible-{{ adminUser }}"
         virtual_network: "{{ virtualnetwork }}"
         subnet_name: "{{ subnet }}"
         security_group: "SG_Network"
@@ -93,7 +93,7 @@
   # Create Virtual Machines
     - name: Create Virtual Machines
       azure_rm_virtualmachine:
-        resource_group: "{{ resourcegroup_input }}"
+        resource_group: "ansible-{{ adminUser }}"
         name: "{{ item.name }}"
         os_type: "{{ item.os_type }}"
         admin_username: "{{ adminUser }}"
@@ -133,14 +133,14 @@
       azure_rm_manageddisk:
         name: datadisk
         location: "{{ location }}"
-        resource_group: "{{ resourcegroup_input }}"
+        resource_group: "ansible-{{ adminUser }}"
         disk_size_gb: 32
         managed_by: ansible
 
     - name: Create Azure VM extension to enable datadisk
       azure_rm_virtualmachineextension:
         name: ansible-adddisk
-        resource_group: "{{ resourcegroup_input }}"
+        resource_group: "ansible-{{ adminUser }}"
         virtual_machine_name: ansible
         publisher: Microsoft.Azure.Extensions
         virtual_machine_extension_type: CustomScript
