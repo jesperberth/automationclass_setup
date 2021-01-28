@@ -29,7 +29,7 @@
       include_role:
         name: jesperberth.az_virtualnetwork
       vars:
-        resourcegroup: "{{ resourcegroup_input }}"
+        resourcegroup: "ansible-{{ adminUser }}"
         virtualnetwork_name: "{{ virtualnetwork }}"
         cidr: 10.1.0.0/16
         subnet_name: "{{ subnet }}"
@@ -41,7 +41,7 @@
       include_role:
         name: jesperberth.az_securitygroup
       vars:
-        resourcegroup: "{{ resourcegroup_input }}"
+        resourcegroup: "ansible-{{ adminUser }}"
         networksecuritygroup_name: "{{ item.networksecuritygroup_name }}"
         rulename: "{{ item.rulename }}"
         ruleprotocol: "{{ item.ruleprotocol }}"
