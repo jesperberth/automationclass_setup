@@ -74,12 +74,7 @@ function roleAssignment($user) {
     catch{
         write-host -ForegroundColor red "Could not create Storage account for $user"
     }
-    try{
-        Get-AzStorageAccount -ResourceGroupName $rgname -StorageAccountName $storageName | New-AzRmStorageShare -Name $stoname -QuotaGiB 6
-        }
-    catch{
-        write-host -ForegroundColor red "Could not create Fileshare for $user"
-        }
+    Get-AzStorageAccount -ResourceGroupName $rgname -StorageAccountName $storageName | New-AzRmStorageShare -Name $stoname -QuotaGiB 6
 }
 #connect-azuread
 $subId = (Get-AzureRmContext).Subscription
