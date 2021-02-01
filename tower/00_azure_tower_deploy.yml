@@ -41,7 +41,7 @@
         project: "{{ tag_project }}"
       loop:
         - { networksecuritygroup_name: 'SG_Network', rulename: 'AllowSSH',  ruleprotocol: 'Tcp', rulesourceaddress: '0.0.0.0/0', ruledestinationportrange: '22', ruleaccess: 'Allow', rulepriority: '102', ruledirection: 'Inbound' }
-        - { networksecuritygroup_name: 'SG_Network', rulename: 'AllowHTTP',  ruleprotocol: 'Tcp', rulesourceaddress: '0.0.0.0/0', ruledestinationportrange: '80', ruleaccess: 'Allow', rulepriority: '104', ruledirection: 'Inbound' }
+        - { networksecuritygroup_name: 'SG_Network', rulename: 'AllowHTTP',  ruleprotocol: 'Tcp', rulesourceaddress: '0.0.0.0/0', ruledestinationportrange: '80', ruleaccess: 'Allow', rulepriority: '103', ruledirection: 'Inbound' }
         - { networksecuritygroup_name: 'SG_Network', rulename: 'AllowHTTPS',  ruleprotocol: 'Tcp', rulesourceaddress: '0.0.0.0/0', ruledestinationportrange: '443', ruleaccess: 'Allow', rulepriority: '104', ruledirection: 'Inbound' }
 
     - name: Create network interfaces
