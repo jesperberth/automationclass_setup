@@ -10,7 +10,9 @@
     ssh_public_key: "{{lookup('file', '~/.ssh/id_rsa.pub') }}"
     tag_owner: arrow
     tag_project: ansibletraining
-    servers: tower01
+    servers:
+          - tower01
+          - tower02
 
   tasks:
     - name: Azure Virtual Network
