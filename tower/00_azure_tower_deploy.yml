@@ -118,8 +118,9 @@
         location: "{{ location }}"
         resource_group: "{{ rgname }}"
         disk_size_gb: 32
-        managed_by: ansible
-
+        managed_by: "{{ item }}"
+      loop:
+          - "{{ servers }}"
 #    - name: Create Azure VM extension to enable datadisk
 #      azure_rm_virtualmachineextension:
 #        name: ansible-adddisk
