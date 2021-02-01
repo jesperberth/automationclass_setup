@@ -9,7 +9,7 @@
     adminUser: jesbe
     ssh_public_key: "{{lookup('file', '~/.ssh/id_rsa.pub') }}"
     tag_owner: arrow
-    tag_project: ansibletraining
+    tag_project: ansibleawx
     servers:
           - tower01
           - tower02
