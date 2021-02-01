@@ -6,6 +6,7 @@
     virtualnetwork: TowerNetwork
     subnet: Servers
     rgname: TowerRG
+    adminUser: jesbe
     ssh_public_key: "{{lookup('file', '~/.ssh/id_rsa.pub') }}"
     tag_owner: arrow
     tag_project: ansibletraining
@@ -79,10 +80,10 @@
         resource_group: "{{ rgname }}"
         name: "{{ item }}"
         os_type: "Linux"
-        admin_username: "jesbe"
+        admin_username: "{{ adminUser }}"
         ssh_password_enabled: false
         ssh_public_keys:
-          - path: "/home/{{ user }}/.ssh/authorized_keys"
+          - path: "/home/{{ adminUser }}/.ssh/authorized_keys"
             key_data: "{{ ssh_public_key }}"
         managed_disk_type: Standard_LRS
         state: present
