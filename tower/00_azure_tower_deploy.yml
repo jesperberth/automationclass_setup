@@ -114,7 +114,7 @@
 
     - name: Add Datadisk to ansible VM
       azure_rm_manageddisk:
-        name: "{{ servers }}datadisk"
+        name: "{{ item }}datadisk"
         location: "{{ location }}"
         resource_group: "{{ rgname }}"
         disk_size_gb: 32
