@@ -130,7 +130,7 @@
         publisher: Microsoft.Azure.Extensions
         virtual_machine_extension_type: CustomScript
         type_handler_version: "2.1"
-        settings: '{"commandToExecute": "pvcreate /dev/sdc && vgextend rootvg /dev/sdc && lvm lvextend -l +4G /dev/rootvg/homelv && resize2fs -p /dev/mapper/rootvg-homelv && lvm lvextend -l +10G /dev/rootvg/varlv && resize2fs -p /dev/mapper/rootvg-varlv && lvm lvextend -l +10G /dev/rootvg/usrlv && resize2fs -p /dev/mapper/rootvg-usrlv && lvm lvextend -l +8G /dev/rootvg/tmplv && resize2fs -p /dev/mapper/rootvg-tmplv", "skipDos2Unix": true}'
+        settings: '{"commandToExecute": "pvcreate /dev/sdc && vgextend rootvg /dev/sdc && lvm lvextend -L +4G /dev/rootvg/homelv && resize2fs -p /dev/mapper/rootvg-homelv && lvm lvextend -L +10G /dev/rootvg/varlv && resize2fs -p /dev/mapper/rootvg-varlv && lvm lvextend -L +10G /dev/rootvg/usrlv && resize2fs -p /dev/mapper/rootvg-usrlv && lvm lvextend -L +8G /dev/rootvg/tmplv && resize2fs -p /dev/mapper/rootvg-tmplv", "skipDos2Unix": true}'
         auto_upgrade_minor_version: true
       loop:
           - "{{ servers }}"
