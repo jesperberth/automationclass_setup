@@ -123,7 +123,7 @@
 
     - name: Create Azure VM extension to enable datadisk
       azure_rm_virtualmachineextension:
-        name: "{{ servers }}-adddisk"
+        name: "adddisk"
         resource_group: "{{ rgname }}"
         virtual_machine_name: "{{ item }}"
         publisher: Microsoft.Azure.Extensions
