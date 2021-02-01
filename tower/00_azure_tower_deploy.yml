@@ -61,8 +61,7 @@
         tags:
            owner: "{{ tag_owner }}"
            project: "{{ tag_project }}"
-      loop:
-        - "{{ servers }}"
+      loop: "{{ servers }}"
       async: 1000
       poll: 0
       register: create_nic
