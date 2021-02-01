@@ -92,7 +92,7 @@
           publisher: "RedHat"
           sku: "8"
           version: "latest"
-        vm_size: "Standard_D3_V3"
+        vm_size: "Standard_D2s_v3"
         network_interfaces: "{{ item }}_nic01"
         tags:
             owner: "{{ adminUser }}"
