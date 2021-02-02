@@ -67,10 +67,6 @@
       poll: 0
       register: create_nic
 
-    - name: Debug nic
-      debug:
-        var: "{{ create_nic }}"
-
     - name: Wait for Network Interfaces
       async_status:
         jid: "{{ item.ansible_job_id }}"
@@ -120,13 +116,12 @@
     - name: get public Ip address
       community.azure.azure_rm_publicipaddress_info:
         resource_group: "{{ rgname }}"
-        name: "{{ item }}_public_ip"
-      loop: "{{ servers }}"
+        name: "tower01_public_ip"
       register: public_ip_addresses
 
     - name: Set Fact Public Ip addresses
       set_fact:
-        iplist:  "{{ iplist }} + [ '{{ item }}' ]"
+        iplist:  "{{ iplist }} + [ '{{ item.publicipaddresses.ip_address }}' ]"
       with_items: "{{ public_ip_addresses }}"
 
     - name: debug public ip
