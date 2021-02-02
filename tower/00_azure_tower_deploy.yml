@@ -97,7 +97,7 @@
         network_interfaces: "{{ item }}_nic01"
         tags:
             owner: "{{ adminUser }}"
-            project: "{{ tag_projects }}"
+            project: "{{ tag_project }}"
       loop: "{{ servers }}"
       async: 1000
       poll: 0
