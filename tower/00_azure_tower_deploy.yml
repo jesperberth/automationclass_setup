@@ -97,7 +97,7 @@
         network_interfaces: "{{ item }}_nic01"
         tags:
             owner: "{{ adminUser }}"
-            delete: ansibletraining
+            project: "{{ tag_projects }}"
       loop: "{{ servers }}"
       async: 1000
       poll: 0
