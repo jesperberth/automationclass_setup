@@ -113,30 +113,6 @@
       delay: 5
       with_items: "{{ create_vm.results }}"
 
-    - name: get public Ip address
-      community.azure.azure_rm_publicipaddress_info:
-        resource_group: "{{ rgname }}"
-        name: "tower01_public_ip"
-      register: public_ip_addresses
-      verbosity: 4
-
-    - name: debug public ip
-      debug:
-        var: "{{ public_ip_addresses }}"
-      verbosity: 4
-
-    - name: Set Fact Public Ip addresses
-      set_fact:
-        iplist:  "{{ iplist }} + [ '{{ item.publicipaddresses.ip_address }}' ]"
-      with_items: "{{ public_ip_addresses }}"
-
-    - name: debug public ip
-      debug:
-        var: "{{ iplist }}"
-
-    - name: Add webserver to ssh known_hosts
-      shell: "ssh-keyscan -t ecdsa {{ webserver_pub_ip.state.ip_address }}  >> ~/.ssh/known_hosts"
-
     - name: Add Datadisk to ansible VM
       azure_rm_manageddisk:
         name: "{{ item }}datadisk"
@@ -169,3 +145,11 @@
         settings: '{"commandToExecute": "pvcreate /dev/sdc && vgextend rootvg /dev/sdc && lvm lvextend -L +3G /dev/rootvg/homelv && resize2fs -p /dev/mapper/rootvg-homelv && lvm lvextend -L +10G /dev/rootvg/varlv && resize2fs -p /dev/mapper/rootvg-varlv && lvm lvextend -L +10G /dev/rootvg/usrlv && resize2fs -p /dev/mapper/rootvg-usrlv && lvm lvextend -L +8G /dev/rootvg/tmplv && resize2fs -p /dev/mapper/rootvg-tmplv", "skipDos2Unix": true}'
         auto_upgrade_minor_version: true
       loop: "{{ servers }}"
+
+    - name: Disable ssh known host
+      lineinfile:
+        path: ~/.ansible.cfg
+        block: |
+          [defaults]
+          host_key_checking = False
+        create: yes
