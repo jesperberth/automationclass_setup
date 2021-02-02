@@ -122,12 +122,12 @@
 
     - name: Set Fact Public Ip addresses
       set_fact:
-        iplist:  "{{ iplist }} + [ '{{ item.publicipaddresses.ip_address }}' ]"
+        iplist:  "{{ iplist }} + [ '{{ item.ip_address }}' ]"
       with_items: "{{ public_ip_addresses }}"
 
     - name: debug public ip
       debug:
-        var: "{{ public_ip_addresses }}"
+        var: "{{ iplist }}"
 
     - name: Add webserver to ssh known_hosts
       shell: "ssh-keyscan -t ecdsa {{ webserver_pub_ip.state.ip_address }}  >> ~/.ssh/known_hosts"
