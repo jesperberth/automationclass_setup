@@ -147,7 +147,7 @@
       loop: "{{ servers }}"
 
     - name: Disable ssh known host
-      lineinfile:
+      blockinfile:
         path: ~/.ansible.cfg
         block: |
           [defaults]
