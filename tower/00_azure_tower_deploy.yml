@@ -117,6 +117,11 @@
         resource_group: "{{ rgname }}"
         name: "{{ item }}_public_ip"
       loop: "{{ servers }}"
+      register: public_ip_addresses
+
+    - name: debug public ip
+      debug:
+        var: "{{ public_ip_addresses }}"
 
     - name: Add webserver to ssh known_hosts
       shell: "ssh-keyscan -t ecdsa {{ webserver_pub_ip.state.ip_address }}  >> ~/.ssh/known_hosts"
