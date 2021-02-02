@@ -122,7 +122,7 @@
 
     - name: Set Fact Public Ip addresses
       set_fact:
-        iplist:  "{{ iplist }} + [ '{{ item.ip_address }}' ]"
+        iplist:  "{{ iplist }} + [ '{{ item }}' ]"
       with_items: "{{ public_ip_addresses }}"
 
     - name: debug public ip
