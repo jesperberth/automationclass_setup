@@ -67,6 +67,10 @@
       poll: 0
       register: create_nic
 
+   - name: Debug nic
+     debug:
+       var: "{{ create_nic }}"
+
     - name: Wait for Network Interfaces
       async_status:
         jid: "{{ item.ansible_job_id }}"
