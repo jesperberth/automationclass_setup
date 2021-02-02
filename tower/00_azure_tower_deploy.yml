@@ -13,6 +13,7 @@
     servers:
           - tower01
           - tower02
+    iplist: []
 
   tasks:
     - name: Azure Virtual Network
@@ -118,6 +119,11 @@
         name: "{{ item }}_public_ip"
       loop: "{{ servers }}"
       register: public_ip_addresses
+
+    - name: Set Fact Public Ip addresses
+      set_fact:
+        iplist:  "{{ iplist }} + [ '{{ item.publicipaddresses.ip_address }}' ]"
+      with_items: "{{ public_ip_addresses }}"
 
     - name: debug public ip
       debug:
