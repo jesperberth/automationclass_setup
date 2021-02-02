@@ -118,10 +118,12 @@
         resource_group: "{{ rgname }}"
         name: "tower01_public_ip"
       register: public_ip_addresses
+      verbosity: 4
 
     - name: debug public ip
       debug:
-        var: "{{ public_ip_addresses.ansible_facts.azure_publicipaddresses }}"
+        var: "{{ public_ip_addresses }}"
+      verbosity: 4
 
     - name: Set Fact Public Ip addresses
       set_fact:
