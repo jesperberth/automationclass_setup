@@ -112,6 +112,15 @@
       delay: 5
       with_items: "{{ create_vm.results }}"
 
+    - name: get public Ip address
+      community.azure.azure_rm_publicipaddress_info:
+        resource_group: "{{ rgname }}"
+        name: "{{ item }}_public_ip"
+      loop: "{{ servers }}"
+
+    - name: Add webserver to ssh known_hosts
+      shell: "ssh-keyscan -t ecdsa {{ webserver_pub_ip.state.ip_address }}  >> ~/.ssh/known_hosts"
+
     - name: Add Datadisk to ansible VM
       azure_rm_manageddisk:
         name: "{{ item }}datadisk"
