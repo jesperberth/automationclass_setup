@@ -121,7 +121,7 @@
 
     - name: debug public ip
       debug:
-        var: "{{ public_ip_addresses }}"
+        var: "{{ public_ip_addresses.ansible_facts.azure_publicipaddresses }}"
 
     - name: Set Fact Public Ip addresses
       set_fact:
