@@ -119,6 +119,10 @@
         name: "tower01_public_ip"
       register: public_ip_addresses
 
+    - name: debug public ip
+      debug:
+        var: "{{ public_ip_addresses }}"
+
     - name: Set Fact Public Ip addresses
       set_fact:
         iplist:  "{{ iplist }} + [ '{{ item.publicipaddresses.ip_address }}' ]"
