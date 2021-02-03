@@ -26,3 +26,24 @@ connect-azuread
 setup_users.ps1
 
 ```
+## AWX/Tower Class
+
+vi ~/.ansible.cfg
+
+```bash
+[defaults]
+host_key_checking = False
+[sudo_become_plugin]
+flags = -H -S
+```
+
+```bash
+ssh-keygen
+
+change playbook to install more than 2 environments
+
+ansible-playbook.yml 00_azure_tower_deploy.yml
+
+ansible-playbook -i inventory.azure_rm.yml install_awx.yml
+
+```
