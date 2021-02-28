@@ -11,8 +11,8 @@
     tag_owner: arrow
     tag_project: ansibleawx
     servers:
-          - tower01
-          - tower02
+      - tower01
+      - tower02
 
   tasks:
     - name: Azure Virtual Network
@@ -57,10 +57,10 @@
         ip_configurations:
           - name: "{{ item }}_nic01_ipconfig"
             public_ip_address_name: "{{ item }}_public_ip"
-            primary: True
+            primary: true
         tags:
-           owner: "{{ tag_owner }}"
-           project: "{{ tag_project }}"
+          owner: "{{ tag_owner }}"
+          project: "{{ tag_project }}"
       loop: "{{ servers }}"
       async: 1000
       poll: 0
