@@ -46,6 +46,6 @@ ansible-playbook 00_azure_tower_deploy.yml
 
 ansible-galaxy install -u jesperberth.awx_install
 
-ansible-playbook -i inventory.azure_rm.yaml install_awx.yml
+ansible-playbook -i inventory.azure_rm.yml install_awx.yml
 
 ```
