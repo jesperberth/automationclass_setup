@@ -32,20 +32,20 @@
         name: jesperberth.az_securitygroup
       vars:
         resourcegroup: "{{ rgname }}"
-        networksecuritygroup_name: "{{ item.networksecuritygroup_name }}"
-        rulename: "{{ item.rulename }}"
-        ruleprotocol: "{{ item.ruleprotocol }}"
-        rulesourceaddress: "{{ item.rulesourceaddress }}"
-        ruledestinationportrange: "{{ item.ruledestinationportrange }}"
-        ruleaccess: "{{ item.ruleaccess }}"
-        rulepriority: "{{ item.rulepriority }}"
-        ruledirection: "{{ item.ruledirection }}"
+        networksecuritygroup_name: "{{ item.sg_name }}"
+        rulename: "{{ item.name }}"
+        ruleprotocol: "{{ item.protocol }}"
+        rulesourceaddress: "{{ item.sourceaddr }}"
+        ruledestinationportrange: "{{ item.destport }}"
+        ruleaccess: "{{ item.access }}"
+        rulepriority: "{{ item.pri }}"
+        ruledirection: "{{ item.dir }}"
         owner: "{{ tag_owner }}"
         project: "{{ tag_project }}"
       loop:
-        - { networksecuritygroup_name: 'SG_Network', rulename: 'AllowSSH',  ruleprotocol: 'Tcp', rulesourceaddress: '0.0.0.0/0', ruledestinationportrange: '22', ruleaccess: 'Allow', rulepriority: '102', ruledirection: 'Inbound' }
-        - { networksecuritygroup_name: 'SG_Network', rulename: 'AllowHTTP',  ruleprotocol: 'Tcp', rulesourceaddress: '0.0.0.0/0', ruledestinationportrange: '80', ruleaccess: 'Allow', rulepriority: '103', ruledirection: 'Inbound' }
-        - { networksecuritygroup_name: 'SG_Network', rulename: 'AllowHTTPS',  ruleprotocol: 'Tcp', rulesourceaddress: '0.0.0.0/0', ruledestinationportrange: '443', ruleaccess: 'Allow', rulepriority: '104', ruledirection: 'Inbound' }
+        - { sg_name: 'SG_Network', name: 'AllowSSH',  protocol: 'Tcp', sourceaddr: '0.0.0.0/0', destport: '22', access: 'Allow', pri: '102', dir: 'Inbound' }
+        - { sg_name: 'SG_Network', name: 'AllowHTTP',  protocol: 'Tcp', sourceaddr: '0.0.0.0/0', destport: '80', access: 'Allow', pri: '103', dir: 'Inbound' }
+        - { sg_name: 'SG_Network', name: 'AllowHTTPS',  protocol: 'Tcp', sourceaddr: '0.0.0.0/0', destport: '443', access: 'Allow', pri: '104', dir: 'Inbound' }
 
     - name: Create network interfaces
       azure_rm_networkinterface:
@@ -75,7 +75,7 @@
       delay: 5
       with_items: "{{ create_nic.results }}"
 
-  # Create Virtual Machines
+    # Create Virtual Machines
     - name: Create Virtual Machines
       azure_rm_virtualmachine:
         resource_group: "{{ rgname }}"
@@ -96,8 +96,8 @@
         vm_size: "Standard_D2s_v3"
         network_interfaces: "{{ item }}_nic01"
         tags:
-            owner: "{{ adminUser }}"
-            project: "{{ tag_project }}"
+          owner: "{{ adminUser }}"
+          project: "{{ tag_project }}"
       loop: "{{ servers }}"
       async: 1000
       poll: 0
