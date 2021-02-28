@@ -4,4 +4,4 @@
   become: yes
 
   roles:
-    - role: /mnt/c/Users/Jesper/git/awx-install
+    - role: jesperberth.awx_install

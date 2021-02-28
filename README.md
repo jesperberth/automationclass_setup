@@ -42,7 +42,7 @@ ssh-keygen
 
 change playbook to install more than 2 environments
 
-ansible-playbook.yml 00_azure_tower_deploy.yml
+ansible-playbook 00_azure_tower_deploy.yml
 
 ansible-playbook -i inventory.azure_rm.yml install_awx.yml
 
