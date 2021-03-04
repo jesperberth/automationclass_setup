@@ -14,10 +14,12 @@ Get-AzResourceGroup | Where-Object ResourceGroupName -Match "^user.*" | Select-O
 
 #Remove-AzResourceGroup
 
-Get-AzResourceGroup | Where-Object ResourceGroupName -Match "^ansible.*"
+Get-AzResourceGroup | Where-Object ResourceGroupName -Match "^ansible.*" | Select-Object ResourceGroupName
 
 #Remove-AzResourceGroup
 
-Get-AzResourceGroup | Where-Object ResourceGroupName -Match "^webserver.*"
+Get-AzResourceGroup | Where-Object ResourceGroupName -Match "^webserver.*" | Select-Object ResourceGroupName
 
 #Remove-AzResourceGroup
+
+Get-AzureADApplication
