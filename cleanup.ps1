@@ -7,3 +7,7 @@
 # Author: Jesper Berth, jesper.berth@arrow.com - march 2021
 
 get-azureaduser | Where-Object UserPrincipalName -Match "^user.*"
+
+#remove-azureaduser
+
+Get-AzResourceGroup
