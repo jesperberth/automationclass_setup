@@ -18,13 +18,20 @@ do {
     $response = Read-Host -Prompt "Delete users y/n"
     if ($response -eq 'y') {
         foreach ($user in $azureaduser) {
-            remove-azureaduser $user.UserPrincipalName
+            remove-azureaduser $user.UserPrincipalName -force
         }
     $response = "n"
      }
 } 	until ($response -eq 'n')
 
-$azureapp = Get-AzureADApplication | Where-Object DisplayName -Match "*.^ansible.*"
+write-host "Remaining Users"
+get-azureaduser | Select-Object UserPrincipalName
+
+# End User Cleanup
+
+# Begin app Cleanup
+
+$azureapp = Get-AzureADApplication | Where-Object DisplayName -Match "*ansible*"
 
 write-host -ForegroundColor Yellow "These are the app registrations to delete"
 foreach ($app in $azureapp) {
@@ -41,7 +48,12 @@ do {
      }
 } 	until ($response -eq 'n')
 
-#remove-azureadapplication
+write-host "Remaining App registrations"
+Get-AzureADApplication | Select-Object DisplayName
+
+# End App Cleanup
+
+
 
 $webserver = Get-AzResourceGroup | Where-Object ResourceGroupName -Match "^webserver.*"
 $ansible = Get-AzResourceGroup | Where-Object ResourceGroupName -Match "^ansible.*"
