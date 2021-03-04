@@ -41,7 +41,7 @@ do {
     $response = Read-Host -Prompt "Delete appregistration y/n"
     if ($response -eq 'y') {
         foreach ($app in $azureapp) {
-            remove-azureadapplication $app.DisplayName
+            remove-azureadapplication -ObjectId $app.DisplayName
         }
     $response = "n"
      }
