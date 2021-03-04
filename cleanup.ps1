@@ -8,7 +8,10 @@
 
 $azureaduser = get-azureaduser | Where-Object UserPrincipalName -Match "^user.*"
 
-Write-Host $azureaduser.UserPrincipalName
+foreach ($user in $azureaduser) {
+    Write-Host $user.UserPrincipalName
+}
+
 
 #remove-azureaduser
 
