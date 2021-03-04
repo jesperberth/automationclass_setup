@@ -73,7 +73,7 @@ do {
     $response = Read-Host -Prompt "Delete Resourcegroups y/n"
     if ($response -eq 'y') {
         foreach ($usr in $user) {
-            Remove-AzResourceGroup $usr.ResourceGroupName -Force
+            Remove-AzResourceGroup $usr.ResourceGroupName -Force -AsJob
         }
     $response = "n"
      }
@@ -94,7 +94,7 @@ do {
     $response = Read-Host -Prompt "Delete Resourcegroups y/n"
     if ($response -eq 'y') {
         foreach ($rg in $webserver) {
-            Remove-AzResourceGroup $rg.ResourceGroupName -Force
+            Remove-AzResourceGroup $rg.ResourceGroupName -Force -AsJob
         }
     $response = "n"
      }
