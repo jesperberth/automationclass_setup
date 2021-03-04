@@ -48,7 +48,7 @@ do {
     $response = Read-Host -Prompt "Delete Resourcegroups y/n"
     if ($response -eq 'y') {
         foreach ($server in $webserver) {
-            Remove-AzResourceGroup $rg
+            Remove-AzResourceGroup $rg.ResourceGroupName
         }
     $response = "n"
      }
