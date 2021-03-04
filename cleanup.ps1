@@ -20,7 +20,7 @@ do {
     $response = Read-Host -Prompt "Delete users y/n"
     if ($response -eq 'y') {
         foreach ($user in $azureaduser) {
-            remove-azureaduser $user.UserPrincipalName -force
+            remove-azureaduser -ObjectId $user.UserPrincipalName -force
         }
     $response = "n"
      }
