@@ -17,26 +17,35 @@ foreach ($user in $azureaduser) {
 do {
     $response = Read-Host -Prompt "Delete users y/n"
     if ($response -eq 'y') {
-    #remove-azureaduser
+        foreach ($user in $azureaduser) {
+            remove-azureaduser $user.UserPrincipalName
+        }
     $response = "n"
      }
 } 	until ($response -eq 'n')
 
-#remove-azureaduser
+$azureapp = Get-AzureADApplication | Where-Object DisplayName -Match "*.^ansible.*"
 
-#Get-AzureADApplication | Where-Object DisplayName -Match "*.^ansible.*" | Select-Object DisplayName
+write-host -ForegroundColor Yellow "These are the app registrations to delete"
+foreach ($app in $azureapp) {
+    Write-Host $app.DisplayName
+}
+
+do {
+    $response = Read-Host -Prompt "Delete appregistration y/n"
+    if ($response -eq 'y') {
+        foreach ($app in $azureapp) {
+            remove-azureadapplication $app.DisplayName
+        }
+    $response = "n"
+     }
+} 	until ($response -eq 'n')
 
 #remove-azureadapplication
 
-#Get-AzResourceGroup | Where-Object ResourceGroupName -Match "^user.*" | Select-Object ResourceGroupName
-
-#Remove-AzResourceGroup
-
-#Get-AzResourceGroup | Where-Object ResourceGroupName -Match "^ansible.*" | Select-Object ResourceGroupName
-
-#Remove-AzResourceGroup
-
 $webserver = Get-AzResourceGroup | Where-Object ResourceGroupName -Match "^webserver.*"
+$ansible = Get-AzResourceGroup | Where-Object ResourceGroupName -Match "^ansible.*"
+$user = Get-AzResourceGroup | Where-Object ResourceGroupName -Match "^user.*"
 
 write-host -ForegroundColor Yellow "webserver* resourcegroups to delete"
 
