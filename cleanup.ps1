@@ -40,14 +40,16 @@ $webserver = Get-AzResourceGroup | Where-Object ResourceGroupName -Match "^webse
 
 write-host -ForegroundColor Yellow "webserver* resourcegroups to delete"
 
-foreach ($server in $webserver) {
-    Write-Host $server.ResourceGroupName
+foreach ($rg in $webserver) {
+    Write-Host $rg.ResourceGroupName
 }
 
 do {
     $response = Read-Host -Prompt "Delete Resourcegroups y/n"
     if ($response -eq 'y') {
-    #remove-azureaduser
+        foreach ($server in $webserver) {
+            Remove-AzResourceGroup $rg
+        }
     $response = "n"
      }
 } 	until ($response -eq 'n')
