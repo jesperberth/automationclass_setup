@@ -6,6 +6,8 @@
 #
 # Author: Jesper Berth, jesper.berth@arrow.com - march 2021
 
+# Begin User Cleanup
+
 $azureaduser = get-azureaduser | Where-Object UserPrincipalName -Match "^user.*"
 
 write-host -ForegroundColor Yellow "These are the users to delete"
@@ -53,12 +55,6 @@ Get-AzureADApplication | Select-Object DisplayName
 
 # End App Cleanup
 
-
-
-
-$ansible = Get-AzResourceGroup | Where-Object ResourceGroupName -Match "^ansible.*"
-
-
  # Begin RG User
 
 $user = Get-AzResourceGroup | Where-Object ResourceGroupName -Match "^user.*"
@@ -101,3 +97,28 @@ do {
 } 	until ($response -eq 'n')
 
 # End RG Webserver
+
+# Begin RG ansible
+
+$ansible = Get-AzResourceGroup | Where-Object ResourceGroupName -Match "^ansible.*"
+
+write-host -ForegroundColor Yellow "webserver* resourcegroups to delete"
+
+foreach ($rg in $ansible) {
+    Write-Host $rg.ResourceGroupName
+}
+
+do {
+    $response = Read-Host -Prompt "Delete Resourcegroups y/n"
+    if ($response -eq 'y') {
+        foreach ($rg in $ansible) {
+            Remove-AzResourceGroup $rg.ResourceGroupName -Force -AsJob
+        }
+    $response = "n"
+     }
+} 	until ($response -eq 'n')
+
+# End RG ansible
+
+write-host "Remaining resource groups"
+Get-AzResourceGroup | Select-Object ResourceGroupName
