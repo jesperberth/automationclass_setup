@@ -26,9 +26,6 @@ do {
      }
 } 	until ($response -eq 'n')
 
-write-host "Remaining Users"
-get-azureaduser | Select-Object UserPrincipalName
-
 # End User Cleanup
 
 # Begin app Cleanup
@@ -49,9 +46,6 @@ do {
     $response = "n"
      }
 } 	until ($response -eq 'n')
-
-write-host "Remaining App registrations"
-Get-AzureADApplication | Select-Object DisplayName
 
 # End App Cleanup
 
