@@ -22,4 +22,5 @@ Get-AzResourceGroup | Where-Object ResourceGroupName -Match "^webserver.*" | Sel
 
 #Remove-AzResourceGroup
 
-Get-AzureADApplication
+Get-AzureADApplication  | Select-Object DisplayName
+
