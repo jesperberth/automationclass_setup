@@ -44,8 +44,21 @@ change playbook to install more than 2 environments
 
 ansible-playbook 00_azure_tower_deploy.yml
 
-ansible-galaxy install -u jesperberth.awx_install
+ansible-galaxy install jesperberth.awx_install -force
 
 ansible-playbook -i inventory.azure_rm.yml install_awx.yml
+
+```
+
+## Cleanup Azure
+
+```bash
+cd clouddrive
+
+cd automationclass_setup
+
+connect-azuread
+
+cleanup.ps1
 
 ```
