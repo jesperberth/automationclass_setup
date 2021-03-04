@@ -8,10 +8,19 @@
 
 $azureaduser = get-azureaduser | Where-Object UserPrincipalName -Match "^user.*"
 
+write-host -ForegroundColor Yellow "These are the users to delete"
+
 foreach ($user in $azureaduser) {
     Write-Host $user.UserPrincipalName
 }
 
+do {
+    $response = Read-Host -Prompt "Delete users y/n"
+    if ($response -eq 'y') {
+    #remove-azureaduser
+    $response = "n"
+     }
+} 	until ($response -eq 'n')
 
 #remove-azureaduser
 
