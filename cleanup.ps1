@@ -6,4 +6,4 @@
 #
 # Author: Jesper Berth, jesper.berth@arrow.com - march 2021
 
-get-azureaduser
+get-azureaduser | Where-Object $_.-UserPrincipalName -Match "^user.*"
