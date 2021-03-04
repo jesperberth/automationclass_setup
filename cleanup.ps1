@@ -31,7 +31,7 @@ get-azureaduser | Select-Object UserPrincipalName
 
 # Begin app Cleanup
 
-$azureapp = Get-AzureADApplication | Where-Object DisplayName -Match "*ansible*"
+$azureapp = Get-AzureADApplication #| Where-Object DisplayName -Match "^ansible*"
 
 write-host -ForegroundColor Yellow "These are the app registrations to delete"
 foreach ($app in $azureapp) {
