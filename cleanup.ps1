@@ -10,4 +10,4 @@ get-azureaduser | Where-Object UserPrincipalName -Match "^user.*"
 
 #remove-azureaduser
 
-Get-AzResourceGroup
+Get-AzResourceGroup | Where-Object ResourceGroupName -Match "^user.*"
