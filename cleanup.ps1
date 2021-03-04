@@ -96,7 +96,7 @@ do {
 
 $ansible = Get-AzResourceGroup | Where-Object ResourceGroupName -Match "^ansible.*"
 
-write-host -ForegroundColor Yellow "webserver* resourcegroups to delete"
+write-host -ForegroundColor Yellow "ansible* resourcegroups to delete"
 
 foreach ($rg in $ansible) {
     Write-Host $rg.ResourceGroupName
