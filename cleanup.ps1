@@ -114,5 +114,25 @@ do {
 
 # End RG ansible
 
+# Begin RG ansible
+
+$tower = Get-AzResourceGroup | Where-Object ResourceGroupName -Match "^TowerRG"
+
+write-host -ForegroundColor Yellow "TowerRG resourcegroups to delete"
+
+foreach ($rg in $tower) {
+    Write-Host $rg.ResourceGroupName
+}
+
+do {
+    $response = Read-Host -Prompt "Delete Resourcegroups y/n"
+    if ($response -eq 'y') {
+            Remove-AzResourceGroup $rg.ResourceGroupName -Force -AsJob
+    $response = "n"
+     }
+} 	until ($response -eq 'n')
+
+# End RG ansible
+
 write-host "Remaining resource groups"
 Get-AzResourceGroup | Select-Object ResourceGroupName
