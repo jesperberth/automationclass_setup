@@ -55,10 +55,35 @@ Get-AzureADApplication | Select-Object DisplayName
 
 
 
-$webserver = Get-AzResourceGroup | Where-Object ResourceGroupName -Match "^webserver.*"
+
 $ansible = Get-AzResourceGroup | Where-Object ResourceGroupName -Match "^ansible.*"
+
+
+ # Begin RG User
+
 $user = Get-AzResourceGroup | Where-Object ResourceGroupName -Match "^user.*"
 
+write-host -ForegroundColor Yellow "user* resourcegroups to delete"
+
+foreach ($usr in $user) {
+    Write-Host $usr.ResourceGroupName
+}
+
+do {
+    $response = Read-Host -Prompt "Delete Resourcegroups y/n"
+    if ($response -eq 'y') {
+        foreach ($usr in $user) {
+            Remove-AzResourceGroup $usr.ResourceGroupName -Force
+        }
+    $response = "n"
+     }
+} 	until ($response -eq 'n')
+
+# End RG User
+
+# Begin RG Webserver
+
+$webserver = Get-AzResourceGroup | Where-Object ResourceGroupName -Match "^webserver.*"
 write-host -ForegroundColor Yellow "webserver* resourcegroups to delete"
 
 foreach ($rg in $webserver) {
@@ -75,8 +100,4 @@ do {
      }
 } 	until ($response -eq 'n')
 
-
-#Remove-AzResourceGroup
-
-
-
+# End RG Webserver
