@@ -10,6 +10,10 @@ get-azureaduser | Where-Object UserPrincipalName -Match "^user.*"
 
 #remove-azureaduser
 
+Get-AzureADApplication | Where-Object ResourceGroupName -Match "^ansible.*" | Select-Object DisplayName
+
+#remove-azureadapplication
+
 Get-AzResourceGroup | Where-Object ResourceGroupName -Match "^user.*" | Select-Object ResourceGroupName
 
 #Remove-AzResourceGroup
@@ -22,5 +26,5 @@ Get-AzResourceGroup | Where-Object ResourceGroupName -Match "^webserver.*" | Sel
 
 #Remove-AzResourceGroup
 
-Get-AzureADApplication  | Select-Object DisplayName
+
 
