@@ -49,7 +49,18 @@ do {
 
 # End App Cleanup
 
- # Begin RG User
+# Begin App Role Assignment
+
+$appRoleAssignment = Get-AzRoleAssignment | Where-Object {$_.ObjectType -eq $OBJTYPE}
+
+write-host -ForegroundColor Yellow "Deleting app Role registrations"
+foreach ($approle in $appRoleAssignment) {
+    Write-Host $approle.ObjectId
+}
+
+# End App Role Assignment
+
+# Begin RG User
 
 $user = Get-AzResourceGroup | Where-Object ResourceGroupName -Match "^user.*"
 
