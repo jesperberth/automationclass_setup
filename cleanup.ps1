@@ -55,7 +55,7 @@ $appRoleAssignment = Get-AzRoleAssignment | Where-Object {$_.ObjectType -eq $OBJ
 
 write-host -ForegroundColor Yellow "Deleting app Role registrations"
 foreach ($approle in $appRoleAssignment) {
-    Remove-AzRoleAssignment -ObjectId $approle.ObjectId
+    Remove-AzRoleAssignment -ObjectId $approle.ObjectId -RoleDefinitionName Contributer
 }
 
 # End App Role Assignment
