@@ -1,0 +1,7 @@
+---
+- name: AWX install on Enterprise Linux
+  hosts: tag_project_ansibleawx
+  become: true
+
+  roles:
+    - role: /mnt/c/Users/jesper/git/el_minikube
