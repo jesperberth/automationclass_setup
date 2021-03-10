@@ -46,6 +46,7 @@
         - {sg_name: 'SG_Network', name: 'AllowSSH', protocol: 'Tcp', sourceaddr: '0.0.0.0/0', destport: '22', access: 'Allow', pri: '102', dir: 'Inbound'}
         - {sg_name: 'SG_Network', name: 'AllowHTTP', protocol: 'Tcp', sourceaddr: '0.0.0.0/0', destport: '80', access: 'Allow', pri: '103', dir: 'Inbound'}
         - {sg_name: 'SG_Network', name: 'AllowHTTPS', protocol: 'Tcp', sourceaddr: '0.0.0.0/0', destport: '443', access: 'Allow', pri: '104', dir: 'Inbound'}
+        - {sg_name: 'SG_Network', name: 'Allow8443', protocol: 'Tcp', sourceaddr: '0.0.0.0/0', destport: '8443', access: 'Allow', pri: '105', dir: 'Inbound'}
 
     - name: Create network interfaces
       azure_rm_networkinterface:
