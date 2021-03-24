@@ -2,6 +2,8 @@
 - name: AWX install on Enterprise Linux
   hosts: tag_project_ansibleawx
   become: true
+  ansible_user: awx
 
   roles:
     - role: /mnt/c/Users/jesper/git/el_k3s
+    - role: /mnt/c/Users/jesper/git/awx_k8s_install
