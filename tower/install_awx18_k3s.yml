@@ -2,7 +2,8 @@
 - name: AWX install on Enterprise Linux
   hosts: tag_project_ansibleawx
   become: true
-  ansible_user: awx
+  vars:
+    ansible_user: awx
 
   roles:
     - role: /mnt/c/Users/jesper/git/el_k3s
