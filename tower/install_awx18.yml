@@ -4,6 +4,7 @@
   become: true
   vars:
     ansible_user: awx
+    awx_password: Passw0rd!
 
   roles:
     - role: /mnt/c/Users/jesper/git/el_k3s
