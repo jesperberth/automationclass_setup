@@ -44,13 +44,13 @@ change playbook to install more than 2 environments
 
 ansible-playbook 00_azure_tower_deploy.yml
 
-ansible-galaxy install jesperberth.el_k3s -force
-ansible-galaxy install jesperberth.awx_k8s_install -force
+ansible-galaxy install jesperberth.el_k3s -f
+ansible-galaxy install jesperberth.awx_k8s_install -f
 
 ansible-playbook -i inventory.azure_rm.yml install_awx18.yml
 
 OLD will install awx 16
-ansible-galaxy install jesperberth.awx_install -force
+ansible-galaxy install jesperberth.awx_install -f
 ansible-playbook -i inventory.azure_rm.yml install_awx.yml
 
 ```
