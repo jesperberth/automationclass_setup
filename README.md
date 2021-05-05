@@ -26,6 +26,7 @@ connect-azuread
 setup_users.ps1
 
 ```
+
 ## AWX/Tower Class
 
 vi ~/.ansible.cfg
@@ -48,10 +49,6 @@ ansible-galaxy install jesperberth.el_k3s -f
 ansible-galaxy install jesperberth.awx_k8s_install -f
 
 ansible-playbook -i inventory.azure_rm.yml install_awx18.yml
-
-OLD will install awx 16
-ansible-galaxy install jesperberth.awx_install -f
-ansible-playbook -i inventory.azure_rm.yml install_awx.yml
 
 ```
 
