@@ -127,7 +127,7 @@
         image:
           offer: "RHEL"
           publisher: "RedHat"
-          sku: "8"
+          sku: "8_4"
           version: "latest"
         vm_size: "Standard_D2s_v3"
         network_interfaces: "{{ item }}_nic01"
