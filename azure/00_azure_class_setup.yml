@@ -107,7 +107,7 @@
           - { 'name': 'ansible', 'size': 'Standard_A2_v2', 'os_type': 'Linux', 'offer': 'RHEL', 'publisher': 'RedHat', 'sku': '8_4', 'version': 'latest' }
           - { 'name': 'server1', 'size': 'Standard_A1_v2', 'os_type': 'Linux', 'offer': 'RHEL', 'publisher': 'RedHat', 'sku': '8_4', 'version': 'latest' }
           - { 'name': 'server2', 'size': 'Standard_A1_v2', 'os_type': 'Linux', 'offer': 'RHEL', 'publisher': 'RedHat', 'sku': '8_4', 'version': 'latest' }
-          - { 'name': 'server3', 'size': 'Standard_A1_v2', 'os_type': 'Windows', 'offer': 'WindowsServer', 'publisher': 'MicrosoftWindowsServer', 'sku': '2019-Datacenter', 'version': 'latest' }
+          - { 'name': 'server3', 'size': 'Standard_A2_v2', 'os_type': 'Windows', 'offer': 'WindowsServer', 'publisher': 'MicrosoftWindowsServer', 'sku': '2019-Datacenter', 'version': 'latest' }
           - { 'name': 'server4', 'size': 'Standard_A1_v2', 'os_type': 'Windows', 'offer': 'WindowsServer', 'publisher': 'MicrosoftWindowsServer', 'sku': '2019-Datacenter', 'version': 'latest' }
       async: 1000
       poll: 0
