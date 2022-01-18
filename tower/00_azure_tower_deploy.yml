@@ -21,9 +21,6 @@
       - tower08
       - tower09
       - tower10
-      - tower11
-      - tower12
-      - tower13
 
   tasks:
     - name: Azure Virtual Network
