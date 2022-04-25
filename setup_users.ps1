@@ -69,7 +69,8 @@ function roleAssignment($user) {
 
     Add-AzureADDirectoryRoleMember -ObjectId $role -RefObjectId $userguid
     try{
-    New-AzureRmStorageAccount -ResourceGroupName $rgname -Name $storageName -Location $location -SkuName Standard_LRS -kind StorageV2
+    #New-AzureRmStorageAccount -ResourceGroupName $rgname -Name $storageName -Location $location -SkuName Standard_LRS -kind StorageV2
+    az storage account create --name $storageName --resource-group $rgname --location $location --sku Standard_LRS --kind StorageV2
     }
     catch{
         write-host -ForegroundColor red "Could not create Storage account for $user"
