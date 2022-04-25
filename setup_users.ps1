@@ -75,7 +75,7 @@ function roleAssignment($user) {
   #      write-host -ForegroundColor red "Could not create Storage account for $user"
   #  }
   #  Get-AzStorageAccount -ResourceGroupName $rgname -StorageAccountName $storageName | New-AzRmStorageShare -Name $stoname -QuotaGiB 6
-#}
+}
 #connect-azuread
 $subId = (Get-AzureRmContext).Subscription
 $location = getAzureLocations
