@@ -80,5 +80,5 @@ function roleAssignment($user) {
 $subId = (Get-AzureRmContext).Subscription
 $location = getAzureLocations
 #run
-roleAssignment("user1@redhatbyarrow.onmicrosoft.com")
-roleAssignment("user2@redhatbyarrow.onmicrosoft.com")
+roleAssignment("user1")
+roleAssignment("user2")
