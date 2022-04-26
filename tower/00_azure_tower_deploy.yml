@@ -12,8 +12,6 @@
     tag_project: ansibleawx
     servers:
       - tower01
-      - tower02
-      - tower03
 
   tasks:
     - name: Azure Virtual Network
