@@ -56,12 +56,6 @@ function getAzureLocations{
 }
 function roleAssignment($user) {
     $userguid = (Get-AzureADUser -Filter "DisplayName eq '$user'").ObjectId
-    $word = ( -join ((0x30..0x39) + ( 0x61..0x7A)| Get-Random -Count 5  | ForEach-Object {[char]$_}) )
-    $rgname = "$user-ansible"
-    $stoname =$user+"ansible"
-    $storageName = "$stoname$word"
-
-    New-AzureRmResourceGroup -Name $rgname -Location $location
 
     New-AzureRmRoleAssignment -ObjectId $userguid -RoleDefinitionName Owner -Scope "/subscriptions/$subId"
 
@@ -69,9 +63,18 @@ function roleAssignment($user) {
 
     Add-AzureADDirectoryRoleMember -ObjectId $role -RefObjectId $userguid
 
+}
+
+function createStorage($user) {
+    $word = ( -join ((0x30..0x39) + ( 0x61..0x7A)| Get-Random -Count 5  | ForEach-Object {[char]$_}) )
+    $rgname = "$user-ansible"
+    $stoname =$user+"ansible"
+    $storageName = "$stoname$word"
+
+    New-AzureRmResourceGroup -Name $rgname -Location $location
     #New-AzureRmStorageAccount -ResourceGroupName $rgname -Name $storageName -Location $location -SkuName Standard_LRS -kind StorageV2
-    az storage account create --name $storageName --resource-group $rgname --location $location --sku Standard_LRS --kind StorageV2
-    Get-AzStorageAccount -ResourceGroupName $rgname -StorageAccountName $storageName | New-AzRmStorageShare -Name $stoname -QuotaGiB 6
+    #az storage account create --name $storageName --resource-group $rgname --location $location --sku Standard_LRS --kind StorageV2
+    #Get-AzStorageAccount -ResourceGroupName $rgname -StorageAccountName $storageName | New-AzRmStorageShare -Name $stoname -QuotaGiB 6
 }
 #connect-azuread
 $subId = (Get-AzureRmContext).Subscription
