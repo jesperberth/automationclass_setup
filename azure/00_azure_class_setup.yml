@@ -106,8 +106,8 @@
           delete: ansibletraining
       loop:
         - {name: 'ansible', size: 'Standard_B2ms', os: 'Linux', offer: 'RHEL', pub: 'RedHat', sku: '8_4'}
-        - {name: 'server1', size: 'Standard_B2s', os: 'Linux', offer: 'RHEL', pub': 'RedHat', sku: '8_4'}
-        - {name: 'server2', size: 'Standard_B2s', os: 'Linux', offer: 'RHEL', pub': 'RedHat', sku: '8_4'}
+        - {name: 'server1', size: 'Standard_B2s', os: 'Linux', offer: 'RHEL', pub: 'RedHat', sku: '8_4'}
+        - {name: 'server2', size: 'Standard_B2s', os: 'Linux', offer: 'RHEL', pub: 'RedHat', sku: '8_4'}
         - {name: 'server3', size: 'Standard_B2ms', os: 'Windows', offer: 'WindowsServer', pub: 'MicrosoftWindowsServer', sku: '2019-Datacenter'}
         - {name: 'server4', size: 'Standard_B2ms', os: 'Windows', offer: 'WindowsServer', pub: 'MicrosoftWindowsServer', sku: '2019-Datacenter'}
         - {name: 'student', size: 'Standard_D4s_v3', os: 'Windows', offer: 'windows-11', pub: 'microsoftwindowsdesktop', sku: 'win11-21h2-pro'}
