@@ -1,5 +1,13 @@
 # Azure Class Setup
 
+## Build and push image
+
+docker build -t jesperberth/automationclass:0.1 -t jesperberth/automationclass:latest .
+
+docker push jesperberth/automationclass:0.1
+
+docker push jesperberth/automationclass:latest
+
 ## Create users in azure
 
 Open a azure cloud shell
