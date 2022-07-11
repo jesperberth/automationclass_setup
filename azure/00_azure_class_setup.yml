@@ -8,17 +8,9 @@
     tag_owner: arrow
     tag_project: ansibletraining
 
-  vars_prompt:
-    - name: adminUser
-      prompt: "Type the name of your root/administrator account"
-      private: no
-    - name: adminPassword
-      prompt: "Type the password of your root/administrator account"
-      private: no
-
   tasks:
     - name: Azure Virtual Network
-      include_role:
+      ansible.builtin.include_role:
         name: jesperberth.az_virtualnetwork
       vars:
         resourcegroup: "ansible-{{ adminUser }}"
@@ -30,25 +22,25 @@
         project: "{{ tag_project }}"
 
     - name: Azure Network Security Group
-      include_role:
+      ansible.builtin.include_role:
         name: jesperberth.az_securitygroup
       vars:
         resourcegroup: "ansible-{{ adminUser }}"
-        networksecuritygroup_name: "{{ item.networksecuritygroup_name }}"
-        rulename: "{{ item.rulename }}"
-        ruleprotocol: "{{ item.ruleprotocol }}"
-        rulesourceaddress: "{{ item.rulesourceaddress }}"
-        ruledestinationportrange: "{{ item.ruledestinationportrange }}"
-        ruleaccess: "{{ item.ruleaccess }}"
-        rulepriority: "{{ item.rulepriority }}"
-        ruledirection: "{{ item.ruledirection }}"
+        networksecuritygroup_name: "{{ item.nsgname }}"
+        rulename: "{{ item.name }}"
+        ruleprotocol: "{{ item.proto }}"
+        rulesourceaddress: "{{ item.sourceadd }}"
+        ruledestinationportrange: "{{ item.destportrange }}"
+        ruleaccess: "{{ item.access }}"
+        rulepriority: "{{ item.pri }}"
+        ruledirection: "{{ item.dir }}"
         owner: "{{ tag_owner }}"
         project: "{{ tag_project }}"
       loop:
-        - { networksecuritygroup_name: 'SG_Network', rulename: 'AllowSSH',  ruleprotocol: 'Tcp', rulesourceaddress: '0.0.0.0/0', ruledestinationportrange: '22', ruleaccess: 'Allow', rulepriority: '102', ruledirection: 'Inbound' }
-        - { networksecuritygroup_name: 'SG_Network', rulename: 'AllowRDP',  ruleprotocol: 'Tcp', rulesourceaddress: '0.0.0.0/0', ruledestinationportrange: '3389', ruleaccess: 'Allow', rulepriority: '103', ruledirection: 'Inbound' }
-        - { networksecuritygroup_name: 'SG_Network', rulename: 'AllowHTTP',  ruleprotocol: 'Tcp', rulesourceaddress: '0.0.0.0/0', ruledestinationportrange: '80', ruleaccess: 'Allow', rulepriority: '104', ruledirection: 'Inbound' }
-        - { networksecuritygroup_name: 'SG_Network', rulename: 'AllowHTTPS',  ruleprotocol: 'Tcp', rulesourceaddress: '0.0.0.0/0', ruledestinationportrange: '443', ruleaccess: 'Allow', rulepriority: '105', ruledirection: 'Inbound' }
+        - {nsgname: 'SG_Network', name: 'AllowSSH', proto: 'Tcp', sourceadd: '0.0.0.0/0', destportrange: '22', access: 'Allow', pri: '102', dir: 'Inbound'}
+        - {nsgname: 'SG_Network', name: 'AllowRDP', proto: 'Tcp', sourceadd: '0.0.0.0/0', destportrange: '3389', access: 'Allow', pri: '103', dir: 'Inbound'}
+        - {nsgname: 'SG_Network', name: 'AllowHTTP', proto: 'Tcp', sourceadd: '0.0.0.0/0', destportrange: '80', access: 'Allow', pri: '104', dir: 'Inbound'}
+        - {nsgname: 'SG_Network', name: 'AllowHTTPS', proto: 'Tcp', sourceadd: '0.0.0.0/0', destportrange: '443', access: 'Allow', pri: '105', dir: 'Inbound'}
 
     - name: Create network interfaces
       azure_rm_networkinterface:
@@ -60,22 +52,23 @@
         ip_configurations:
           - name: "{{ item }}_nic01_ipconfig"
             public_ip_address_name: "{{ item }}_public_ip"
-            primary: True
+            primary: true
         tags:
-           owner: "{{ tag_owner }}"
-           project: "{{ tag_project }}"
+          owner: "{{ tag_owner }}"
+          project: "{{ tag_project }}"
       loop:
         - ansible
         - server1
         - server2
         - server3
         - server4
+        - student
       async: 1000
       poll: 0
       register: create_nic
 
     - name: Wait for Network Interfaces
-      async_status:
+      ansible.builtin.async_status:
         jid: "{{ item.ansible_job_id }}"
       register: job_result
       until: job_result.finished
@@ -88,33 +81,34 @@
       azure_rm_virtualmachine:
         resource_group: "ansible-{{ adminUser }}"
         name: "{{ item.name }}"
-        os_type: "{{ item.os_type }}"
+        os_type: "{{ item.os }}"
         admin_username: "{{ adminUser }}"
         admin_password: "{{ adminPassword }}"
         managed_disk_type: Standard_LRS
         state: present
         image:
           offer: "{{ item.offer }}"
-          publisher: "{{ item.publisher }}"
+          publisher: "{{ item.pub }}"
           sku: "{{ item.sku }}"
-          version: "{{ item.version }}"
+          version: latest
         vm_size: "{{ item.size }}"
         network_interfaces: "{{ item.name }}_nic01"
         tags:
-            owner: "{{ adminUser }}"
-            delete: ansibletraining
+          owner: "{{ adminUser }}"
+          delete: ansibletraining
       loop:
-          - { 'name': 'ansible', 'size': 'Standard_B2ms', 'os_type': 'Linux', 'offer': 'RHEL', 'publisher': 'RedHat', 'sku': '8_4', 'version': 'latest' }
-          - { 'name': 'server1', 'size': 'Standard_B2s', 'os_type': 'Linux', 'offer': 'RHEL', 'publisher': 'RedHat', 'sku': '8_4', 'version': 'latest' }
-          - { 'name': 'server2', 'size': 'Standard_B2s', 'os_type': 'Linux', 'offer': 'RHEL', 'publisher': 'RedHat', 'sku': '8_4', 'version': 'latest' }
-          - { 'name': 'server3', 'size': 'Standard_B2ms', 'os_type': 'Windows', 'offer': 'WindowsServer', 'publisher': 'MicrosoftWindowsServer', 'sku': '2019-Datacenter', 'version': 'latest' }
-          - { 'name': 'server4', 'size': 'Standard_B2ms', 'os_type': 'Windows', 'offer': 'WindowsServer', 'publisher': 'MicrosoftWindowsServer', 'sku': '2019-Datacenter', 'version': 'latest' }
+        - {name: 'ansible', size: 'Standard_B2ms', os: 'Linux', offer: 'RHEL', pub: 'RedHat', sku: '8_4'}
+        - {name: 'server1', size: 'Standard_B2s', os: 'Linux', offer: 'RHEL', pub: 'RedHat', sku: '8_4'}
+        - {name: 'server2', size: 'Standard_B2s', os: 'Linux', offer: 'RHEL', pub: 'RedHat', sku: '8_4'}
+        - {name: 'server3', size: 'Standard_B2ms', os: 'Windows', offer: 'WindowsServer', pub: 'MicrosoftWindowsServer', sku: '2019-Datacenter'}
+        - {name: 'server4', size: 'Standard_B2ms', os: 'Windows', offer: 'WindowsServer', pub: 'MicrosoftWindowsServer', sku: '2019-Datacenter'}
+        - {name: 'student', size: 'Standard_D4s_v3', os: 'Windows', offer: 'windows-11', pub: 'microsoftwindowsdesktop', sku: 'win11-21h2-pro'}
       async: 1000
       poll: 0
       register: create_vm
 
     - name: Wait for Virtual Machines
-      async_status:
+      ansible.builtin.async_status:
         jid: "{{ item.ansible_job_id }}"
       register: job_result
       until: job_result.finished
