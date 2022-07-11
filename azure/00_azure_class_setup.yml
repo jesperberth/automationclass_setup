@@ -8,14 +8,6 @@
     tag_owner: arrow
     tag_project: ansibletraining
 
-  vars_prompt:
-    - name: adminUser
-      prompt: "Type the name of your root/administrator account"
-      private: false
-    - name: adminPassword
-      prompt: "Type the password of your root/administrator account"
-      private: false
-
   tasks:
     - name: Azure Virtual Network
       ansible.builtin.include_role:

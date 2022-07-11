@@ -36,3 +36,4 @@ ansible-galaxy install -r requirements.yml
 
 curl -o 00_azure_class_setup.yml https://raw.githubusercontent.com/jesperberth/automationclass_setup/main/azure/00_azure_class_setup.yml
 
+ansible-playbook -e "adminUser=$username adminPassword=$password" 00_azure_class_setup.yml

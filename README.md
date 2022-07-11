@@ -1,5 +1,13 @@
 # Azure Class Setup
 
+## Download and run deploy_lab.sh
+
+curl -o deploy_lab.sh https://raw.githubusercontent.com/jesperberth/automationclass_setup/main/azure/deploy_lab.sh
+
+chmod +x deploy_lab.sh
+
+./deploy_lab.sh
+
 ## Build and push image
 
 docker build -t jesperberth/automationclass:0.1 -t jesperberth/automationclass:latest .
