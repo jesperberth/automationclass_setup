@@ -35,6 +35,7 @@ function createUsers($numberUsers, $defaultPassword) {
         try{
         New-AzureADUser -DisplayName $user -PasswordProfile $PasswordProfile -UserPrincipalName $upn -AccountEnabled $true -MailNickName $user
         roleAssignment $user
+        createStorage $user
         }
         catch{
             write-host -ForegroundColor yellow "$upn already exists"
@@ -72,9 +73,9 @@ function createStorage($user) {
     $storageName = "$stoname$word"
 
     New-AzureRmResourceGroup -Name $rgname -Location $location
-    #New-AzureRmStorageAccount -ResourceGroupName $rgname -Name $storageName -Location $location -SkuName Standard_LRS -kind StorageV2
+    New-AzureRmStorageAccount -ResourceGroupName $rgname -Name $storageName -Location $location -SkuName Standard_LRS -kind StorageV2
     #az storage account create --name $storageName --resource-group $rgname --location $location --sku Standard_LRS --kind StorageV2
-    #Get-AzStorageAccount -ResourceGroupName $rgname -StorageAccountName $storageName | New-AzRmStorageShare -Name $stoname -QuotaGiB 6
+    Get-AzStorageAccount -ResourceGroupName $rgname -StorageAccountName $storageName | New-AzRmStorageShare -Name $stoname -QuotaGiB 6
 }
 #connect-azuread
 $subId = (Get-AzureRmContext).Subscription
