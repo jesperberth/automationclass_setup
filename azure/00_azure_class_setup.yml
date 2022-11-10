@@ -113,7 +113,7 @@
       register: job_result
       until: job_result.finished
       retries: 100
-      delay: 5
+      delay: 10
       with_items: "{{ create_vm.results }}"
 
     - name: Add Datadisk to ansible VM
