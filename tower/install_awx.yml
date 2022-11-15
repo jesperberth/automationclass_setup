@@ -1,6 +1,6 @@
 ---
 - name: AWX install on Enterprise Linux
-  hosts: tag_project_ansibleawx1
+  hosts: tag_project_ansibleawx
   become: true
   vars:
     ansible_user: awx
