@@ -1,11 +1,11 @@
 ---
 - name: AWX install on Enterprise Linux
-  hosts: tag_project_ansibleawx
+  hosts: tag_project_ansibleawx1
   become: true
   vars:
     ansible_user: awx
     awx_password: Passw0rd!
-    awxoperater_version: "0.20.1"
+    awxoperater_version: "1.0.0"
 
   roles:
     - role: jesperberth.el_k3s
