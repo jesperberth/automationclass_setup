@@ -11,9 +11,7 @@
     tag_owner: arrow
     tag_project: ansibleawx
     servers:
-      - tower01
-      - tower02
-      - tower03
+      - tower04
 
   tasks:
     - name: Azure Virtual Network
@@ -153,7 +151,7 @@
     - name: Extend var
       azure_rm_virtualmachineextension:
         name: Extend_Var
-        resource_group: "ansible-{{ adminUser }}"
+        resource_group: "{{ rgname }}"
         virtual_machine_name: "{{ item }}"
         publisher: Microsoft.Azure.Extensions
         virtual_machine_extension_type: CustomScript
