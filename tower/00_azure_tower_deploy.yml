@@ -11,7 +11,7 @@
     tag_owner: arrow
     tag_project: ansibleawx
     servers:
-      - tower04
+      - tower01
 
   tasks:
     - name: Azure Virtual Network
