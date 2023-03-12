@@ -20,7 +20,7 @@ if [[ $? -ne 0 ]];then
 fi
 echo Your username is $username and your password is $password
 
-virtualenv ansible
+python3 -m venv ansible
 
 source ansible/bin/activate
 
