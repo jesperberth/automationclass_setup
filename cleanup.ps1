@@ -51,14 +51,14 @@ do {
 
 # Begin App Role Assignment
 
-$appRoleAssignment = Get-AzRoleAssignment | Where-Object {$_.ObjectType -eq $OBJTYPE}
+<# $appRoleAssignment = Get-AzRoleAssignment | Where-Object {$_.ObjectType -eq $OBJTYPE}
 
 write-host -ForegroundColor Yellow "Deleting app Role registrations"
 foreach ($approle in $appRoleAssignment) {
     write-host $approle.ObjectId
     Remove-AzRoleAssignment -ObjectId $approle.ObjectId -RoleDefinitionName $approle.RoleDefinitionName
 }
-
+ #>
 # End App Role Assignment
 
 # Begin RG User
