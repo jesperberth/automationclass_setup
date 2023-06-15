@@ -2,7 +2,7 @@
 
 echo Get Automationclass Container
 
-CONTAINER = az container list --resource-group AutomationclassContainer | jq -r '.[].containers[].name'
+CONTAINER=$(az container list --resource-group AutomationclassContainer | jq -r '.[].containers[].name')
 
 echo - $CONTAINER
 
