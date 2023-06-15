@@ -6,9 +6,9 @@ az container list --resource-group AutomationclassContainer | jq -r '.[].contain
 
 echo "Delete Container y/n"
 
-read deletecontainer
+read DELETECONTAINER
 
-if [ "$deletecontainer" = "y"];
+if [ $DELETECONTAINER = "y"];
 then
     echo Delete Container
 fi
