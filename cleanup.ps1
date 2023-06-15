@@ -126,7 +126,15 @@ do {
 
 # End RG ansible
 
-# Begin RG ansible
+# Begin Container
+
+write-host -ForegroundColor Yellow "Automation Class Container to delete"
+
+
+
+# End Container
+
+# Begin RG Tower
 
 $tower = Get-AzResourceGroup | Where-Object ResourceGroupName -Match "^TowerRG"
 
@@ -144,7 +152,7 @@ do {
     }
 } 	until ($response -eq 'n')
 
-# End RG ansible
+# End RG Tower
 
 write-host "Remaining resource groups"
 Get-AzResourceGroup | Select-Object ResourceGroupName
