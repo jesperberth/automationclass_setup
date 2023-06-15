@@ -8,7 +8,7 @@ echo "Delete Container y/n"
 
 read deletecontainer
 
-if [ $deletecontainer -eq  y]
+if [ $deletecontainer -eq  'y']
 then
     echo Delete Container
 fi
