@@ -2,19 +2,26 @@
 
 ## Download and run deploy_lab.sh
 
+```bash
 curl -o deploy_lab.sh https://raw.githubusercontent.com/jesperberth/automationclass_setup/main/azure/deploy_lab.sh
 
 chmod +x deploy_lab.sh
 
 ./deploy_lab.sh
 
+```
+
 ## Build and push image
+
+```bash
 
 docker build -t jesperberth/automationclass:0.1 -t jesperberth/automationclass:latest .
 
 docker push jesperberth/automationclass:0.1
 
 docker push jesperberth/automationclass:latest
+
+```
 
 ## Create users in azure
 
@@ -31,6 +38,7 @@ number of users to deploy
 Default password for all new users
 
 ```bash
+
 cd clouddrive
 
 git clone https://github.com/jesperberth/automationclass_setup.git
