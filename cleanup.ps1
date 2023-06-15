@@ -23,14 +23,14 @@ do {
             remove-azureaduser -ObjectId $user.UserPrincipalName
         }
     $response = "n"
-     }
+    }
 } 	until ($response -eq 'n')
 
 # End User Cleanup
 
 # Begin app Cleanup
 
-$azureapp = Get-AzureADApplication #| Where-Object DisplayName -Match "^ansible*"
+$azureapp = Get-AzureADApplication | Where-Object DisplayName -Match "^ansible*"
 
 write-host -ForegroundColor Yellow "These are the app registrations to delete"
 foreach ($app in $azureapp) {
@@ -44,7 +44,7 @@ do {
             remove-azureadapplication -ObjectId $app.ObjectId
         }
     $response = "n"
-     }
+    }
 } 	until ($response -eq 'n')
 
 # End App Cleanup
@@ -78,7 +78,7 @@ do {
             Remove-AzResourceGroup $usr.ResourceGroupName -Force -AsJob
         }
     $response = "n"
-     }
+    }
 } 	until ($response -eq 'n')
 
 # End RG User
@@ -99,7 +99,7 @@ do {
             Remove-AzResourceGroup $rg.ResourceGroupName -Force -AsJob
         }
     $response = "n"
-     }
+    }
 } 	until ($response -eq 'n')
 
 # End RG Webserver
@@ -121,7 +121,7 @@ do {
             Remove-AzResourceGroup $rg.ResourceGroupName -Force -AsJob
         }
     $response = "n"
-     }
+    }
 } 	until ($response -eq 'n')
 
 # End RG ansible
@@ -141,7 +141,7 @@ do {
     if ($response -eq 'y') {
             Remove-AzResourceGroup $rg.ResourceGroupName -Force -AsJob
     $response = "n"
-     }
+    }
 } 	until ($response -eq 'n')
 
 # End RG ansible
