@@ -28,7 +28,12 @@
 
 
 create_users () {
-    echo "Creating $1 new users"
+    echo "Creating $1 new users with password $2"
+    for n in {1..$1};
+    do
+        echo $n
+    done
+    #az ad user create --display-name myuser --password password --user-principal-name myuser@contoso.com
 }
 
 create_users 4
