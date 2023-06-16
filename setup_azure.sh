@@ -28,10 +28,10 @@
 
 
 create_users () {
-    echo "Creating $1 new users with password $2"
+    echo -e "Creating $1 new users with password $2\n"
     for (( i=1 ; i<=$1 ; i++ ));
     do
-        echo $i
+        echo "Create - user$1"
     done
     #az ad user create --display-name myuser --password password --user-principal-name myuser@contoso.com
 }
