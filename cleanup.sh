@@ -30,6 +30,8 @@ az group list --query "[?starts_with(name,'ansible-')].name" | jq -r .[]
 
 echo Get user- ResourceGroups
 
+az group list --query "[?starts_with(name,'user')].name" | jq -r .[]
+
 USERRG=$(az group list --query "[?starts_with(name,'user')].name" | jq -r .[])
 eval "USERARR=($USERRG)"
 
@@ -40,10 +42,9 @@ read DELETEUSERRG
 if [ $DELETEUSERRG = "y" ];
 then
     for u in "${USERARR[@]}"; do 
-    echo Delete ResourceGroup TowerRG
+    echo Delete $ Resource Group
     az group delete -n $u --force-deletion-types Microsoft.Compute/virtualMachines --yes --no-wait
     done
-
 fi
 
 ### Remove webserver_* Resource Groups
