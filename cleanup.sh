@@ -20,7 +20,7 @@ echo Get Application Registrations
 
 az ad app list --filter "startswith(displayName,'ansible')" --query '[].displayName' | jq -r .[]
 
-az ad app delete --id
+#az ad app delete --id
 
 echo -e "###########################"
 echo -e "Get ansible- ResourceGroups"
