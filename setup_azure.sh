@@ -8,6 +8,7 @@
 #
 # Author: Jesper Berth, jesper.berth@arrow.com - june 2023
 
+LOCATION=northeurope
 DOMAIN=arrowadfs.onmicrosoft.com
 SUBID=$(az account list --query "[].{id:id}" -o tsv)
 
@@ -16,6 +17,17 @@ read NUMBERUSERS
 
 echo -e "Enter default password for new users\n"
 read PASSWORD
+
+create_storage () {
+    USER=user$1
+    echo -e "Creating Resource Group and storage for $USER\n"
+    RANSTRING=$(echo $RANDOM | md5sum | head -c 5)
+    az group create -l $LOCATION -n $USER-ansible
+    STONAME="$USER"ansible
+    STORAGENAME="$STONAME""$RANSTRING"
+    az storage account create -n $STORAGENAME -g $USER-ansible -l $LOCATION --sku Standard_LRS
+    az storage share create --account-name $STORAGENAME --name $STONAME --quota 6
+}
 
 create_users () {
     echo -e "Creating $1 new users with password $2\n"
@@ -28,6 +40,7 @@ create_users () {
         echo $USERID
         az rest -m post --headers "Content-Type=application/json" -u "https://graph.microsoft.com/beta/roleManagement/directory/roleAssignments" -b '{"principalId":"'$USERID'","roleDefinitionId":"9b895d92-2cd3-44c7-9d02-a6ac2d5ea5c3","directoryScopeId":"/"}'
     done
+    create_storage $1
 }
 
 create_users $NUMBERUSERS $PASSWORD
