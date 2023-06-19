@@ -28,7 +28,9 @@ az group list --query "[?starts_with(name,'ansible-')].name" | jq -r .[]
 
 ### Remove user-* Resource Groups
 
-echo Get user- ResourceGroups
+echo -e "########################\n"
+echo -e "Get user- ResourceGroups\n"
+echo -e "########################\n"
 
 az group list --query "[?starts_with(name,'user')].name" | jq -r .[]
 
@@ -41,9 +43,9 @@ read DELETEUSERRG
 
 if [ $DELETEUSERRG = "y" ];
 then
-    for u in "${USERARR[@]}"; do 
-    echo Delete $ Resource Group
-    az group delete -n $u --force-deletion-types Microsoft.Compute/virtualMachines --yes --no-wait
+    for U in "${USERARR[@]}"; do 
+    echo Delete $U Resource Group
+    az group delete -n $U --force-deletion-types Microsoft.Compute/virtualMachines --yes --no-wait
     done
 fi
 
