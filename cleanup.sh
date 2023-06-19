@@ -22,7 +22,9 @@ az ad app list --filter "startswith(displayName,'ansible')" --query '[].displayN
 
 az ad app delete --id
 
-echo Get ansible- ResourceGroups
+echo -e "###########################"
+echo -e "Get ansible- ResourceGroups"
+echo -e "###########################\n"
 
 az group list --query "[?starts_with(name,'ansible-')].name" | jq -r .[]
 
@@ -43,7 +45,7 @@ read DELETEUSERRG
 
 if [ $DELETEUSERRG = "y" ];
 then
-    for U in "${USERARR[@]}"; do 
+    for U in "${USERARR[@]}"; do
     echo Delete $U Resource Group
     az group delete -n $U --force-deletion-types Microsoft.Compute/virtualMachines --yes --no-wait
     done
@@ -51,11 +53,11 @@ fi
 
 ### Remove webserver_* Resource Groups
 
-echo Get webserver- ResourceGroups
+echo -e "Get webserver- ResourceGroups\n"
 
 az group list --query "[?starts_with(name,'webserver')].name" | jq -r .[]
 
-echo Get TowerRG ResourceGroup\n
+echo -e "Get TowerRG ResourceGroup\n"
 
 az group list --query "[?starts_with(name,'TowerRG')].name" | jq -r .[]
 
@@ -69,13 +71,13 @@ then
     az group delete -n TowerRG --force-deletion-types Microsoft.Compute/virtualMachines --yes --no-wait
 fi
 
-echo -e Get users\n
+echo -e "Get users\n"
 
 USERS=$(az ad user list --query "[?starts_with(displayName,'user')].userPrincipalName" | jq -r .[])
 
 echo $USERS
 
-echo -e "Delete Users y/n"\n
+echo -e "Delete Users y/n\n"
 
 read DELETEUSERS
 
