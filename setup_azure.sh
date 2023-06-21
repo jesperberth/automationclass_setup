@@ -9,7 +9,7 @@
 # Author: Jesper Berth, jesper.berth@arrow.com - june 2023
 
 LOCATION=northeurope
-DOMAIN=arrowadfs.onmicrosoft.com
+DOMAIN=RedhatbyArrow.onmicrosoft.com
 SUBID=$(az account list --query "[].{id:id}" -o tsv)
 
 echo -e "How many users?\n"
