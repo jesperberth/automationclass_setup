@@ -30,9 +30,9 @@ az group list --query "[?starts_with(name,'ansible-')].name" | jq -r .[]
 
 ### Remove user-* Resource Groups
 
-echo -e "########################"
-echo -e "Get user- ResourceGroups"
-echo -e "########################\n"
+echo -e "##############################"
+echo -e "#  Get user- ResourceGroups  #"
+echo -e "##############################\n"
 
 az group list --query "[?starts_with(name,'user')].name" | jq -r .[]
 
@@ -53,11 +53,33 @@ fi
 
 ### Remove webserver_* Resource Groups
 
-echo -e "Get webserver- ResourceGroups\n"
+echo -e "###################################"
+echo -e "#  Get webserver- ResourceGroups  #"
+echo -e "###################################\n"
 
 az group list --query "[?starts_with(name,'webserver')].name" | jq -r .[]
 
-echo -e "Get TowerRG ResourceGroup\n"
+WEBRG=$(az group list --query "[?starts_with(name,'webserver')].name" | jq -r .[])
+
+eval "WEBARR=($WEBRG)"
+
+echo -e "Delete user-** Resource Groups y/n"
+
+read DELETEWEBRG
+
+if [ $DELETEWEBRG = "y" ];
+then
+    for W in "${WEBARR[@]}"; do
+    echo Delete $W Resource Group
+    az group delete -n $W --force-deletion-types Microsoft.Compute/virtualMachines --yes --no-wait
+    done
+fi
+
+## Remove TowerRG Resource Group
+
+echo -e "###############################"
+echo -e "#  Get TowerRG ResourceGroup  #"
+echo -e "###############################\n"
 
 az group list --query "[?starts_with(name,'TowerRG')].name" | jq -r .[]
 
@@ -71,7 +93,11 @@ then
     az group delete -n TowerRG --force-deletion-types Microsoft.Compute/virtualMachines --yes --no-wait
 fi
 
-echo -e "Get users\n"
+### Remove users
+
+echo -e "########################"
+echo -e "#      Get users       #"
+echo -e "########################\n"
 
 USERS=$(az ad user list --query "[?starts_with(displayName,'user')].userPrincipalName" | jq -r .[])
 
