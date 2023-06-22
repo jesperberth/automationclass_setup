@@ -29,7 +29,21 @@ echo -e "####################################\n"
 
 az ad app list --filter "startswith(displayName,'ansible')" --query '[].displayName' | jq -r .[]
 
-#az ad app delete --id
+APPREG=$(az ad app list --filter "startswith(displayName,'ansible')" --query '[].displayName' | jq -r .[])
+
+eval "APPARR=($APPREG)"
+
+echo -e "\n${YELLOW}Delete ansible-* App Registrations y/n${NC}"
+
+read DELETEAPPREG
+
+if [ $DELETEAPPREG = "y" ];
+then
+    for A in "${APPARR[@]}"; do
+    echo Delete $A Resource Group
+    az ad app delete --id $A
+    done
+fi
 
 echo -e "##################################"
 echo -e "#  ${YELLOW}Get ansible- Resource Groups${NC}  #"
