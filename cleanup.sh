@@ -63,7 +63,7 @@ WEBRG=$(az group list --query "[?starts_with(name,'webserver')].name" | jq -r .[
 
 eval "WEBARR=($WEBRG)"
 
-echo -e "Delete user-** Resource Groups y/n"
+echo -e "Delete webserver-** Resource Groups y/n\n"
 
 read DELETEWEBRG
 

@@ -26,7 +26,7 @@ create_storage () {
         STONAME="$USER"ansible
         STORAGENAME="$STONAME""$RANSTRING"
         az storage account create -n $STORAGENAME -g $USER-ansible -l $LOCATION --sku Standard_LRS
-        az storage share create --account-name $STORAGENAME --name $STONAME --quota
+        az storage share create --account-name $STORAGENAME --name $STONAME --quota 6
 }
 
 create_users () {
