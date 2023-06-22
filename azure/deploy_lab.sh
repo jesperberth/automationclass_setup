@@ -1,7 +1,10 @@
 #!/bin/bash
-echo "##################"
-echo "# Deploy Lab kit #"
-echo "##################"
+YELLOW='\033[0;33m'
+NC='\033[0;0m'
+
+echo -e "####################"
+echo -e "#  ${YELLOW}Deploy Lab kit${NC}  #"
+echo -e "####################"
 
 echo "Enter your username for the lab:"
 read username

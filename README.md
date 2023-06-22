@@ -27,11 +27,9 @@ docker push jesperberth/automationclass:latest
 
 Open a azure cloud shell
 
-Run in Powershell
+Run in Bash
 
-Setup_users.ps1
-
-Select a region
+./setup_azure.sh
 
 number of users to deploy
 
@@ -45,9 +43,7 @@ git clone https://github.com/jesperberth/automationclass_setup.git
 
 cd automationclass_setup
 
-connect-azuread
-
-setup_users.ps1
+./setup_azure.sh
 
 ```
 
@@ -83,8 +79,6 @@ cd clouddrive
 
 cd automationclass_setup
 
-connect-azuread
-
-cleanup.ps1
+./cleanup.sh
 
 ```

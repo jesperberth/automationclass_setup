@@ -7,10 +7,16 @@
 # using azure cli
 #
 # Author: Jesper Berth, jesper.berth@arrow.com - june 2023
+YELLOW='\033[0;33m'
+NC='\033[0;0m'
 
 LOCATION=northeurope
 DOMAIN=$(az rest --method get --url 'https://graph.microsoft.com/v1.0/domains?$select=id' | jq -r .value[].id)
 SUBID=$(az account list --query "[].{id:id}" -o tsv)
+
+echo -e "###################################"
+echo -e "#  ${YELLOW}Create Users for lab${NC}           #"
+echo -e "###################################\n"
 
 echo -e "How many users?\n"
 read NUMBERUSERS

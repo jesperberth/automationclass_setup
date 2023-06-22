@@ -134,15 +134,6 @@ echo -e "\n${YELLOW}Delete Users y/n${NC}"
 
 read DELETEUSERS
 
-# if [ $DELETEUSERS = "y" ];
-# then
-#     echo Delete Users
-#     for USER in $USERS
-#     do
-#         az ad user delete --id $USER
-#     done
-# fi
-
 if [ $DELETEUSERS = "y" ];
 then
     for U in "${USERARR[@]}"; do
