@@ -31,12 +31,9 @@ VAR=$(printf $LIST)
 SERVERS=$(jq -n -c -M --arg var "$VAR" '{"servers": ($var|split("\n"))}')
 TOWER=\'$SERVERS\'
 
-#ansible-playbook -e $TOWER 00_azure_tower_deploy.yml
+ansible-playbook -e $TOWER 00_azure_tower_deploy.yml
 
-# ansible-galaxy install jesperberth.el_k3s -f
-# ansible-galaxy install jesperberth.awx_k8s_install -f
+ansible-galaxy install jesperberth.el_k3s -f
+ansible-galaxy install jesperberth.awx_k8s_install -f
 
-# ansible-playbook -i inventory.azure_rm.yml install_awx.yml
-
-
-
+ansible-playbook -i inventory.azure_rm.yml install_awx.yml
