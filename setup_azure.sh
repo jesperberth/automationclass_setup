@@ -33,7 +33,7 @@ create_users () {
     echo -e "Creating $1 new users with password $2\n"
     for (( i=1 ; i<=$1 ; i++ ));
     do
-        USER=user$1
+        USER=user$i
         echo "Create - $USER"
         az ad user create --display-name $USER --password $2 --user-principal-name $USER@$DOMAIN
         USERID=$(az ad user show --id $USER@$DOMAIN | jq -r .id)
