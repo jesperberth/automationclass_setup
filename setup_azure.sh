@@ -4,7 +4,7 @@
 #
 # Create users for Ansible training
 #
-# using native azure ad users
+# using azure cli
 #
 # Author: Jesper Berth, jesper.berth@arrow.com - june 2023
 

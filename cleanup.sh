@@ -1,9 +1,10 @@
 #/bin/sh
-Yellow='\033[0;33m'
+YELLOW='\033[0;33m'
+NC='\033[0;0m'
 ### Remove Automationclass Container
 
-echo -e "${Yellow}###################################"
-echo -e "#  Get Automationclass Container  #"
+echo -e "###################################"
+echo -e "#  ${YELLOW}Get Automationclass Container${NC}  #"
 echo -e "###################################\n"
 
 CONTAINER=$(az container list --resource-group AutomationclassContainer | jq -r '.[].containers[].name')
@@ -31,10 +32,26 @@ az ad app list --filter "startswith(displayName,'ansible')" --query '[].displayN
 #az ad app delete --id
 
 echo -e "##################################"
-echo -e "#  Get ansible- Resource Groups  #"
+echo -e "#  ${YELLOW}Get ansible- Resource Groups${NC}  #"
 echo -e "##################################\n"
 
 az group list --query "[?starts_with(name,'ansible-')].name" | jq -r .[]
+
+ANSIBLERG=$(az group list --query "[?starts_with(name,'ansible-')].name" | jq -r .[])
+
+eval "ANSIRGARR=($ANSIBLERG)"
+
+echo -e "Delete user-** Resource Groups y/n"
+
+read DELETEANSIBLERG
+
+if [ $DELETEANSIBLERG = "y" ];
+then
+    for A in "${ANSIRGARR[@]}"; do
+    echo Delete $A Resource Group
+    az group delete -n $A --force-deletion-types Microsoft.Compute/virtualMachines --yes --no-wait
+    done
+fi
 
 ### Remove user-* Resource Groups
 
