@@ -1,6 +1,10 @@
 #/bin/sh
+Yellow='\033[0;33m'
+### Remove Automationclass Container
 
-echo Get Automationclass Container
+echo -e "${Yellow}###################################"
+echo -e "#  Get Automationclass Container  #"
+echo -e "###################################\n"
 
 CONTAINER=$(az container list --resource-group AutomationclassContainer | jq -r '.[].containers[].name')
 
@@ -16,15 +20,19 @@ then
     az container delete --name $CONTAINER --resource-group AutomationclassContainer --yes
 fi
 
-echo Get Application Registrations
+### Remove Application Registrations
+
+echo -e "####################################"
+echo -e "#  Get ansible- app registrations  #"
+echo -e "####################################\n"
 
 az ad app list --filter "startswith(displayName,'ansible')" --query '[].displayName' | jq -r .[]
 
 #az ad app delete --id
 
-echo -e "###########################"
-echo -e "Get ansible- ResourceGroups"
-echo -e "###########################\n"
+echo -e "##################################"
+echo -e "#  Get ansible- Resource Groups  #"
+echo -e "##################################\n"
 
 az group list --query "[?starts_with(name,'ansible-')].name" | jq -r .[]
 
