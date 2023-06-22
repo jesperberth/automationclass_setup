@@ -34,9 +34,9 @@ echo -e "##############################"
 echo -e "#  Get user- ResourceGroups  #"
 echo -e "##############################\n"
 
-az group list --query "[?starts_with(name,'user')].name" | jq -r .[]
+az group list --query "[?starts_with(name,'user*-ansible')].name" | jq -r .[]
 
-USERRG=$(az group list --query "[?starts_with(name,'user')].name" | jq -r .[])
+USERRG=$(az group list --query "[?starts_with(name,'user*-ansible')].name" | jq -r .[])
 eval "USERARR=($USERRG)"
 
 echo -e "Delete user-** Resource Groups y/n"
@@ -99,19 +99,29 @@ echo -e "########################"
 echo -e "#      Get users       #"
 echo -e "########################\n"
 
+az ad user list --query "[?starts_with(displayName,'user')].userPrincipalName" | jq -r .[]
+
 USERS=$(az ad user list --query "[?starts_with(displayName,'user')].userPrincipalName" | jq -r .[])
 
-echo $USERS
+eval "USERARR=($USERS)"
 
 echo -e "Delete Users y/n\n"
 
 read DELETEUSERS
 
+# if [ $DELETEUSERS = "y" ];
+# then
+#     echo Delete Users
+#     for USER in $USERS
+#     do
+#         az ad user delete --id $USER
+#     done
+# fi
+
 if [ $DELETEUSERS = "y" ];
 then
-    echo Delete Users
-    for USER in $USERS
-    do
-        az ad user delete --id $USER
+    for U in "${USERARR[@]}"; do
+    echo Delete $U Resource Group
+    az ad user delete --id $USER
     done
 fi
