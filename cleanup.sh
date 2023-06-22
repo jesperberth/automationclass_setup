@@ -24,7 +24,7 @@ fi
 ### Remove Application Registrations
 
 echo -e "####################################"
-echo -e "#  Get ansible- app registrations  #"
+echo -e "#  ${YELLOW}Get ansible- app registrations${NC}  #"
 echo -e "####################################\n"
 
 az ad app list --filter "startswith(displayName,'ansible')" --query '[].displayName' | jq -r .[]
@@ -56,7 +56,7 @@ fi
 ### Remove user-* Resource Groups
 
 echo -e "##############################"
-echo -e "#  Get user- ResourceGroups  #"
+echo -e "#  ${YELLOW}Get user- ResourceGroups${NC}  #"
 echo -e "##############################\n"
 
 az group list --query "[?starts_with(name,'user*-ansible')].name" | jq -r .[]
@@ -79,7 +79,7 @@ fi
 ### Remove webserver_* Resource Groups
 
 echo -e "###################################"
-echo -e "#  Get webserver- ResourceGroups  #"
+echo -e "#  ${YELLOW}Get webserver- ResourceGroups${NC}  #"
 echo -e "###################################\n"
 
 az group list --query "[?starts_with(name,'webserver')].name" | jq -r .[]
@@ -103,7 +103,7 @@ fi
 ## Remove TowerRG Resource Group
 
 echo -e "###############################"
-echo -e "#  Get TowerRG ResourceGroup  #"
+echo -e "#  ${YELLOW}Get TowerRG ResourceGroup${NC}  #"
 echo -e "###############################\n"
 
 az group list --query "[?starts_with(name,'TowerRG')].name" | jq -r .[]
@@ -121,7 +121,7 @@ fi
 ### Remove users
 
 echo -e "########################"
-echo -e "#      Get users       #"
+echo -e "#      ${YELLOW}Get users${NC}       #"
 echo -e "########################\n"
 
 az ad user list --query "[?starts_with(displayName,'user')].userPrincipalName" | jq -r .[]
