@@ -30,7 +30,6 @@ for (( i=1 ; i<=$INSTANCES ; i++ ));
 VAR=$(printf $LIST)
 SERVERS=$(jq -n -c -M --arg var "$VAR" '{"servers": ($var|split("\n"))}')
 TOWER=\'$SERVERS\'
-echo $TOWER
 
 #ansible-playbook -e $TOWER 00_azure_tower_deploy.yml
 
@@ -38,13 +37,6 @@ echo $TOWER
 # ansible-galaxy install jesperberth.awx_k8s_install -f
 
 # ansible-playbook -i inventory.azure_rm.yml install_awx.yml
-
-# LIST="tower1\ntower2\ntower3\n"
-
-
-# VAR=$(printf $LIST)
-# SERVERS=$(jq -n -c -M --arg var "$VAR" '{"servers": ($var|split("\n"))}')
-# echo \'$SERVERS\'
 
 
 
