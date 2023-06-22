@@ -11,7 +11,7 @@ CONTAINER=$(az container list --resource-group AutomationclassContainer | jq -r 
 
 echo - $CONTAINER
 
-echo "Delete Container y/n"
+echo -e "\n${YELLOW}Delete Container y/n${NC}"
 
 read DELETECONTAINER
 
@@ -41,7 +41,7 @@ ANSIBLERG=$(az group list --query "[?starts_with(name,'ansible-')].name" | jq -r
 
 eval "ANSIRGARR=($ANSIBLERG)"
 
-echo -e "Delete user-** Resource Groups y/n"
+echo -e "\n${YELLOW}Delete ansible-* Resource Groups y/n${NC}"
 
 read DELETEANSIBLERG
 
@@ -64,7 +64,7 @@ az group list --query "[?starts_with(name,'user')].name" | jq -r .[]
 USERRG=$(az group list --query "[?starts_with(name,'user')].name" | jq -r .[])
 eval "USERARR=($USERRG)"
 
-echo -e "Delete user-** Resource Groups y/n"
+echo -e "\n${YELLOW}Delete user-** Resource Groups y/n${NC}"
 
 read DELETEUSERRG
 
@@ -88,7 +88,7 @@ WEBRG=$(az group list --query "[?starts_with(name,'webserver')].name" | jq -r .[
 
 eval "WEBARR=($WEBRG)"
 
-echo -e "Delete webserver-** Resource Groups y/n\n"
+echo -e "\n${YELLOW}Delete webserver-** Resource Groups y/n${NC}"
 
 read DELETEWEBRG
 
@@ -108,7 +108,7 @@ echo -e "###############################\n"
 
 az group list --query "[?starts_with(name,'TowerRG')].name" | jq -r .[]
 
-echo -e "Delete TowerRG y/n"
+echo -e "\n${YELLOW}Delete TowerRG y/n${NC}"
 
 read DELETETOWER
 
@@ -130,7 +130,7 @@ USERS=$(az ad user list --query "[?starts_with(displayName,'user')].userPrincipa
 
 eval "USERARR=($USERS)"
 
-echo -e "Delete Users y/n\n"
+echo -e "\n${YELLOW}Delete Users y/n${NC}"
 
 read DELETEUSERS
 
