@@ -29,7 +29,7 @@ echo -e "####################################\n"
 
 az ad app list --filter "startswith(displayName,'ansible')" --query '[].displayName' | jq -r .[]
 
-APPREG=$(az ad app list --filter "startswith(displayName,'ansible')" --query '[].displayName' | jq -r .[])
+APPREG=$(az ad app list --filter "startswith(displayName,'ansible')" --query '[].id' | jq -r .[])
 
 eval "APPARR=($APPREG)"
 
