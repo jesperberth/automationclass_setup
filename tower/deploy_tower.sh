@@ -33,7 +33,7 @@ TOWER=\'$SERVERS\'
 
 echo $TOWER
 
-ansible-playbook -e $TOWER 00_azure_tower_deploy.yml
+ansible-playbook -e "$TOWER" 00_azure_tower_deploy.yml
 
 ansible-galaxy install jesperberth.el_k3s -f
 ansible-galaxy install jesperberth.awx_k8s_install -f
