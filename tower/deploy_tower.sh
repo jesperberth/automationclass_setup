@@ -28,12 +28,13 @@ for (( i=1 ; i<=$INSTANCES ; i++ ));
     done
 
 VAR=$(printf $LIST)
-SERVERS=$(jq -n -c -M --arg var "$VAR" '{"servers": ($var|split("\n"))}')
+SERVERS=$(jq -n -c -M --arg var "$VAR" '{($var|split("\n"))}')
+#SERVERS=$(jq -n -c -M --arg var "$VAR" '{"servers": ($var|split("\n"))}')
 TOWER=\'$SERVERS\'
 
 echo $TOWER
 
-ansible-playbook -e "$TOWER" 00_azure_tower_deploy.yml
+ansible-playbook -e "servers=$TOWER" 00_azure_tower_deploy.yml
 
 ansible-galaxy install jesperberth.el_k3s -f
 ansible-galaxy install jesperberth.awx_k8s_install -f
