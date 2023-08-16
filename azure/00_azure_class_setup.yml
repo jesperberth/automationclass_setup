@@ -84,7 +84,7 @@
         os_type: "{{ item.os }}"
         admin_username: "{{ adminUser }}"
         admin_password: "{{ adminPassword }}"
-        managed_disk_type: Standard_LRS
+        managed_disk_type: Premium_LRS
         state: present
         image:
           offer: "{{ item.offer }}"
