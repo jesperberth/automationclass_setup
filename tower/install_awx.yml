@@ -5,7 +5,7 @@
   vars:
     ansible_user: awx
     awx_password: Passw0rd!
-    awxoperater_version: "2.5.0"
+    awxoperater_version: "2.4.0"
 
   roles:
     - role: jesperberth.el_k3s
