@@ -133,6 +133,6 @@
         publisher: Microsoft.Azure.Extensions
         virtual_machine_extension_type: CustomScript
         type_handler_version: "2.1"
-        settings: '{"commandToExecute": " lvm lvextend --size 20G /dev/rootvg/varlv && xfs_growfs /dev/mapper/rootvg-varlv", "skipDos2Unix": true}'
+        settings: '{"commandToExecute": " lvm lvextend --size 20G /dev/rootvg/homelv && xfs_growfs /dev/mapper/rootvg-homelv", "skipDos2Unix": true}'
         #settings: '{"commandToExecute": "pvcreate /dev/sdc && vgextend rootvg /dev/sdc && lvm lvextend -l +100%FREE /dev/rootvg/homelv && xfs_growfs /dev/mapper/rootvg-homelv", "skipDos2Unix": true}'
         auto_upgrade_minor_version: true
