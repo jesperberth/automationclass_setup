@@ -34,6 +34,8 @@ TOWER=\'$SERVERS\'
 
 PLAY="ansible-playbook -e $TOWER 00_azure_tower_deploy.yml"
 
+source ~/ansible/bin/activate
+
 eval $PLAY
 
 ansible-galaxy install jesperberth.el_k3s -f
