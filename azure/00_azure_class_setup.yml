@@ -84,7 +84,7 @@
         os_type: "{{ item.os }}"
         admin_username: "{{ adminUser }}"
         admin_password: "{{ adminPassword }}"
-        managed_disk_type: Standard_LRS
+        managed_disk_type: Premium_LRS
         state: present
         image:
           offer: "{{ item.offer }}"
@@ -98,10 +98,10 @@
           delete: ansibletraining
       loop:
         - {name: 'ansible', size: 'Standard_B2ms', os: 'Linux', offer: 'RHEL', pub: 'RedHat', sku: '9_1'}
-        - {name: 'server1', size: 'Standard_A2_v2', os: 'Linux', offer: 'RHEL', pub: 'RedHat', sku: '9_1'}
-        - {name: 'server2', size: 'Standard_A2_v2', os: 'Linux', offer: 'RHEL', pub: 'RedHat', sku: '9_1'}
-        - {name: 'server3', size: 'Standard_D2_v2', os: 'Windows', offer: 'WindowsServer', pub: 'MicrosoftWindowsServer', sku: '2022-Datacenter'}
-        - {name: 'server4', size: 'Standard_D2_v2', os: 'Windows', offer: 'WindowsServer', pub: 'MicrosoftWindowsServer', sku: '2022-Datacenter'}
+        - {name: 'server1', size: 'Standard_B2s', os: 'Linux', offer: 'RHEL', pub: 'RedHat', sku: '9_1'}
+        - {name: 'server2', size: 'Standard_B2s', os: 'Linux', offer: 'RHEL', pub: 'RedHat', sku: '9_1'}
+        - {name: 'server3', size: 'Standard_B2ms', os: 'Windows', offer: 'WindowsServer', pub: 'MicrosoftWindowsServer', sku: '2022-Datacenter'}
+        - {name: 'server4', size: 'Standard_B2ms', os: 'Windows', offer: 'WindowsServer', pub: 'MicrosoftWindowsServer', sku: '2022-Datacenter'}
         - {name: 'student', size: 'Standard_D4s_v3', os: 'Windows', offer: 'windows-11', pub: 'microsoftwindowsdesktop', sku: 'win11-21h2-pro'}
       async: 1000
       poll: 0
