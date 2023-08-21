@@ -31,7 +31,8 @@ pip install ansible
 
 ansible-galaxy collection install azure.azcollection
 
-pip install -r ~/.ansible/collections/ansible_collections/azure/azcollection/requirements-azure.txt
+pip install -r ~/ansible/lib/python3.9/site-packages/ansible_collections/azure/azcollection/requirements-azure.txt
+
 
 curl -o requirements.yml https://raw.githubusercontent.com/jesperberth/automationclass_setup/main/azure/requirements.yml
 
