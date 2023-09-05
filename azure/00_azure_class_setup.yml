@@ -135,5 +135,5 @@
         publisher: Microsoft.Azure.Extensions
         virtual_machine_extension_type: CustomScript
         type_handler_version: "2.1"
-        settings: '{"fileUris": [ "change_reg.ps1" ],"commandToExecute": " powershell -ExecutionPolicy Unrestricted -File change_reg.ps1 "}'
+        settings: '{"fileUris": [ "https://raw.githubusercontent.com/jesperberth/automationclass_setup/main/azure/change_reg.ps1" ],"commandToExecute": " powershell -ExecutionPolicy Unrestricted -File change_reg.ps1 "}'
         auto_upgrade_minor_version: true
