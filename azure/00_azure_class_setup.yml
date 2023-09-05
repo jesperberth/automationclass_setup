@@ -132,8 +132,8 @@
         name: student-regkey
         resource_group: "ansible-{{ adminUser }}"
         virtual_machine_name: student
-        publisher: Microsoft.Azure.Extensions
-        virtual_machine_extension_type: CustomScript
+        publisher: Microsoft.Compute
+        virtual_machine_extension_type: CustomScriptExtension
         type_handler_version: "2.1"
         settings: '{"fileUris": [ "https://raw.githubusercontent.com/jesperberth/automationclass_setup/main/azure/change_reg.ps1" ],"commandToExecute": " powershell -ExecutionPolicy Unrestricted -File change_reg.ps1 "}'
         auto_upgrade_minor_version: true
