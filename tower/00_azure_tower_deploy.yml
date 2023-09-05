@@ -2,7 +2,7 @@
 - hosts: localhost
   connection: local
   vars:
-    location: northeurope
+    location: westeurope
     virtualnetwork: TowerNetwork
     subnet: Servers
     rgname: TowerRG
