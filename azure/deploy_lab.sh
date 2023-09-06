@@ -21,15 +21,25 @@ if [[ $count -lt 12 ]];then
     echo "Password length should be minimum 12 characters"
     exit 1;
 fi
-    echo $password | grep "[A-Z]" | grep "[a-z]" | grep "[0-9]" | grep "[,.-_!@#$%^&*]"
-if [[ $? -ne 0 ]];then
-    echo "Password must contain atleast 1 uppercase, lowercase, digits and special characters"
-    exit 2;
+
+if [ "$password" != "$password2" ]; then
+  echo "Passwords dosn't match"
+  exit 1
+else
+  echo "Passwords Match"
 fi
-if [[ $password -ne $password2 ]];then
-    echo "Passwords dosn't match"
-    exit 3;
+
+result="$(cracklib-check <<<"$password")"
+
+okay="$(awk -F': ' '{ print $2}' <<<"$result")"
+if [[ "$okay" == "OK" ]]
+then
+        echo "Password OK"
+else
+        echo "Your password was rejected - $result"
+        exit 1
 fi
+
 echo Your username is $username and your password is $password
 
 python3 -m venv ansible
