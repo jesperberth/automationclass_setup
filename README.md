@@ -11,18 +11,6 @@ chmod +x deploy_lab.sh
 
 ```
 
-## Build and push image
-
-```bash
-
-docker build -t jesperberth/automationclass:0.1 -t jesperberth/automationclass:latest .
-
-docker push jesperberth/automationclass:0.1
-
-docker push jesperberth/automationclass:latest
-
-```
-
 ## Create users in azure
 
 Open a azure cloud shell
@@ -52,23 +40,7 @@ cd automationclass_setup
 vi ~/.ansible.cfg
 
 ```bash
-[defaults]
-host_key_checking = False
-[sudo_become_plugin]
-flags = -H -S
-```
-
-```bash
-ssh-keygen
-
-change playbook to install more than 2 environments
-
-ansible-playbook 00_azure_tower_deploy.yml
-
-ansible-galaxy install jesperberth.el_k3s -f
-ansible-galaxy install jesperberth.awx_k8s_install -f
-
-ansible-playbook -i inventory.azure_rm.yml install_awx.yml
+./deploy_tower.sh
 
 ```
 
