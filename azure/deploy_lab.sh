@@ -9,8 +9,13 @@ echo -e "####################"
 echo "Enter your username for the lab:"
 read username
 
-echo "Please enter password:"
+echo "Please type password:"
 read password
+
+echo "Please re-type password:"
+read password2
+
+
 count=`echo ${#password}`
 if [[ $count -lt 12 ]];then
     echo "Password length should be minimum 12 characters"
@@ -21,6 +26,10 @@ if [[ $? -ne 0 ]];then
     echo "Password must contain atleast 1 uppercase, lowercase, digits and special characters"
     exit 2;
 fi
+if [[ $password -ne $password2 ]];then
+    echo "Passwords dosn't match"
+    exit 3;
+fi
 echo Your username is $username and your password is $password
 
 python3 -m venv ansible
@@ -30,8 +39,6 @@ source ansible/bin/activate
 pip install ansible
 
 ansible-galaxy collection install azure.azcollection --force
-
-#pip install -r ~/ansible/lib/python3.9/site-packages/ansible_collections/azure/azcollection/requirements-azure.txt
 
 pip install -r ~/.ansible/collections/ansible_collections/azure/azcollection/requirements-azure.txt
 
