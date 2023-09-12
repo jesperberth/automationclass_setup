@@ -96,8 +96,8 @@
       amazon.aws.ec2_instance:
         key_name: tower_keypair
         region: "{{ region }}"
-        instance_type: t2.micro
-        image_id: ami-0ca7795427fb03aa0
+        instance_type: t3.xlarge
+        image_id: ami-0f0e333655f014f4f
         wait: yes
         security_group: default
         vpc_subnet_id: "{{ subnetpublica.subnet.id }}"
