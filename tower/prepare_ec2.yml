@@ -30,3 +30,7 @@
         fstype: xfs
         opts: noatime
         state: mounted
+
+  roles:
+    - role: jesperberth.el_k3s
+    - role: jesperberth.awx_k8s_install
