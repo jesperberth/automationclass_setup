@@ -3,7 +3,7 @@
   connection: local
   vars:
     vpc_name: "Tower-vpc"
-    project_name: "ansible"
+    project_name: "ansibleawx"
     region: "eu-west-1"
     cidr: "10.1.0.0/16"
     cidr_public_a: "10.1.0.0/24"
@@ -23,7 +23,7 @@
         region: "{{ region }}"
         state: present
         tags:
-          project: "{{ ansibleawx }}"
+          project: "{{ project_name }}"
       register: network
 
     - name: create subnet Servers
