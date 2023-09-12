@@ -104,6 +104,11 @@
         network:
           assign_public_ip: true
         state: running
+        volumes:
+          - device_name: /dev/sda1
+            ebs:
+              volume_size: 32
+              delete_on_termination: true
         tags:
           Name: tower1
 
