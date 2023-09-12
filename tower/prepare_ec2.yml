@@ -7,12 +7,30 @@
     awxoperater_version: "2.4.0"
 
   tasks:
-    - name: Create filesystem on /dev/nvme1n1
+    - name: Create xfs filesystem on /dev/nvme1n1
       community.general.filesystem:
         fstype: xfs
         dev: /dev/nvme1n1
-      register: disk
+
+    - name: Create /var/lib/rancher
+      ansible.builtin.file:
+        path: /var/lib/rancher
+        state: directory
+        mode: "0755"
+
+    - name: Get UUID of App disks
+      ansible.builtin.shell: |
+        blkid /dev/nvme1n1 -s UUID -o value
+      register: uuid
+
+    - name: Mount device /dev/nvme1n1
+      ansible.posix.mount:
+        path: /home
+        src: UUID="{{ uuid }}"
+        fstype: xfs
+        opts: noatime
+        state: present
 
     - name: Debug
       ansible.builtin.debug:
-        msg: "{{ disk }}"
+        msg: "{{ uuid }}"
