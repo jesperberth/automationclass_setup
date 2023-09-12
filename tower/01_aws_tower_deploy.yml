@@ -65,7 +65,6 @@
         route_table_id: "{{ routea.route_tables[0].id }}"
         subnets:
           - "{{ subnetpublica.subnet.id }}"
-          - "{{ subnetpublicb.subnet.id }}"
         routes:
           - dest: 0.0.0.0/0
             gateway_id: "{{ igw.gateway_id }}"
