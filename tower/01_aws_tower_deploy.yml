@@ -1,0 +1,112 @@
+---
+- hosts: localhost
+  connection: local
+  vars:
+    vpc_name: "Tower-vpc"
+    project_name: "ansible"
+    region: "eu-west-1"
+    cidr: "10.1.0.0/16"
+    cidr_public_a: "10.1.0.0/24"
+    zone1: "a"
+
+  tasks:
+    - name: create key pair using key_material obtained using 'file' lookup plugin
+      amazon.aws.ec2_key:
+        name: tower_keypair
+        key_material: "{{ lookup('file', '~/.ssh/id_rsa.pub') }}"
+
+    - name: create VPC
+      amazon.aws.ec2_vpc_net:
+        name: "{{ vpc_name }}"
+        cidr_block: "{{ cidr }}"
+        region: "{{ region }}"
+        state: present
+        tags:
+          project: "{{ ansibleawx }}"
+      register: network
+
+    - name: create subnet Servers
+      amazon.aws.ec2_vpc_subnet:
+        region: "{{ region }}"
+        state: present
+        cidr: "{{ cidr_public_a }}"
+        az: "{{ region }}{{ zone1 }}"
+        vpc_id: "{{ network.vpc.id }}"
+        resource_tags:
+          project: "{{ project_name }}"
+          Name: "public_az_{{ zone1 }}"
+      register: subnetpublica
+
+    - name: vpc internet gateway
+      amazon.aws.ec2_vpc_igw:
+        region: "{{ region }}"
+        vpc_id: "{{ network.vpc.id }}"
+        state: present
+        tags:
+          project: "{{ project_name }}"
+      register: igw
+
+    - name: Get Route table
+      amazon.aws.ec2_vpc_route_table_info:
+        region: "{{ region }}"
+        filters:
+          vpc-id: "{{ network.vpc.id }}"
+      register: routea
+
+    - name: Setup route tables public az a
+      amazon.aws.ec2_vpc_route_table:
+        region: "{{ region }}"
+        vpc_id: "{{ network.vpc.id }}"
+        lookup: id
+        purge_subnets: false
+        tags:
+          project: "{{ project_name }}"
+        route_table_id: "{{ routea.route_tables[0].id }}"
+        subnets:
+          - "{{ subnetpublica.subnet.id }}"
+          - "{{ subnetpublicb.subnet.id }}"
+        routes:
+          - dest: 0.0.0.0/0
+            gateway_id: "{{ igw.gateway_id }}"
+
+    - name: Set Security Group for VPC
+      amazon.aws.ec2_group:
+        name: default
+        description: default VPC security group
+        vpc_id: "{{ network.vpc.id }}"
+        region: "{{ region }}"
+        rules:
+          - proto: tcp
+            ports:
+              - 80
+            cidr_ip: 0.0.0.0/0
+            rule_desc: allow all http
+          - proto: tcp
+            ports:
+              - 443
+            cidr_ip: 0.0.0.0/0
+            rule_desc: allow all https
+          - proto: tcp
+            ports:
+              - 22
+            cidr_ip: 0.0.0.0/0
+            rule_desc: allow all ssh
+
+    - name: Create towerserver
+      amazon.aws.ec2_instance:
+        key_name: tower_keypair
+        region: "{{ region }}"
+        instance_type: t2.micro
+        image_id: ami-0ca7795427fb03aa0
+        wait: yes
+        security_group: default
+        vpc_subnet_id: "{{ subnetpublicb.subnet.id }}"
+        network:
+          assign_public_ip: true
+        state: running
+        tags:
+          Name: tower1
+
+    - name: Pause for 1 minute
+      pause:
+        minutes: 1
