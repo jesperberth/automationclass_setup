@@ -13,6 +13,7 @@
     - name: create key pair using key_material obtained using 'file' lookup plugin
       amazon.aws.ec2_key:
         name: tower_keypair
+        region: "{{ region }}"
         key_material: "{{ lookup('file', '~/.ssh/id_rsa.pub') }}"
 
     - name: create VPC
