@@ -31,6 +31,10 @@
         opts: noatime
         state: mounted
 
-  roles:
-    - role: jesperberth.el_k3s
-    - role: jesperberth.awx_k8s_install
+    - name: Include role el_k3s
+      ansible.builtin.include_role:
+        name: jesperberth.el_k3s
+
+  # roles:
+  #   - role: jesperberth.el_k3s
+  #   - role: jesperberth.awx_k8s_install
