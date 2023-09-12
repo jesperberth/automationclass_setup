@@ -6,35 +6,6 @@
     awx_password: Passw0rd!
     awxoperater_version: "2.4.0"
 
-  tasks:
-    - name: Create xfs filesystem on /dev/nvme1n1
-      community.general.filesystem:
-        fstype: xfs
-        dev: /dev/nvme1n1
-
-    - name: Create /var/lib/rancher
-      ansible.builtin.file:
-        path: /var/lib/rancher
-        state: directory
-        mode: "0755"
-
-    - name: Get UUID of App disks
-      ansible.builtin.shell: |
-        blkid /dev/nvme1n1 -s UUID -o value
-      register: uuid
-
-    - name: Mount device /dev/nvme1n1
-      ansible.posix.mount:
-        path: /var/lib/rancher
-        src: "UUID={{ uuid.stdout }}"
-        fstype: xfs
-        opts: noatime
-        state: mounted
-
-    - name: Include role el_k3s
-      ansible.builtin.include_role:
-        name: jesperberth.el_k3s
-
-  # roles:
-  #   - role: jesperberth.el_k3s
-  #   - role: jesperberth.awx_k8s_install
+  roles:
+    - role: jesperberth.el_k3s
+    - role: jesperberth.awx_k8s_install
