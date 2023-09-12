@@ -3,7 +3,6 @@
   hosts: tag_project_ansibleawx
   become: true
   vars:
-    ansible_user: awx
     awx_password: Passw0rd!
     awxoperater_version: "2.4.0"
 
