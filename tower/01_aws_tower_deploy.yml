@@ -100,7 +100,7 @@
         image_id: ami-0ca7795427fb03aa0
         wait: yes
         security_group: default
-        vpc_subnet_id: "{{ subnetpublicb.subnet.id }}"
+        vpc_subnet_id: "{{ subnetpublica.subnet.id }}"
         network:
           assign_public_ip: true
         state: running
