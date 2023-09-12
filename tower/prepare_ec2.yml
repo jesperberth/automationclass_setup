@@ -21,11 +21,11 @@
     - name: Get UUID of App disks
       ansible.builtin.shell: |
         blkid /dev/nvme1n1 -s UUID -o value
-      register: blkid
+      register: uuid
 
-    - name: Set uuid
-      ansible.builtin.set_fact:
-        uuid: blkid.stdout[1:-1]
+    # - name: Set uuid
+    #   ansible.builtin.set_fact:
+    #     uuid: blkid.stdout[1:-1]
 
     - name: Debug
       ansible.builtin.debug:
@@ -34,7 +34,7 @@
     - name: Mount device /dev/nvme1n1
       ansible.posix.mount:
         path: /var/lib/rancher
-        src: UUID="{{ uuid }}"
+        src: "UUID={{ uuid.stdout }}"
         fstype: xfs
         opts: noatime
         state: present
