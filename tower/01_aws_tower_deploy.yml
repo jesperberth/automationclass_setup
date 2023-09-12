@@ -105,13 +105,10 @@
           assign_public_ip: true
         state: running
         volumes:
-          - device_name: /dev/sda1
+          - device_name: /dev/nvme1n1
             ebs:
               volume_size: 32
               delete_on_termination: true
         tags:
           Name: tower1
-
-    - name: Pause for 1 minute
-      pause:
-        minutes: 1
+          project: "{{ project_name }}"
