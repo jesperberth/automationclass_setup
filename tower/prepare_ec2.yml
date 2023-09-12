@@ -26,11 +26,11 @@
     - name: Mount device /dev/nvme1n1
       ansible.posix.mount:
         path: /home
-        src: UUID="{{ uuid }}"
+        src: UUID="{{ uuid.stdout }}"
         fstype: xfs
         opts: noatime
         state: present
 
     - name: Debug
       ansible.builtin.debug:
-        msg: "{{ uuid }}"
+        msg: "{{ uuid.stdout }}"
