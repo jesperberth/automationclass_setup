@@ -110,6 +110,18 @@
               volume_size: 32
               delete_on_termination: true
         tags:
-          Name: "{{ servers }}"
+          Name: "{{ item }}"
           project: "{{ project_name }}"
       loop: "{{ servers }}"
+      async: 1000
+      poll: 0
+      register: create_vm
+
+    - name: Wait for Virtual Machines
+      async_status:
+        jid: "{{ item.ansible_job_id }}"
+      register: job_result
+      until: job_result.finished
+      retries: 100
+      delay: 5
+      with_items: "{{ create_vm.results }}"
