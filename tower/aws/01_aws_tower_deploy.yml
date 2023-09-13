@@ -112,7 +112,6 @@
         tags:
           Name: "{{ item }}"
           project: "{{ project_name }}"
-      register: server
       loop: "{{ servers }}"
       async: 1000
       poll: 0
@@ -127,6 +126,14 @@
       delay: 5
       with_items: "{{ create_vm.results }}"
 
+    - name: Gather information about ec2 instances
+      amazon.aws.ec2_instance_info:
+        region: "{{ region }}"
+        filters:
+          "tag:Name": "tower*"
+          instance-state-name: ["running"]
+      register: ec2_node_info
+
     - name: Debug
       ansible.builtin.debug:
-        msg: "{{ server }}"
+        msg: "{{ ec2_node_info }}"
