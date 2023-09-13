@@ -44,8 +44,14 @@
           vpc-id: "{{ vpc.vpcs[0].id }}"
       register: subnets
 
-    - name: Setup route tables public az a
+    - name: Remove route tables public az a
       amazon.aws.ec2_vpc_route_table:
+        region: "{{ region }}"
+        vpc_id: "{{ vpc.vpcs[0].id }}"
+        state: absent
+
+    - name: vpc internet gateway
+      amazon.aws.ec2_vpc_igw:
         region: "{{ region }}"
         vpc_id: "{{ vpc.vpcs[0].id }}"
         state: absent
