@@ -17,10 +17,10 @@
         filters:
           tag:project: "{{ project_name }}"
 
-    - name: create key pair using key_material obtained using 'file' lookup plugin
+    - name: Remove keypair
       amazon.aws.ec2_key:
         name: tower_keypair
-        state: adsent
+        state: absent
         region: "{{ region }}"
 
     - name: Remove VPC
