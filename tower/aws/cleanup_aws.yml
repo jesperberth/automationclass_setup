@@ -30,13 +30,6 @@
           "tag:Name": "{{ vpc_name }}"
       register: vpc
 
-    # - name: Get VPC route table info
-    #   amazon.aws.ec2_vpc_route_table_info:
-    #     region: "{{ region }}"
-    #     filters:
-    #       vpc-id: "{{ vpc.vpcs[0].id }}"
-    #   register: routetable
-
     - name: Get Subnets info
       amazon.aws.ec2_vpc_subnet_info:
         region: "{{ region }}"
@@ -47,13 +40,6 @@
     - name: Set Subnet cidr_block
       ansible.builtin.set_fact:
         subnet_cidr: "{{ subnets.subnets|map(attribute='cidr_block')|list }}"
-
-    # - name: Remove route tables public az a
-    #   amazon.aws.ec2_vpc_route_table:
-    #     region: "{{ region }}"
-    #     vpc_id: "{{ vpc.vpcs[0].id }}"
-    #     id: "{{ routetable.id }}"
-    #     state: absent
 
     - name: vpc internet gateway
       amazon.aws.ec2_vpc_igw:
@@ -75,69 +61,3 @@
         cidr_block: "{{ cidr }}"
         region: "{{ region }}"
         state: absent
-
-    # - name: create subnet Servers
-    #   amazon.aws.ec2_vpc_subnet:
-    #     region: "{{ region }}"
-    #     state: present
-    #     cidr: "{{ cidr_public_a }}"
-    #     az: "{{ region }}{{ zone1 }}"
-    #     vpc_id: "{{ network.vpc.id }}"
-    #     resource_tags:
-    #       project: "{{ project_name }}"
-    #       Name: "public_az_{{ zone1 }}"
-    #   register: subnetpublica
-
-    # - name: vpc internet gateway
-    #   amazon.aws.ec2_vpc_igw:
-    #     region: "{{ region }}"
-    #     vpc_id: "{{ network.vpc.id }}"
-    #     state: present
-    #     tags:
-    #       project: "{{ project_name }}"
-    #   register: igw
-
-    # - name: Get Route table
-    #   amazon.aws.ec2_vpc_route_table_info:
-    #     region: "{{ region }}"
-    #     filters:
-    #       vpc-id: "{{ network.vpc.id }}"
-    #   register: routea
-
-    # - name: Setup route tables public az a
-    #   amazon.aws.ec2_vpc_route_table:
-    #     region: "{{ region }}"
-    #     vpc_id: "{{ network.vpc.id }}"
-    #     lookup: id
-    #     purge_subnets: false
-    #     tags:
-    #       project: "{{ project_name }}"
-    #     route_table_id: "{{ routea.route_tables[0].id }}"
-    #     subnets:
-    #       - "{{ subnetpublica.subnet.id }}"
-    #     routes:
-    #       - dest: 0.0.0.0/0
-    #         gateway_id: "{{ igw.gateway_id }}"
-
-    # - name: Set Security Group for VPC
-    #   amazon.aws.ec2_group:
-    #     name: default
-    #     description: default VPC security group
-    #     vpc_id: "{{ network.vpc.id }}"
-    #     region: "{{ region }}"
-    #     rules:
-    #       - proto: tcp
-    #         ports:
-    #           - 80
-    #         cidr_ip: 0.0.0.0/0
-    #         rule_desc: allow all http
-    #       - proto: tcp
-    #         ports:
-    #           - 443
-    #         cidr_ip: 0.0.0.0/0
-    #         rule_desc: allow all https
-    #       - proto: tcp
-    #         ports:
-    #           - 22
-    #         cidr_ip: 0.0.0.0/0
-    #         rule_desc: allow all ssh
