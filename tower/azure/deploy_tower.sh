@@ -41,4 +41,4 @@ eval $PLAY
 ansible-galaxy install jesperberth.el_k3s -f
 ansible-galaxy install jesperberth.awx_k8s_install -f
 
-ansible-playbook -i inventory.aws_ec2.yml install_awx.yml
+ansible-playbook -i inventory.azure_rm.yml install_awx.yml
