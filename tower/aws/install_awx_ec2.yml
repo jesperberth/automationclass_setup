@@ -1,5 +1,5 @@
 ---
-- name: AWX install on Enterprise Linux
+- name: AWX install on Ubuntu Linux
   hosts: tag_project_ansibleawx
   become: true
   vars:
@@ -9,4 +9,4 @@
 
   roles:
     - role: jesperberth.deb_k3s
-    #- role: jesperberth.awx_k8s_install
+    - role: jesperberth.awx_k8s_install
