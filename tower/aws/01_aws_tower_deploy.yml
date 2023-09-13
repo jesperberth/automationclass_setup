@@ -125,3 +125,7 @@
       retries: 100
       delay: 5
       with_items: "{{ create_vm.results }}"
+
+    - name: Debug
+      ansible.builtin.debug:
+        msg: "{{ create_vm }}"
