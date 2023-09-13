@@ -17,23 +17,18 @@
         filters:
           tag:project: "{{ project_name }}"
 
-    # - name: create key pair using key_material obtained using 'file' lookup plugin
-    #   amazon.aws.ec2_key:
-    #     name: tower_keypair
-    #     region: "{{ region }}"
-    #     key_material: "{{ lookup('file', '~/.ssh/id_rsa.pub') }}"
-    #     tags:
-    #       project: "{{ project_name }}"
+    - name: create key pair using key_material obtained using 'file' lookup plugin
+      amazon.aws.ec2_key:
+        name: tower_keypair
+        state: adsent
+        region: "{{ region }}"
 
-    # - name: create VPC
-    #   amazon.aws.ec2_vpc_net:
-    #     name: "{{ vpc_name }}"
-    #     cidr_block: "{{ cidr }}"
-    #     region: "{{ region }}"
-    #     state: present
-    #     tags:
-    #       project: "{{ project_name }}"
-    #   register: network
+    - name: Remove VPC
+      amazon.aws.ec2_vpc_net:
+        name: "{{ vpc_name }}"
+        cidr_block: "{{ cidr }}"
+        region: "{{ region }}"
+        state: absent
 
     # - name: create subnet Servers
     #   amazon.aws.ec2_vpc_subnet:
