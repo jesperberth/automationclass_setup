@@ -38,6 +38,8 @@ source ~/ansible/bin/activate
 
 eval $PLAY
 
+export ANSIBLE_HOST_KEY_CHECKING=False
+
 ansible-galaxy install jesperberth.deb_k3s -f
 ansible-galaxy install jesperberth.awx_k8s_install -f
 

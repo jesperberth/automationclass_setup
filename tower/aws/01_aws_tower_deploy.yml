@@ -125,16 +125,3 @@
       retries: 100
       delay: 5
       with_items: "{{ create_vm.results }}"
-
-    - name: Gather information about ec2 instances
-      amazon.aws.ec2_instance_info:
-        region: "{{ region }}"
-        filters:
-          "tag:Name": "{{ item }}"
-          instance-state-name: ["running"]
-      loop: "{{ servers }}"
-      register: ec2_node_info
-
-    - name: Debug
-      ansible.builtin.debug:
-        msg: "{{ ec2_node_info }}"
