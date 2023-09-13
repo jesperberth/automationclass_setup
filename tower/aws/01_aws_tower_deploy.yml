@@ -15,6 +15,8 @@
         name: tower_keypair
         region: "{{ region }}"
         key_material: "{{ lookup('file', '~/.ssh/id_rsa.pub') }}"
+        tags:
+          project: "{{ project_name }}"
 
     - name: create VPC
       amazon.aws.ec2_vpc_net:
