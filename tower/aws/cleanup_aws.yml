@@ -23,6 +23,33 @@
         state: absent
         region: "{{ region }}"
 
+    - name: Get VPC info
+      amazon.aws.ec2_vpc_net_info:
+        region: "{{ region }}"
+        filters:
+          "tag:Name": "{{ vpc_name }}"
+      register: vpc
+
+    - name: Get VPC route table info
+      amazon.aws.ec2_vpc_route_table_info:
+        region: "{{ region }}"
+        filters:
+          vpc-id: "{{ vpc.vpcs[0].id }}"
+      register: routetable
+
+    - name: Get Subnets info
+      amazon.aws.ec2_vpc_subnet_info:
+        region: "{{ region }}"
+        filters:
+          vpc-id: "{{ vpc.vpcs[0].id }}"
+      register: subnets
+
+    - name: Setup route tables public az a
+      amazon.aws.ec2_vpc_route_table:
+        region: "{{ region }}"
+        vpc_id: "{{ vpc.vpcs[0].id }}"
+        state: absent
+
     - name: Remove VPC
       amazon.aws.ec2_vpc_net:
         name: "{{ vpc_name }}"
