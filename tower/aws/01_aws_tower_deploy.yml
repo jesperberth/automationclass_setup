@@ -112,6 +112,7 @@
         tags:
           Name: "{{ item }}"
           project: "{{ project_name }}"
+      register: server
       loop: "{{ servers }}"
       async: 1000
       poll: 0
@@ -128,4 +129,4 @@
 
     - name: Debug
       ansible.builtin.debug:
-        msg: "{{ create_vm }}"
+        msg: "{{ server }}"
