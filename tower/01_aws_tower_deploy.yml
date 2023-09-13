@@ -4,7 +4,7 @@
   vars:
     vpc_name: "Tower-vpc"
     project_name: "ansibleawx"
-    region: "eu-west-1"
+    region: "eu-central-1"
     cidr: "10.1.0.0/16"
     cidr_public_a: "10.1.0.0/24"
     zone1: "a"
@@ -97,7 +97,7 @@
         key_name: tower_keypair
         region: "{{ region }}"
         instance_type: t3.xlarge
-        image_id: ami-01dd271720c1ba44f
+        image_id: ami-04e601abe3e1a910f
         wait: yes
         security_group: default
         vpc_subnet_id: "{{ subnetpublica.subnet.id }}"

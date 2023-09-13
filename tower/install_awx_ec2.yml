@@ -7,5 +7,5 @@
     awxoperater_version: "2.4.0"
 
   roles:
-    - role: jesperberth.el_k3s
+    - role: jesperberth.deb_k3s
     - role: jesperberth.awx_k8s_install
