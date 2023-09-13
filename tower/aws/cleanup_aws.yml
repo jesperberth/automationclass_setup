@@ -30,16 +30,12 @@
           "tag:Name": "{{ vpc_name }}"
       register: vpc
 
-    - name: Get VPC route table info
-      amazon.aws.ec2_vpc_route_table_info:
-        region: "{{ region }}"
-        filters:
-          vpc-id: "{{ vpc.vpcs[0].id }}"
-      register: routetable
-
-    - name: debug
-      ansible.builtin.debug:
-        msg: "{{ routetable }}"
+    # - name: Get VPC route table info
+    #   amazon.aws.ec2_vpc_route_table_info:
+    #     region: "{{ region }}"
+    #     filters:
+    #       vpc-id: "{{ vpc.vpcs[0].id }}"
+    #   register: routetable
 
     - name: Get Subnets info
       amazon.aws.ec2_vpc_subnet_info:
@@ -48,18 +44,30 @@
           vpc-id: "{{ vpc.vpcs[0].id }}"
       register: subnets
 
-    - name: Remove route tables public az a
-      amazon.aws.ec2_vpc_route_table:
-        region: "{{ region }}"
-        vpc_id: "{{ vpc.vpcs[0].id }}"
-        id: "{{ routetable.id }}"
-        state: absent
+    - name: Set Subnet cidr_block
+      ansible.builtin.set_fact:
+        subnet_cidr: "{{ subnets.subnets|map(attribute='cidr_block')|list }}"
+
+    # - name: Remove route tables public az a
+    #   amazon.aws.ec2_vpc_route_table:
+    #     region: "{{ region }}"
+    #     vpc_id: "{{ vpc.vpcs[0].id }}"
+    #     id: "{{ routetable.id }}"
+    #     state: absent
 
     - name: vpc internet gateway
       amazon.aws.ec2_vpc_igw:
         region: "{{ region }}"
         vpc_id: "{{ vpc.vpcs[0].id }}"
         state: absent
+
+    - name: Delete Subnets
+      amazon.aws.ec2_vpc_subnet:
+        region: "{{ region }}"
+        state: absent
+        vpc_id: "{{ vpc.vpcs[0].id }}"
+        cidr: "{{ item }}"
+      loop: "{{ subnet_cidr }}"
 
     - name: Remove VPC
       amazon.aws.ec2_vpc_net:
