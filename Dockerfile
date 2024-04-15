@@ -1,0 +1,18 @@
+FROM python:3.12.3-slim-bullseye
+
+WORKDIR /app
+
+COPY requirements.txt ./
+RUN pip install --no-cache-dir -r requirements.txt
+
+RUN pip install --no-cache-dir -r /usr/local/lib/python3.12/site-packages/ansible_collections/azure/azcollection/requirements-azure.txt
+
+COPY /azure/requirements.yml ./
+RUN ansible-galaxy install -r requirements.yml
+
+COPY /azure/change_reg.ps1 ./
+COPY /azure/00_azure_class_setup.yml ./
+
+ENV AZURE_PROFILE=redhat
+
+RUN ansible-playbook -e "adminUser=$username adminPassword=$password" 00_azure_class_setup.yml

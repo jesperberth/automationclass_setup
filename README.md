@@ -54,3 +54,13 @@ cd automationclass_setup
 ./cleanup.sh
 
 ```
+
+## Docker run
+
+```bash
+
+docker build . -t automationclass:latest
+
+docker run -it --mount type=bind,source=/home/jesper/.azure/credentials,target=/root/.azure/credentials automationclass:latest /bin/bash
+
+```
