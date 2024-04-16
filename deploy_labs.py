@@ -4,9 +4,7 @@ import subprocess
 def launchContainer(username, password):
     usernameCmd = f"username={username}"
     passwordCmd = f"password={password}"
-    #f"docker run -d --mount type=bind,source=/home/jesper/.azure/credentials,target=/root/.azure/credentials -e username={username} -e password={password} automationclass:latest"
     command = ['docker','run', '-d', '--mount', 'type=bind,source=/home/jesper/.azure/credentials,target=/root/.azure/credentials', '-e', usernameCmd, '-e', passwordCmd, 'automationclass:latest']
-    print(command)
     result = subprocess.run(command, text=True, capture_output=True)
 
     print("Return code:", result.returncode)
