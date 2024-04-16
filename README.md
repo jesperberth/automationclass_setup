@@ -55,12 +55,24 @@ cd automationclass_setup
 
 ```
 
-## Docker run
+## Docker build
 
 ```bash
 
 docker build . -t automationclass:latest
 
-docker run -d --mount type=bind,source=/home/jesper/.azure/credentials,target=/root/.azure/credentials -e username=jesper -e password= automationclass:latest
+#docker run -d --mount type=bind,source=/home/jesper/.azure/credentials,target=/root/.azure/credentials -e username=jesper -e password= automationclass:latest
+
+```
+
+## Deploy labs
+
+Requires docker installed and a local .azure/credentials file
+
+Update users.csv file
+
+```bash
+
+deploy_labs.py
 
 ```
