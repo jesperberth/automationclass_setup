@@ -15,4 +15,4 @@ COPY /azure/00_azure_class_setup.yml ./
 
 ENV AZURE_PROFILE=redhat
 
-RUN ansible-playbook -e "adminUser=$username adminPassword=$password" 00_azure_class_setup.yml
+CMD ansible-playbook -e "adminUser=$username adminPassword=$password" 00_azure_class_setup.yml

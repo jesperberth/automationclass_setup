@@ -61,6 +61,6 @@ cd automationclass_setup
 
 docker build . -t automationclass:latest
 
-docker run -it --mount type=bind,source=/home/jesper/.azure/credentials,target=/root/.azure/credentials automationclass:latest /bin/bash
+docker run -d --mount type=bind,source=/home/jesper/.azure/credentials,target=/root/.azure/credentials -e username=jesper -e password= automationclass:latest
 
 ```
