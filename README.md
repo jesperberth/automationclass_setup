@@ -61,6 +61,10 @@ cd automationclass_setup
 
 docker build . -t automationclass:latest
 
+# or
+
+docker build . -f DockerfileWorkshop -t ansibleworkshop:latest
+
 #docker run -d --mount type=bind,source=/home/jesper/.azure/credentials,target=/root/.azure/credentials -e username=jesper -e password= automationclass:latest
 
 ```
@@ -73,6 +77,6 @@ Update users.csv file
 
 ```bash
 
-deploy_labs.py
+python deploy_labs.py
 
 ```
