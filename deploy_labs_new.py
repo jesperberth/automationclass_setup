@@ -11,7 +11,7 @@ def setup_logging():
         format='%(asctime)s - %(levelname)s - %(message)s',
         handlers=[
             logging.StreamHandler(sys.stdout),
-            logging.FileHandler('container_deployment.log')
+            logging.FileHandler('~/container_deployment.log')
         ]
     )
 

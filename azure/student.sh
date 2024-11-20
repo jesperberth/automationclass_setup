@@ -31,9 +31,9 @@ sudo apt-get install ubuntu-desktop task-gnome-desktop dconf-editor xrdp -y
 
 sudo sed -i 's/allowed_users=console/allowed_users=anybody/' /etc/X11/Xwrapper.config
 
-curl https://raw.githubusercontent.com/jesperberth/automationclass_setup/refs/heads/container-deploy/azure/dconf.ini -o dconf.ini
+curl https://raw.githubusercontent.com/jesperberth/automationclass_setup/refs/heads/container-deploy/azure/dconf.ini -o ~/dconf.ini
 
-dconf load / < dconf.ini
+dconf load / < ~/dconf.ini
 
 sudo service xrdp restart
 
