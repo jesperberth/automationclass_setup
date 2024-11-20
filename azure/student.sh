@@ -27,7 +27,7 @@ echo $USER' ALL = NOPASSWD: /usr/bin/dockerd' | sudo EDITOR='tee -a' visudo
 # Install Gnome + xrdp
 #
 
-sudo apt-get install ubuntu-desktop task-gnome-desktop dconf-editor xrdp -y
+sudo apt-get install ubuntu-gnome-desktop dconf-editor xrdp -y
 
 sudo sed -i 's/allowed_users=console/allowed_users=anybody/' /etc/X11/Xwrapper.config
 
