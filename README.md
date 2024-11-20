@@ -67,6 +67,8 @@ docker build . -f DockerfileWorkshop -t ansibleworkshop:latest
 
 #docker run -d --mount type=bind,source=/home/jesper/.azure/credentials,target=/root/.azure/credentials -e username=jesper -e password= automationclass:latest
 
+docker build . -f DockerfileNewClass -t ansiblenewclass:latest
+
 ```
 
 ## Deploy labs
