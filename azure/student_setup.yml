@@ -1,0 +1,12 @@
+---
+- name: Automation Class Student
+  hosts: "{{ student | default([]) }}"
+  vars:
+    ansible_connection: ssh
+    ansible_shell_type: powershell
+
+  tasks:
+    - name: Install vscode
+      chocolatey.chocolatey.win_chocolatey:
+        name: vscode
+        state: present

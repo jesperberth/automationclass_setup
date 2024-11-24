@@ -1,5 +1,6 @@
-plugin: azure_rm
-auth_source: auto
+plugin: azure.azcollection.azure_rm
+auth_source: credential_file
+profile: redhat
 include_vm_resource_groups:
   - "*"
 keyed_groups:
