@@ -110,13 +110,14 @@
         network_interfaces: "{{ item.name }}_nic01"
         tags:
           owner: "{{ adminUser }}"
+          ansible: "{{ item.name }}_{{ adminUser }}"
       loop:
         - {name: 'ansible', size: 'Standard_B2ms', os: 'Linux', offer: 'RHEL', pub: 'RedHat', sku: '9_4'}
         - {name: 'server1', size: 'Standard_B2s', os: 'Linux', offer: 'RHEL', pub: 'RedHat', sku: '9_4'}
         - {name: 'server2', size: 'Standard_B2s', os: 'Linux', offer: 'RHEL', pub: 'RedHat', sku: '9_4'}
         - {name: 'server3', size: 'Standard_B2ms', os: 'Linux', offer: 'ubuntu-24_04-lts', pub: 'canonical', sku: 'server'}
         - {name: 'server4', size: 'Standard_B2ms', os: 'Linux', offer: 'ubuntu-24_04-lts', pub: 'canonical', sku: 'server'}
-        - {name: 'student', size: 'Standard_D4s_v3', os: 'Windows', offer: 'windows-11', pub: 'microsoftwindowsdesktop', sku: 'win11-24h2-pro'}
+        - {name: 'student', size: 'Standard_D4s_v5', os: 'Windows', offer: 'windows-11', pub: 'microsoftwindowsdesktop', sku: 'win11-24h2-pro'}
       async: 1000
       poll: 0
       register: create_vm
@@ -144,7 +145,7 @@
     - name: Create Azure VM extension to add regkeys on student
       azure.azcollection.azure_rm_virtualmachineextension:
         name: student-regkey
-        resource_group: "ansible-{{ adminUser }}"
+        resource_group: "{{ resource_group }}"
         virtual_machine_name: student
         publisher: Microsoft.Compute
         virtual_machine_extension_type: CustomScriptExtension
@@ -154,11 +155,11 @@
 
     - name: Create Azure VM extension to enable sshd on student
       azure.azcollection.azure_rm_virtualmachineextension:
-        name: student-regkey
-        resource_group: "ansible-{{ adminUser }}"
+        name: student-sshd
+        resource_group: "{{ resource_group }}"
         virtual_machine_name: student
         publisher: Microsoft.Compute
         virtual_machine_extension_type: CustomScriptExtension
         type_handler_version: "1.10"
-        settings: '{"fileUris": [ "https://raw.githubusercontent.com/jesperberth/automationclass_setup/main/azure/enable_sshd.ps1" ],"commandToExecute": " powershell -ExecutionPolicy Unrestricted -File enable_sshd.ps1 "}' # noqa yaml[line-length]
+        settings: '{"fileUris": [ "https://raw.githubusercontent.com/jesperberth/automationclass_setup/container-deploy/azure/enable_sshd.ps1" ],"commandToExecute": " powershell -ExecutionPolicy Unrestricted -File enable_sshd.ps1 "}' # noqa yaml[line-length]
         auto_upgrade_minor_version: true
