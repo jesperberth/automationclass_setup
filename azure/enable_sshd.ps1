@@ -1,4 +1,4 @@
-Get-WindowsCapability -Name OpenSSH.Server* -Online | Add-WindowsCapability -Online
+Add-WindowsCapability -Online -Name OpenSSH.Server*
 
 Set-Service -Name sshd -StartupType Automatic -Status Running
 
