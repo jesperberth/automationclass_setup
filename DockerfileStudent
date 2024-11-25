@@ -1,0 +1,18 @@
+FROM python:3.12.3-slim-bullseye
+
+WORKDIR /app
+
+RUN apt-get update && apt-get install sshpass -y
+
+COPY requirements.txt ./
+RUN pip install --no-cache-dir -r requirements.txt
+
+RUN pip install --no-cache-dir -r /usr/local/lib/python3.12/site-packages/ansible_collections/azure/azcollection/requirements-azure.txt
+
+COPY /azure/student_setup.yml ./
+COPY /azure/class.azure_rm.yml ./
+COPY /azure/create_user.sh ./
+
+ENV AZURE_PROFILE=redhat
+
+CMD ansible-playbook student_setup.yml -i class.azure_rm.yml -k -e "ansible_user=$username ansible_password=$password student=tag_ansible_student_$username"

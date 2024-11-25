@@ -4,9 +4,39 @@
   vars:
     ansible_connection: ssh
     ansible_shell_type: powershell
+    ansible_host_key_checking: false
 
   tasks:
     - name: Install vscode
       chocolatey.chocolatey.win_chocolatey:
         name: vscode
         state: present
+
+    - name: Test if ubuntu.exe exist
+      ansible.windows.win_stat:
+        path: C:\Users\work1\AppData\Local\Microsoft\WindowsApps\ubuntu.exe
+      register: ubuntu_exe
+
+    - name: Install WSL
+      ansible.windows.win_command:
+        cmd: wsl.exe --install -d ubuntu --no-launch
+      when: not ubuntu_exe.stat.exist
+
+    - name: Reboot
+      ansible.windows.win_reboot:
+      when: not ubuntu_exe.stat.exist
+
+    - name: Install WSL Continued
+      ansible.windows.win_command:
+        cmd: ubuntu.exe install --root
+      when: not ubuntu_exe.stat.exist
+
+    - name: Copy create_user.sh
+      ansible.windows.win_copy:
+        src: create_user.sh
+        dest: create_user.sh
+        remote_src: true
+
+    - name: Create user in WSL
+      ansible.windows.win_command:
+        cmd: "wsl.exe -d ubuntu --user root -- /bin/bash create_user.sh {{ ansible_user }} {{ ansible_password }}"

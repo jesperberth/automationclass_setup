@@ -69,6 +69,8 @@ docker build . -f DockerfileWorkshop -t ansibleworkshop:latest
 
 docker build . -f DockerfileNewClass -t ansiblenewclass:latest
 
+docker build . -f DockerfileStudent -t ansiblenewclassstudent:latest
+
 ```
 
 ## Deploy labs
