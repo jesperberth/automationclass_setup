@@ -14,29 +14,37 @@
 
     - name: Test if ubuntu.exe exist
       ansible.windows.win_stat:
-        path: C:\Users\work1\AppData\Local\Microsoft\WindowsApps\ubuntu.exe
+        path: 'C:\\Users\\work1\\AppData\\Local\\Microsoft\\WindowsApps\\ubuntu.exe'
+        get_checksum: false
       register: ubuntu_exe
+
+    - name: Debug
+      ansible.builtin.debug:
+        msg: "{{ ubuntu_exe }}"
 
     - name: Install WSL
       ansible.windows.win_command:
         cmd: wsl.exe --install -d ubuntu --no-launch
-      when: not ubuntu_exe.stat.exist
+      when: not ubuntu_exe.stat.exists
 
     - name: Reboot
       ansible.windows.win_reboot:
-      when: not ubuntu_exe.stat.exist
+      when: not ubuntu_exe.stat.exists
 
     - name: Install WSL Continued
       ansible.windows.win_command:
         cmd: ubuntu.exe install --root
-      when: not ubuntu_exe.stat.exist
+      when: not ubuntu_exe.stat.exists
 
     - name: Copy create_user.sh
       ansible.windows.win_copy:
         src: create_user.sh
-        dest: create_user.sh
-        remote_src: true
+        dest: "C:\\Users\\{{ ansible_user }}\\create_user.sh"
 
     - name: Create user in WSL
       ansible.windows.win_command:
         cmd: "wsl.exe -d ubuntu --user root -- /bin/bash create_user.sh {{ ansible_user }} {{ ansible_password }}"
+
+    - name: Set WSL Default user
+      ansible.windows.win_command:
+        cmd: "ubuntu.exe config --default-user {{ ansible_user }}"
