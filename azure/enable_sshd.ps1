@@ -1,8 +1,8 @@
-#$sshServerName = (Get-WindowsCapability -Online -Name OpenSSH.Server*).Name
+Invoke-WebRequest https://github.com/PowerShell/Win32-OpenSSH/releases/download/v9.8.1.0p1-Preview/OpenSSH-Win64.zip -OutFile openssh.zip
 
-#Add-WindowsCapability -Online -Name "OpenSSH.Server~~~~0.0.1.0"
+Expand-Archive openssh.zip 'C:\Program Files'
 
-DISM.exe /Online /Add-Capability /CapabilityName:OpenSSH.Server~~~~0.0.1.0
+powershell.exe -ExecutionPolicy Bypass -File 'C:\Program Files\OpenSSH-Win64\install-sshd.ps1'
 
 Set-Service -Name sshd -StartupType Automatic -Status Running
 
