@@ -1,6 +1,6 @@
-$sshServerName = (Get-WindowsCapability -Online -Name OpenSSH.Server*).Name
+#$sshServerName = (Get-WindowsCapability -Online -Name OpenSSH.Server*).Name
 
-Add-WindowsCapability -Online -Name $sshServerName
+Add-WindowsCapability -Online -Name "OpenSSH.Server~~~~0.0.1.0"
 
 Set-Service -Name sshd -StartupType Automatic -Status Running
 
