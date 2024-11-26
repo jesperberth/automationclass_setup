@@ -11,7 +11,8 @@ RUN pip install --no-cache-dir -r /usr/local/lib/python3.12/site-packages/ansibl
 
 COPY /azure/student_setup.yml ./
 COPY /azure/class.azure_rm.yml ./
-COPY /azure/create_user.sh ./
+COPY /azure/wsl_create_user.sh ./
+COPY /azure/wsl_install_docker.sh ./
 
 ENV AZURE_PROFILE=redhat
 
