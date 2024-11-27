@@ -84,8 +84,3 @@ Update users.csv file
 python deploy_labs.py
 
 ```
-
-```bash
-cmdkey /generic:YOURSERVERNAME /user:work1 /pass:YOURPASSWORD mstsc /v:YOURSERVERNAME
-
-```

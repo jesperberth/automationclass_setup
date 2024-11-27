@@ -26,5 +26,3 @@ $shellParams = @{
     Force        = $true
 }
 New-ItemProperty @shellParams
-
-wsl.exe --install -d ubuntu --no-launch

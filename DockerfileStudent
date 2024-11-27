@@ -7,7 +7,7 @@ RUN apt-get update && apt-get install sshpass -y
 COPY requirements.txt ./
 RUN pip install --no-cache-dir -r requirements.txt
 
-RUN pip install --no-cache-dir -r /usr/local/lib/python3.12/site-packages/ansible_collections/azure/azcollection/requirements-azure.txt
+RUN pip install --no-cache-dir -r /usr/local/lib/python3.12/site-packages/ansible_collections/azure/azcollection/requirements.txt
 
 COPY /azure/student_setup.yml ./
 COPY /azure/class.azure_rm.yml ./

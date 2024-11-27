@@ -37,20 +37,68 @@
         name: vscode
         state: present
 
-    - name: Test if ubuntu.exe exist
+    - name: Test if Microsoft-Windows-Subsystem-Linux exist
+      ansible.windows.win_powershell:
+        script: |
+          (Get-WindowsOptionalFeature -Online -FeatureName "Microsoft-Windows-Subsystem-Linux").State
+      become: true
+      register: wslfeature
+
+    - name: Set WSL_Status
+      ansible.builtin.set_fact:
+        wslstatus: "{{ wslfeature['output'][0]['String'] }}"
+
+    - name: Debug
+      ansible.builtin.debug:
+        msg: "{{ wslstatus }}"
+
+    - name: Install WSL Feature
+      ansible.windows.win_command:
+        cmd: "dism.exe /online /enable-feature /featurename:Microsoft-Windows-Subsystem-Linux /all /norestart"
+      ignore_errors: true
+      register: ignore_errors_register_wsl
+      when: wslstatus == "Disabled"
+
+    - name: Test if VirtualMachinePlatform exist
+      ansible.windows.win_powershell:
+        script: |
+          (Get-WindowsOptionalFeature -Online -FeatureName "VirtualMachinePlatform").State
+      become: true
+      register: vm_feature
+
+    - name: Set VM_Status
+      ansible.builtin.set_fact:
+        vmstatus: "{{ vm_feature['output'][0]['String'] }}"
+
+    - name: Install VirtualMachinePlatform Feature
+      ansible.windows.win_command:
+        cmd: "dism.exe /online /enable-feature /featurename:VirtualMachinePlatform /all /norestart"
+      ignore_errors: true
+      register: ignore_errors_register_vm
+      when: vmstatus == "Disabled"
+
+    - name: Check if WSL is installed
       ansible.windows.win_stat:
-        path: 'C:\\Users\\work1\\AppData\\Local\\Microsoft\\WindowsApps\\ubuntu.exe'
-        get_checksum: false
-      register: ubuntu_exe
+        path: C:\Program Files\WSL\wsl.exe
+      register: wslpath
+
+    - name: Install WSL
+      ansible.windows.win_package:
+        path: https://github.com/microsoft/WSL/releases/download/2.3.26/wsl.2.3.26.0.x64.msi
+        arguments:
+          - /install
+          - /passive
+          - /norestart
+      when: not wslpath.stat.exists
 
     - name: Reboot
       ansible.windows.win_reboot:
-      when: not ubuntu_exe.stat.exists
+      when: not wsl_feature.stat.exists
 
     - name: Install WSL Continued
       ansible.windows.win_shell: |
         ubuntu.exe install --root
-      when: not ubuntu_exe.stat.exists
+      when: not wsl_feature.stat.exists
 
     - name: Copy wsl_create_user.sh
       ansible.windows.win_copy:
@@ -58,8 +106,7 @@
         dest: "C:\\Users\\{{ ansible_user }}\\wsl_create_user.sh"
 
     - name: Create user in WSL
-      ansible.windows.win_shell:
-        "wsl.exe -d ubuntu --user root -- /bin/bash wsl_create_user.sh {{ ansible_user }} {{ ansible_password }}"
+      ansible.windows.win_shell: "wsl.exe -d ubuntu --user root -- /bin/bash wsl_create_user.sh {{ ansible_user }} {{ ansible_password }}"
 
     - name: Set WSL Default user
       ansible.windows.win_shell: |
