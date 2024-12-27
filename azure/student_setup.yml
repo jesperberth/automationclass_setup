@@ -32,9 +32,11 @@
         data: 1
         type: dword
 
-    - name: Install vscode
+    - name: Install vscode and git
       chocolatey.chocolatey.win_chocolatey:
-        name: vscode
+        name:
+          - vscode
+          - git
         state: present
 
     - name: Test if Microsoft-Windows-Subsystem-Linux exist
@@ -47,10 +49,6 @@
     - name: Set WSL_Status
       ansible.builtin.set_fact:
         wslstatus: "{{ wslfeature['output'][0]['String'] }}"
-
-    - name: Debug
-      ansible.builtin.debug:
-        msg: "{{ wslstatus }}"
 
     - name: Install WSL Feature
       ansible.windows.win_command:
@@ -65,6 +63,24 @@
           (Get-WindowsOptionalFeature -Online -FeatureName "VirtualMachinePlatform").State
       become: true
       register: vm_feature
+
+    - name: Test if Windows-Hypervisor-Platform exist
+      ansible.windows.win_powershell:
+        script: |
+          (Get-WindowsOptionalFeature -Online -FeatureName "HypervisorPlatform").State
+      become: true
+      register: hypervisorfeature
+
+    - name: Set Hypervisorfeature_Status
+      ansible.builtin.set_fact:
+        hypervisorfeaturestatus: "{{ hypervisorfeature['output'][0]['String'] }}"
+
+    - name: Install HypervisorFeature Feature
+      ansible.windows.win_command:
+        cmd: "dism.exe /online /enable-feature /featurename:HypervisorPlatform /all /norestart"
+      ignore_errors: true
+      register: ignore_errors_register_wsl
+      when: hypervisorfeaturestatus == "Disabled"
 
     - name: Set VM_Status
       ansible.builtin.set_fact:
@@ -86,19 +102,37 @@
       ansible.windows.win_package:
         path: https://github.com/microsoft/WSL/releases/download/2.3.26/wsl.2.3.26.0.x64.msi
         arguments:
-          - /install
           - /passive
           - /norestart
       when: not wslpath.stat.exists
 
     - name: Reboot
       ansible.windows.win_reboot:
-      when: not wsl_feature.stat.exists
+      when: not wslpath.stat.exists
 
-    - name: Install WSL Continued
+    - name: Check if Ubuntu-24.04 is installed
       ansible.windows.win_shell: |
-        ubuntu.exe install --root
-      when: not wsl_feature.stat.exists
+        wsl --list --quiet
+      register: ubuntustatus
+
+    - name: Debug
+      ansible.builtin.debug:
+        msg: "{{ ubuntustatus }}"
+
+    - name: Set ubuntuStatus
+      ansible.builtin.set_fact:
+        ubuntuinstalled: false
+      when: ubuntustatus['stdout'] == ""
+
+    - name: Install Ubuntu for WSL
+      ansible.windows.win_shell: |
+        wsl --install -d Ubuntu-24.04 --no-launch
+      when: not ubuntuinstalled
+
+    - name: Install Ubuntu for WSL Continued
+      ansible.windows.win_shell: |
+        ubuntu2404.exe install --root
+      when: not ubuntuinstalled
 
     - name: Copy wsl_create_user.sh
       ansible.windows.win_copy:
@@ -106,11 +140,7 @@
         dest: "C:\\Users\\{{ ansible_user }}\\wsl_create_user.sh"
 
     - name: Create user in WSL
-      ansible.windows.win_shell: "wsl.exe -d ubuntu --user root -- /bin/bash wsl_create_user.sh {{ ansible_user }} {{ ansible_password }}"
-
-    - name: Set WSL Default user
-      ansible.windows.win_shell: |
-        "ubuntu.exe config --default-user {{ ansible_user }}"
+      ansible.windows.win_shell: "wsl.exe -d Ubuntu-24.04 --user root -- /bin/bash wsl_create_user.sh {{ ansible_user }} {{ ansible_password }}"
 
     - name: Copy wsl_install_docker.sh
       ansible.windows.win_copy:
@@ -118,5 +148,4 @@
         dest: "C:\\Users\\{{ ansible_user }}\\wsl_install_docker.sh"
 
     - name: Install docker in WSL
-      ansible.windows.win_shell: |
-        "wsl.exe -d ubuntu --user root -- /bin/bash wsl_install_docker.sh {{ ansible_user }}"
+      ansible.windows.win_shell: "wsl.exe -d Ubuntu-24.04 --user root -- /bin/bash wsl_install_docker.sh {{ ansible_user }}"

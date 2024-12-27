@@ -67,7 +67,7 @@ def launch_container(username: str, password: str) -> bool:
             raise ValueError("Username and password cannot be empty")
 
         # Path validation
-        credentials_path = Path('/home/jesper/.azure/credentials')
+        credentials_path = Path('/Users/jesper/.azure/credentials')
         if not credentials_path.exists():
             raise FileNotFoundError(f"Credentials file not found at {credentials_path}")
 

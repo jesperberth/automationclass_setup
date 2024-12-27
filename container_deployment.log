@@ -269,3 +269,118 @@
 2024-11-27 16:22:25,633 - INFO - Successfully launched second container for user work2. Container ID: a5c17c3765029c1bc3dacae58e1a1e60e9fed9ab5c8c45978b49c4bbf2bb7af5
 2024-11-27 16:30:23,216 - ERROR - Second container failed or timed out for user work2
 2024-11-27 16:30:23,216 - INFO - Deployment complete. Successful: 0, Failed: 1
+2024-12-11 12:55:31,309 - INFO - Starting deployment
+2024-12-11 12:55:31,346 - ERROR - Error launching containers for user work1: Credentials file not found at /home/jesper/.azure/credentials
+2024-12-11 12:55:31,347 - INFO - Deployment complete. Successful: 0, Failed: 1
+2024-12-11 13:06:26,850 - INFO - Starting deployment
+2024-12-11 13:06:26,855 - ERROR - Error launching containers for user work1: Credentials file not found at ~/.azure/credentials
+2024-12-11 13:06:26,855 - INFO - Deployment complete. Successful: 0, Failed: 1
+2024-12-11 13:10:30,707 - INFO - Starting deployment
+2024-12-11 13:10:30,710 - ERROR - Error launching containers for user work1: Credentials file not found at ~/.azure/credentials
+2024-12-11 13:10:30,710 - INFO - Deployment complete. Successful: 0, Failed: 1
+2024-12-11 13:13:42,397 - INFO - Starting deployment
+2024-12-11 13:13:42,399 - ERROR - Error launching containers for user work1: Credentials file not found at ~/.azure/credentials
+2024-12-11 13:13:42,399 - INFO - Deployment complete. Successful: 0, Failed: 1
+2024-12-11 13:13:48,706 - INFO - Starting deployment
+2024-12-11 13:13:49,070 - INFO - Launched first container for user work1. Container ID: e39e3c4cf50de3d89c9e445e4c6468dcbc95e39effc66537847575877c5d62db
+2024-12-11 13:13:54,167 - ERROR - First container failed or timed out for user work1
+2024-12-11 13:13:54,168 - INFO - Deployment complete. Successful: 0, Failed: 1
+2024-12-11 13:21:38,953 - INFO - Starting deployment
+2024-12-11 13:21:39,298 - INFO - Launched first container for user work1. Container ID: 6d781fd5516766a9b6622beebbf19e522095295f86c98d269f4bd1e1accf8dd5
+2024-12-11 13:30:48,479 - INFO - Successfully launched second container for user work1. Container ID: e9bdfb83f78d9f58bb6179ccd98c65227d72b51dcec5418c2992d4c668885101
+2024-12-11 13:50:52,289 - ERROR - Container e9bdfb83f78d9f58bb6179ccd98c65227d72b51dcec5418c2992d4c668885101 timed out after 1200 seconds
+2024-12-11 13:50:52,289 - ERROR - Second container failed or timed out for user work1
+2024-12-11 13:50:52,290 - INFO - Deployment complete. Successful: 0, Failed: 1
+2024-12-11 13:53:32,798 - INFO - Starting deployment
+2024-12-11 13:53:32,966 - INFO - Launched first container for user work1. Container ID: 396dc61813d0661eed916e08e08bc219c33b76784a7e282a1055a32ec6c77834
+2024-12-11 13:54:53,851 - INFO - Successfully launched second container for user work1. Container ID: 371b4aff5598a4c6718f15edd65efef8695f24da3b480e7acfa75479103f8df8
+2024-12-11 13:55:39,221 - ERROR - Second container failed or timed out for user work1
+2024-12-11 13:55:39,222 - INFO - Deployment complete. Successful: 0, Failed: 1
+2024-12-11 13:58:36,628 - INFO - Starting deployment
+2024-12-11 13:58:36,870 - INFO - Launched first container for user work1. Container ID: 29c3fbbced9c0844d8f54b0d592a6a890f666a155a0df3893e6686032e024b58
+2024-12-11 13:59:22,530 - INFO - Successfully launched second container for user work1. Container ID: 1f6f3adc9e92f4bdb2ca31e8d4f318f1cc6d6f902e9de2dfc86c69e7e1a69ec7
+2024-12-11 13:59:57,866 - ERROR - Second container failed or timed out for user work1
+2024-12-11 13:59:57,867 - INFO - Deployment complete. Successful: 0, Failed: 1
+2024-12-11 14:52:34,022 - INFO - Starting deployment
+2024-12-11 14:52:34,271 - INFO - Launched first container for user work1. Container ID: 430ac3672a16fa67abe6380b9c504ae12fed0fbc7c09fd4007b2880961678bd4
+2024-12-11 14:53:24,906 - INFO - Successfully launched second container for user work1. Container ID: 291b6820ed71548fabd7d137590a6c79fbf3d0c4686717337d964fff50d783cb
+2024-12-11 14:54:15,308 - ERROR - Second container failed or timed out for user work1
+2024-12-11 14:54:15,309 - INFO - Deployment complete. Successful: 0, Failed: 1
+2024-12-11 14:57:20,675 - INFO - Starting deployment
+2024-12-11 14:57:20,928 - INFO - Launched first container for user work1. Container ID: 3775530d537aecc09ca578411f0be6d78ce67415065b2cac2c5d4d15ff387d3e
+2024-12-11 14:58:06,516 - INFO - Successfully launched second container for user work1. Container ID: 7f2b302051123145a8e8fedbfb0773821c35e2b11f46affae56fb9b0a1910c74
+2024-12-11 14:58:41,835 - ERROR - Second container failed or timed out for user work1
+2024-12-11 14:58:41,835 - INFO - Deployment complete. Successful: 0, Failed: 1
+2024-12-11 15:11:47,747 - INFO - Starting deployment
+2024-12-11 15:11:47,969 - INFO - Launched first container for user work1. Container ID: 9100a8515a23a6cce870cc3c8b903f1c17a9bc0497f68e0c1f6307ff7cde2ed0
+2024-12-11 15:12:33,566 - INFO - Successfully launched second container for user work1. Container ID: 9562f96b827607d41ad033decbd3fae9e9cc9d6b6e73101f0eee9d60ad0c2e15
+2024-12-11 15:13:13,892 - ERROR - Second container failed or timed out for user work1
+2024-12-11 15:13:13,892 - INFO - Deployment complete. Successful: 0, Failed: 1
+2024-12-11 15:15:05,230 - INFO - Starting deployment
+2024-12-11 15:15:05,454 - INFO - Launched first container for user work1. Container ID: 71fbc8c32bbeaa3081114de88f0f36732680fac34cc6c52fb6294a1f3c0a6088
+2024-12-11 15:15:51,022 - INFO - Successfully launched second container for user work1. Container ID: 3432080bbadc93a7775c2e11fd8c224dc6319dc229ee04e74782f37666eb7a07
+2024-12-11 15:16:31,340 - ERROR - Second container failed or timed out for user work1
+2024-12-11 15:16:31,340 - INFO - Deployment complete. Successful: 0, Failed: 1
+2024-12-11 15:18:42,461 - INFO - Starting deployment
+2024-12-11 15:18:42,781 - INFO - Launched first container for user work1. Container ID: 088c843bba3c7438ccd93f7ead8fc12651311b97df57ab7ba230c049e933d555
+2024-12-11 15:19:28,379 - INFO - Successfully launched second container for user work1. Container ID: 00b1ca0af0a6e79bdc57a7bde7ffe4a8dee656c1165a5fc669493eb151224e64
+2024-12-11 15:39:31,585 - ERROR - Container 00b1ca0af0a6e79bdc57a7bde7ffe4a8dee656c1165a5fc669493eb151224e64 timed out after 1200 seconds
+2024-12-11 15:39:31,586 - ERROR - Second container failed or timed out for user work1
+2024-12-11 15:39:31,587 - INFO - Deployment complete. Successful: 0, Failed: 1
+2024-12-12 10:46:22,424 - INFO - Starting deployment
+2024-12-12 10:46:22,647 - INFO - Launched first container for user work1. Container ID: 375b70eaae8bebcc965e8466ec291a9b0f87ae82644fa80126f4722a4691b9fb
+2024-12-12 10:56:42,287 - INFO - Successfully launched second container for user work1. Container ID: 74d5d9ffe2ef3e77167a640c6dbe30d4bb44c9b4e6e34176cafb1f70e4c5f20a
+2024-12-12 11:44:07,189 - INFO - Starting deployment
+2024-12-12 11:44:07,387 - INFO - Launched first container for user work1. Container ID: 417a111a510a923c2f504695881cfa6b7b7a2f06abb19ef962ab3f26a004759f
+2024-12-12 11:44:53,522 - INFO - Starting deployment
+2024-12-12 11:44:53,717 - INFO - Launched first container for user work1. Container ID: f817a09259a5a863ffb298399e7daf444213468a99d1992d3144bfa516d93f5b
+2024-12-12 11:45:39,320 - INFO - Successfully launched second container for user work1. Container ID: 442f4ac84f9bce55d20c6cc95a8d0c088fd050afe5d3e2ad12dc492cb96d3b82
+2024-12-12 11:46:49,887 - INFO - Deployment complete. Successful: 1, Failed: 0
+2024-12-12 12:45:17,095 - INFO - Starting deployment
+2024-12-12 12:45:17,515 - INFO - Launched first container for user work1. Container ID: ba11e1c630b22d8445bd9042f521b333554e2a77da84f068040f1f615fbc0e12
+2024-12-12 12:54:06,656 - INFO - Successfully launched second container for user work1. Container ID: f031673ce171aebf9cc3f200322595de6f8e159705faaad39122f78e82317cc7
+2024-12-12 12:59:03,944 - ERROR - Second container failed or timed out for user work1
+2024-12-12 12:59:03,945 - INFO - Deployment complete. Successful: 0, Failed: 1
+2024-12-27 15:06:32,486 - INFO - Starting deployment
+2024-12-27 15:06:32,553 - ERROR - First container launch failed for user work1. Error: docker: Cannot connect to the Docker daemon at unix:///var/run/docker.sock. Is the docker daemon running?.
+See 'docker run --help'.
+
+2024-12-27 15:06:32,553 - INFO - Deployment complete. Successful: 0, Failed: 1
+2024-12-27 15:17:32,238 - INFO - Starting deployment
+2024-12-27 15:17:33,978 - ERROR - First container launch failed for user work1. Error: Unable to find image 'ansiblenewclass:latest' locally
+docker: Error response from daemon: pull access denied for ansiblenewclass, repository does not exist or may require 'docker login': denied: requested access to the resource is denied.
+See 'docker run --help'.
+
+2024-12-27 15:17:33,979 - INFO - Deployment complete. Successful: 0, Failed: 1
+2024-12-27 15:20:55,946 - INFO - Starting deployment
+2024-12-27 15:20:56,248 - INFO - Launched first container for user work1. Container ID: 920da05d60ac6ca1bf363530ee4dc79a7d8df5d50d59e66475961642fb309dcd
+2024-12-27 15:21:31,812 - INFO - Successfully launched second container for user work1. Container ID: 468453a453a4d45d43a5e6694b333ae8db58f2a140deb55c5e872cb8d043da39
+2024-12-27 15:22:57,531 - INFO - Deployment complete. Successful: 1, Failed: 0
+2024-12-27 15:40:53,321 - INFO - Starting deployment
+2024-12-27 15:40:53,520 - INFO - Launched first container for user work2. Container ID: 0d489ea5c6d614a712ffeab43db13199bc90da3ccd27335790ef67de0cb31d8f
+2024-12-27 15:43:16,204 - INFO - Starting deployment
+2024-12-27 15:43:16,465 - INFO - Launched first container for user work2. Container ID: 559f8f3f9bf3c8186f4bdd16784b76ada8872fd81767b1ab69579b2b6e9f929c
+2024-12-27 15:43:51,767 - ERROR - First container failed or timed out for user work2
+2024-12-27 15:43:51,767 - INFO - Deployment complete. Successful: 0, Failed: 1
+2024-12-27 15:48:12,502 - INFO - Starting deployment
+2024-12-27 15:48:12,763 - INFO - Launched first container for user work2. Container ID: 3e118a6514bad80ab36f3c8eedf5b15a26346f5df696225d9afd36cb9f226994
+2024-12-27 15:57:12,556 - INFO - Successfully launched second container for user work2. Container ID: ed2c113c5faf91ace34d1a5ed4fdbe5f714835a3e003039c8ec00fbae10af61d
+2024-12-27 16:04:36,204 - ERROR - Second container failed or timed out for user work2
+2024-12-27 16:04:36,204 - INFO - Deployment complete. Successful: 0, Failed: 1
+2024-12-27 16:16:19,375 - INFO - Starting deployment
+2024-12-27 16:16:19,638 - INFO - Launched first container for user work2. Container ID: a1d1f8c6c3f18dfde075a5e26dfe21efd221569f0143e062f5e0e26015482751
+2024-12-27 16:16:50,120 - INFO - Successfully launched second container for user work2. Container ID: 7fa2ddca97c7105a6f80cf5f67853027e066efbf1334b9bbc29c59e7077a7ce7
+2024-12-27 16:18:05,854 - ERROR - Second container failed or timed out for user work2
+2024-12-27 16:18:05,854 - INFO - Deployment complete. Successful: 0, Failed: 1
+2024-12-27 16:24:03,658 - INFO - Starting deployment
+2024-12-27 16:24:03,869 - INFO - Launched first container for user work2. Container ID: afd665234d5a169e2ea14b15a26880b1c625f3978485a68cb207e2e34d7f262b
+2024-12-27 16:24:39,408 - INFO - Successfully launched second container for user work2. Container ID: 189fc177eafa7627336400c8807645b8234c7b49bce17c53aadbf2c8d41c0dab
+2024-12-27 16:26:20,207 - INFO - Deployment complete. Successful: 1, Failed: 0
+2024-12-27 16:35:02,435 - INFO - Starting deployment
+2024-12-27 16:35:02,668 - INFO - Launched first container for user work3. Container ID: 9c4d77e407eced3e64187f9f7dbafd926119303bbfc3bd8811b176c7cb708c50
+2024-12-27 16:43:47,045 - INFO - Successfully launched second container for user work3. Container ID: b2b5cdfcb4db62e157e38b47744d25251a67ea7ed915c07d1a1f4df33712750f
+2024-12-27 16:53:56,822 - INFO - Deployment complete. Successful: 1, Failed: 0
+2024-12-27 17:00:50,866 - INFO - Starting deployment
+2024-12-27 17:00:51,159 - INFO - Launched first container for user work1. Container ID: 5cac5b8107905cf9fbd0393d8a0e19c117582020a6fc90705588ee75cad4e5ea
+2024-12-27 17:05:43,724 - INFO - Successfully launched second container for user work1. Container ID: 3243a04d5acf59eb70b254203aebd4946a4d0dd8b5e5913b080598bc2b664ab9
+2024-12-27 17:12:32,006 - INFO - Deployment complete. Successful: 1, Failed: 0
