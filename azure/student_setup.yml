@@ -1,6 +1,7 @@
 ---
 - name: Automation Class Student
   hosts: "{{ student | default([]) }}"
+  gather_facts: true
   vars:
     ansible_connection: ssh
     ansible_shell_type: powershell

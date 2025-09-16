@@ -1,6 +1,9 @@
-FROM python:3.12.3-slim-bullseye
+FROM python:3.12-slim
 
 WORKDIR /app
+
+# Update system packages to reduce vulnerabilities
+RUN apt-get update && apt-get upgrade -y && apt-get clean && rm -rf /var/lib/apt/lists/*
 
 COPY requirements.txt ./
 RUN pip install --no-cache-dir -r requirements.txt
@@ -11,4 +14,4 @@ COPY /azure/00_azure_class_setup_new.yml ./
 
 ENV AZURE_PROFILE=redhat
 
-CMD ansible-playbook -e "adminUser=$username adminPassword=$password" 00_azure_class_setup_new.yml
+CMD ["sh", "-c", "ansible-playbook -e adminUser=$username -e adminPassword=$password 00_azure_class_setup_new.yml"]
