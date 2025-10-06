@@ -77,6 +77,7 @@
         - {name: 'server2', ip: '10.1.0.7'}
         - {name: 'server3', ip: '10.1.0.8'}
         - {name: 'server4', ip: '10.1.0.9'}
+        - {name: 'server5', ip: '10.1.0.10'}
         - {name: 'student', ip: '10.1.0.4'}
       async: 1000
       poll: 0
@@ -113,10 +114,11 @@
           ansible: "{{ item.name }}_{{ adminUser }}"
       loop:
         - {name: 'ansible', size: 'Standard_B2ms', os: 'Linux', offer: 'RHEL', pub: 'RedHat', sku: '9_4'}
-        - {name: 'server1', size: 'Standard_B2s', os: 'Linux', offer: 'RHEL', pub: 'RedHat', sku: '9_4'}
+        - {name: 'server1', size: 'Standard_D4s_v5', os: 'Linux', offer: 'RHEL', pub: 'RedHat', sku: '9_4'}
         - {name: 'server2', size: 'Standard_B2s', os: 'Linux', offer: 'RHEL', pub: 'RedHat', sku: '9_4'}
         - {name: 'server3', size: 'Standard_B2ms', os: 'Linux', offer: 'ubuntu-24_04-lts', pub: 'canonical', sku: 'server'}
         - {name: 'server4', size: 'Standard_B2ms', os: 'Linux', offer: 'ubuntu-24_04-lts', pub: 'canonical', sku: 'server'}
+        - {name: 'server5', size: 'Standard_B2ms', os: 'Windows', offer: 'WindowsServer', pub: 'MicrosoftWindowsServer', sku: '2022-Datacenter'}
         - {name: 'student', size: 'Standard_D4s_v5', os: 'Windows', offer: 'windows-11', pub: 'microsoftwindowsdesktop', sku: 'win11-24h2-pro'}
       async: 1000
       poll: 0
