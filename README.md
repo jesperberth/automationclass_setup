@@ -81,6 +81,6 @@ Update users.csv file
 
 ```bash
 
-python deploy_labs.py
+python3 deploy_labs_new.py
 
 ```
