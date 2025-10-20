@@ -1,4 +1,4 @@
-FROM python:3.12-slim-bookworm
+FROM python:3.12-slim
 
 WORKDIR /app
 
@@ -19,4 +19,4 @@ COPY /azure/wsl_install_docker.sh ./
 
 ENV AZURE_PROFILE=redhat
 
-CMD ["sh", "-c", "ansible-playbook student_setup.yml -i class.azure_rm.yml -k -e ansible_user=$username -e ansible_password=$password -e student=tag_ansible_student_$username"]
+CMD ["sh", "-c", "ansible-playbook student_setup.yml -i class.azure_rm.yml -k -e ansible_user=$username -e ansible_password=$password -e student=tag_type_student_$username"]

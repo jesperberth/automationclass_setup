@@ -65,6 +65,7 @@
         virtual_network: "{{ virtualnetwork }}"
         subnet_name: "{{ subnet }}"
         security_group: "SG_Network"
+        enable_ip_forwarding: "{{ item.forward | default(false) }}"
         ip_configurations:
           - name: "{{ item.name }}_nic01_ipconfig"
             public_ip_address_name: "{{ item.name }}_public_ip"
@@ -73,7 +74,7 @@
             private_ip_address: "{{ item.ip }}"
       loop:
         - {name: 'ovirt', ip: '10.1.0.5'}
-        - {name: 'host1', ip: '10.1.0.15'}
+        - {name: 'host1', ip: '10.1.0.15', forward: true}
         - {name: 'server1', ip: '10.1.0.6'}
         - {name: 'server2', ip: '10.1.0.7'}
         - {name: 'server3', ip: '10.1.0.8'}
@@ -113,13 +114,14 @@
         tags:
           owner: "{{ adminUser }}"
           ansible: "{{ adminUser }}"
+          type: "{{ item.name  }}_{{ adminUser }}"
       loop:
         - {name: 'ovirt', size: 'Standard_D4s_v5', os: 'Linux', offer: 'almalinux-x86_64', pub: 'almalinux', sku: '9-gen2'}
         - {name: 'host1', size: 'Standard_D4s_v5', os: 'Linux', offer: 'almalinux-x86_64', pub: 'almalinux', sku: '9-gen2'}
         - {name: 'server1', size: 'Standard_B2s', os: 'Linux', offer: 'RHEL', pub: 'RedHat', sku: '9_4'}
         - {name: 'server2', size: 'Standard_B2s', os: 'Linux', offer: 'RHEL', pub: 'RedHat', sku: '9_4'}
         - {name: 'server3', size: 'Standard_B2ms', os: 'Linux', offer: 'ubuntu-24_04-lts', pub: 'canonical', sku: 'server'}
-        - {name: 'server4', size: 'Standard_B2ms', os: 'Linux', offer: 'ubuntu-24_04-lts', pub: 'canonical', sku: 'server'}
+        - {name: 'server4', size: 'Standard_B4ms', os: 'Linux', offer: 'ubuntu-24_04-lts', pub: 'canonical', sku: 'server'}
         - {name: 'server5', size: 'Standard_B2ms', os: 'Windows', offer: 'WindowsServer', pub: 'MicrosoftWindowsServer', sku: '2022-Datacenter'}
         - {name: 'student', size: 'Standard_D4s_v5', os: 'Windows', offer: 'windows-11', pub: 'microsoftwindowsdesktop', sku: 'win11-24h2-pro'}
       async: 1000
