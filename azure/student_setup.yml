@@ -10,6 +10,7 @@
     ansible_become_user: "{{ ansible_user }}"
     ansible_become_password: "{{ ansible_password }}"
     ansible_become_flags: logon_type=new_credentials logon_flags=netcredentials_only
+    ubuntuinstalled: false
 
   tasks:
     - name: RegKey HideFirstRunExperience
@@ -30,6 +31,13 @@
       ansible.windows.win_regedit:
         path: HKLM:\SOFTWARE\Policies\Microsoft\Windows\OOBE
         name: DisablePrivacyExperience
+        data: 1
+        type: dword
+
+    - name: RegKey EnableSudo
+      ansible.windows.win_regedit:
+        path: HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Sudo
+        name: Enabled
         data: 1
         type: dword
 
@@ -101,7 +109,7 @@
 
     - name: Install WSL
       ansible.windows.win_package:
-        path: https://github.com/microsoft/WSL/releases/download/2.3.26/wsl.2.3.26.0.x64.msi
+        path: https://github.com/microsoft/WSL/releases/download/2.6.3/wsl.2.6.3.0.x64.msi
         arguments:
           - /passive
           - /norestart
@@ -109,6 +117,7 @@
 
     - name: Reboot
       ansible.windows.win_reboot:
+        post_reboot_delay: 120
       when: not wslpath.stat.exists
 
     - name: Check if Ubuntu-24.04 is installed
@@ -122,17 +131,12 @@
 
     - name: Set ubuntuStatus
       ansible.builtin.set_fact:
-        ubuntuinstalled: false
-      when: ubuntustatus['stdout'] == ""
+        ubuntuinstalled: true
+      when: not ubuntustatus['stdout'] == ""
 
     - name: Install Ubuntu for WSL
       ansible.windows.win_shell: |
         wsl --install -d Ubuntu-24.04 --no-launch
-      when: not ubuntuinstalled
-
-    - name: Install Ubuntu for WSL Continued
-      ansible.windows.win_shell: |
-        ubuntu2404.exe install --root
       when: not ubuntuinstalled
 
     - name: Copy wsl_create_user.sh

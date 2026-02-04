@@ -84,3 +84,9 @@ Update users.csv file
 python3 deploy_labs_new.py
 
 ```
+https://github.com/microsoft/WSL/releases/download/2.3.26/wsl.2.3.26.0.x64.msi
+
+    - name: Install Ubuntu for WSL Continued
+      ansible.windows.win_shell: |
+        wsl.exe -d Ubuntu-24.04 --install --root
+      when: not ubuntuinstalled
