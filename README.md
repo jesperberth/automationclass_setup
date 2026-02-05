@@ -90,3 +90,11 @@ https://github.com/microsoft/WSL/releases/download/2.3.26/wsl.2.3.26.0.x64.msi
       ansible.windows.win_shell: |
         wsl.exe -d Ubuntu-24.04 --install --root
       when: not ubuntuinstalled
+
+Get Azure Credentials
+
+```bash
+SubID=$(az account list --query "[].{id:id}" -o tsv)
+az ad sp create-for-rbac --name lab-student --role Contributor --scopes /subscriptions/$SubID
+echo $SubID
+```
