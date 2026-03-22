@@ -1,9 +1,41 @@
+import argparse
 import csv
 import subprocess
 import logging
+import threading
+from concurrent.futures import ThreadPoolExecutor, as_completed
 from pathlib import Path
 import sys
 import time
+
+MEM_CONTAINER1_MB = 2000  # ansiblenewclass:latest
+MEM_CONTAINER2_MB = 300   # ansiblenewclassstudent:latest
+
+def detect_vm_memory() -> int:
+    """Detect total VM memory available to Docker, returns MB"""
+    result = subprocess.run(
+        ['docker', 'info', '--format', '{{json .MemTotal}}'],
+        capture_output=True, text=True, check=False
+    )
+    if result.returncode == 0:
+        try:
+            return int(result.stdout.strip()) // (1024 * 1024)
+        except ValueError:
+            pass
+    logging.warning("Could not detect VM memory, defaulting to 4096 MB")
+    return 4096
+
+
+def calculate_semaphore_limits(available_mb: int) -> tuple:
+    """Calculate max concurrent containers of each type based on available memory"""
+    max_c1 = max(1, available_mb // MEM_CONTAINER1_MB)
+    max_c2 = max(1, available_mb // MEM_CONTAINER2_MB)
+    logging.info(
+        f"VM memory: {available_mb} MB → "
+        f"max {max_c1} container-1s, {max_c2} container-2s concurrently"
+    )
+    return max_c1, max_c2
+
 
 def setup_logging():
     """Configure logging for the application"""
@@ -56,10 +88,14 @@ def wait_for_container(container_id: str, timeout: int = 1200) -> bool:
         logging.error(f"Error monitoring container {container_id}: {str(e)}")
         return False
 
-def launch_container(username: str, password: str) -> bool:
+def launch_container(username: str, password: str,
+                     sem1: threading.Semaphore, sem2: threading.Semaphore) -> bool:
     """
-    Launch two Docker containers sequentially with provided credentials
-    Returns True if both containers succeed, False otherwise
+    Launch two Docker containers sequentially with provided credentials.
+    Semaphores gate each container type to enforce memory limits independently,
+    so container 1's slot is released as soon as it finishes — allowing the next
+    user's container 1 to start while container 2 is still running.
+    Returns True if both containers succeed, False otherwise.
     """
     try:
         # Validate inputs
@@ -71,69 +107,54 @@ def launch_container(username: str, password: str) -> bool:
         if not credentials_path.exists():
             raise FileNotFoundError(f"Credentials file not found at {credentials_path}")
 
-        # First container configuration
-        first_container_command = [
-            'docker',
-            'run',
-            '-d',
-            '--mount',
-            f'type=bind,source={credentials_path},target=/root/.azure/credentials',
-            '-e', f'username={username}',
-            '-e', f'password={password}',
-            'ansiblenewclass:latest'
-        ]
+        # First container — hold semaphore only while it runs
+        with sem1:
+            first_result = subprocess.run(
+                [
+                    'docker', 'run', '-d',
+                    '--mount', f'type=bind,source={credentials_path},target=/root/.azure/credentials',
+                    '-e', f'username={username}',
+                    '-e', f'password={password}',
+                    'ansiblenewclass:latest'
+                ],
+                text=True, capture_output=True, check=False
+            )
 
-        # Launch first container
-        first_result = subprocess.run(
-            first_container_command,
-            text=True,
-            capture_output=True,
-            check=False
-        )
+            if first_result.returncode != 0:
+                logging.error(f"First container launch failed for user {username}. Error: {first_result.stderr}")
+                return False
 
-        if first_result.returncode != 0:
-            logging.error(f"First container launch failed for user {username}. Error: {first_result.stderr}")
-            return False
+            first_container_id = first_result.stdout.strip()
+            logging.info(f"Launched first container for user {username}. Container ID: {first_container_id}")
 
-        first_container_id = first_result.stdout.strip()
-        logging.info(f"Launched first container for user {username}. Container ID: {first_container_id}")
+            if not wait_for_container(first_container_id):
+                logging.error(f"First container failed or timed out for user {username}")
+                return False
+        # sem1 released here — next user's container 1 can now start
 
-        # Wait for first container to complete
-        if not wait_for_container(first_container_id):
-            logging.error(f"First container failed or timed out for user {username}")
-            return False
+        # Second container — hold semaphore only while it runs
+        with sem2:
+            second_result = subprocess.run(
+                [
+                    'docker', 'run', '-d',
+                    '--mount', f'type=bind,source={credentials_path},target=/root/.azure/credentials',
+                    '-e', f'username={username}',
+                    '-e', f'password={password}',
+                    'ansiblenewclassstudent:latest'
+                ],
+                text=True, capture_output=True, check=False
+            )
 
-        # Second container configuration
-        second_container_command = [
-            'docker',
-            'run',
-            '-d',
-            '--mount',
-            f'type=bind,source={credentials_path},target=/root/.azure/credentials',
-            '-e', f'username={username}',
-            '-e', f'password={password}',
-            'ansiblenewclassstudent:latest'  # Using a different image for the second container
-        ]
+            if second_result.returncode != 0:
+                logging.error(f"Second container launch failed for user {username}. Error: {second_result.stderr}")
+                return False
 
-        # Launch second container
-        second_result = subprocess.run(
-            second_container_command,
-            text=True,
-            capture_output=True,
-            check=False
-        )
+            second_container_id = second_result.stdout.strip()
+            logging.info(f"Successfully launched second container for user {username}. Container ID: {second_container_id}")
 
-        if second_result.returncode != 0:
-            logging.error(f"Second container launch failed for user {username}. Error: {second_result.stderr}")
-            return False
-
-        second_container_id = second_result.stdout.strip()
-        logging.info(f"Successfully launched second container for user {username}. Container ID: {second_container_id}")
-        
-        # Optionally wait for second container to complete as well
-        if not wait_for_container(second_container_id):
-            logging.error(f"Second container failed or timed out for user {username}")
-            return False
+            if not wait_for_container(second_container_id):
+                logging.error(f"Second container failed or timed out for user {username}")
+                return False
 
         return True
 
@@ -142,14 +163,11 @@ def launch_container(username: str, password: str) -> bool:
         return False
 
 def read_csv(filepath: str) -> None:
-    """Read user credentials from CSV and launch containers"""
+    """Read user credentials from CSV and launch containers in parallel"""
     try:
         filepath = Path(filepath)
         if not filepath.exists():
             raise FileNotFoundError(f"CSV file not found: {filepath}")
-
-        successful_launches = 0
-        failed_launches = 0
 
         with open(filepath, mode='r', newline='') as file:
             reader = csv.DictReader(file)
@@ -159,8 +177,23 @@ def read_csv(filepath: str) -> None:
             if not required_fields.issubset(reader.fieldnames):
                 raise ValueError(f"CSV must contain fields: {required_fields}")
 
-            for row in reader:
-                if launch_container(row['Username'], row['Password']):
+            rows = list(reader)
+
+        available_mb = detect_vm_memory()
+        max_c1, max_c2 = calculate_semaphore_limits(available_mb)
+        sem1 = threading.Semaphore(max_c1)
+        sem2 = threading.Semaphore(max_c2)
+
+        successful_launches = 0
+        failed_launches = 0
+
+        with ThreadPoolExecutor(max_workers=len(rows)) as executor:
+            futures = {
+                executor.submit(launch_container, row['Username'], row['Password'], sem1, sem2): row['Username']
+                for row in rows
+            }
+            for future in as_completed(futures):
+                if future.result():
                     successful_launches += 1
                 else:
                     failed_launches += 1
@@ -172,7 +205,13 @@ def read_csv(filepath: str) -> None:
         sys.exit(1)
 
 def main():
-    setup_logging()
+    parser = argparse.ArgumentParser(description='Deploy lab containers')
+    parser.add_argument('--log', action='store_true', help='Enable logging to stdout and file')
+    args = parser.parse_args()
+
+    if args.log:
+        setup_logging()
+
     logging.info("Starting deployment")
     read_csv('users.csv')
 
